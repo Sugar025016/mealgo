@@ -1,0 +1,20 @@
+# Spring Boot
+backend/target/
+
+# Vue
+frontend/node_modules/
+frontend/dist/
+
+# VSCode
+.vscode/
+
+# Env
+.env
+.env.*
+
+# MySQL 資料庫檔案
+mysql/db_data/
+db_data/
+
+# Log
+*.log
