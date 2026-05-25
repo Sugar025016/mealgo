@@ -15,11 +15,6 @@ import com.mealgo.entity.Product;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query("SELECT p FROM Product p WHERE p.shop.id = :shopId AND p.isDelete = false")
-    List<Product> findByShopId(@Param("shopId") int shopId);
-
-    @Query("SELECT p FROM Product p WHERE p.shop.id = :shopId AND p.isDelete = false")
-    Page<Product> findByShopId(@Param("shopId") int shopId, Pageable pageable);
 
 
 

@@ -5,19 +5,27 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "shops")
 public class Shop extends BaseEntity {
@@ -63,6 +71,41 @@ public class Shop extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
     private List<Product> products;
+
+    @JsonIgnore
+    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "shop_category", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "category_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
+            "shop_id", "category_id" }))
+    private List<Category> category;
+
+    // @JsonIgnore
+    // @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy =
+    // "loves")
+    // private List<User> loves;
+
+    // @JsonIgnore
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
+    // private List<Order> orders;
+
+    // @JsonIgnore
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop", fetch =
+    // FetchType.LAZY)
+    // private List<Schedule> schedules;
+
+    // @JsonIgnore
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop", fetch =
+    // FetchType.LAZY)
+    // private List<Tab> tabs;
+
+    // @JsonIgnore
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop", fetch =
+    // FetchType.LAZY)
+    // private List<AddMeals> addMeals;
 
     // 給關聯過來的回傳值
     @Override

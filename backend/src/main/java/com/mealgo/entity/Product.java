@@ -14,10 +14,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "products")
 public class Product extends BaseEntity {
@@ -29,8 +31,8 @@ public class Product extends BaseEntity {
     private String name;
     @Column(name = "description", length = 512)
     private String description;
-    @Column(name = "price", nullable = false)
-    private Integer price;
+    @Column(name = "price")
+    private int price;
 
     @Column(name = "is_orderable", nullable = false)
     private boolean isOrderable;
