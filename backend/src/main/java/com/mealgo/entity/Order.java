@@ -1,8 +1,8 @@
 package com.mealgo.entity;
 
-import java.util.Objects;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mealgo.enums.PayMethod;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,30 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "addresses")
-public class Address extends BaseEntity {
+@Table(name = "orders")
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "order_number", length = 50, nullable = false, unique = true)
+    private String orderNumber;
+    @Column(name = "order_note", length = 512)
+    private String orderNote;
 
-    // 地址
+    @Column(name = "delivery_fee", nullable = false)
+    private int deliveryFee;
+    @Column(name = "subtotal", nullable = false)
+    private int subtotal;
+    @Column(name = "total_price", nullable = false)
+    private int totalPrice;
+
+    @Column(name = "pay_method", nullable = false)
+    private int payMethod = PayMethod.CASH.getCode();
+    @Column(name = "status", nullable = true)
+    private int status = 11;
+
+    // 外送地址
     @Column(name = "city", length = 20, nullable = false)
     private String city;
     @Column(name = "area", length = 20, nullable = false)
@@ -43,46 +60,15 @@ public class Address extends BaseEntity {
     @Column(name = "lng")
     private Double lng = 0.0;
 
-    @JsonIgnore
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // @JsonIgnore
-    // @OneToOne(mappedBy = "addressDelivery", cascade = CascadeType.ALL, fetch =
-    // FetchType.LAZY)
-    // private User userDelivery;
-
-    // @JsonIgnore
-    // @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    // private User loveUsers;
-
-    @Override
-    public String toString() {
-        return "AddressData{" +
-                "id=" + id +
-                ", city=" + city +
-                ", area=" + area +
-                ", street=" + street +
-                ", detail=" + detail +
-                ", lat=" + lat +
-                ", lng=" + lng +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        Address address = (Address) o;
-        return Objects.equals(id, address.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id", nullable = false)
+    private Shop shop;
 
 }

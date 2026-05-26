@@ -17,8 +17,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "cart_items")
-public class CartItem extends BaseEntity {
+@Table(name = "order_items")
+public class OrderItem extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,23 +29,23 @@ public class CartItem extends BaseEntity {
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @Column(name = "qty", nullable = false)
-    private int qty = 1;
+    private int qty;
 
-    @Column(name = "remark", length = 255)
-    private String remark;
+    @Column(name = "price", nullable = false)
+    private int price;
 
-    @Override
-    public String toString() {
-        return "Cart{" +
-                "id=" + id +
-                ", product=" + product +
-                ", qty=" + qty +
-                ", remark=" + remark +
-                '}';
-    }
+    @Column(name = "customer_note", length = 512)
+    private String customerNote;
+
+    // public OrderItem(Cart cart, Order order) {
+    // BeanUtils.copyProperties(cart, this);
+    // // this.id=0;
+    // this.price = cart.getProduct().getPrice();
+    // this.order=order;
+    // }
 
 }

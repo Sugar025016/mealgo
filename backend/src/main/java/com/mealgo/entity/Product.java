@@ -25,7 +25,6 @@ import lombok.Setter;
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
     @Column(name = "name", length = 100, nullable = false)
     private String name;
@@ -45,8 +44,8 @@ public class Product extends BaseEntity {
     private String imagePath;
 
     @JsonIgnore
-    @JoinColumn(name = "shop_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     @Override

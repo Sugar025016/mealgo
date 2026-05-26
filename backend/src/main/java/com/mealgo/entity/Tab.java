@@ -30,15 +30,14 @@ public class Tab {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
     @JsonIgnore
-    @JoinColumn(name = "shop_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     @Column(name = "is_shelve", length = 255, nullable = false, columnDefinition = "TINYINT(1) DEFAULT false")

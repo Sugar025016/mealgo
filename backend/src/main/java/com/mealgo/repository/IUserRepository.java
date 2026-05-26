@@ -7,6 +7,6 @@ import com.mealgo.entity.User;
 // @Repository
 public interface IUserRepository extends JpaRepository<User, Integer> {
 
-    boolean existsByAccount(String account);
+    boolean existsByEmail(String account);
 
 }

@@ -26,7 +26,6 @@ import lombok.Setter;
 public class Schedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "week", nullable = false)
@@ -39,8 +38,8 @@ public class Schedule extends BaseEntity {
     private LocalTime endTime;
 
     @JsonIgnore
-    @JoinColumn(name = "shop_id")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
 }

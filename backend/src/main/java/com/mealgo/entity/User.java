@@ -13,8 +13,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,15 +31,14 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
     @Column(name = "name", length = 255, nullable = false)
     private String name;
     @Column(name = "phone", length = 11)
     private String phone;
     @Email
-    @Column(name = "account", length = 64, nullable = false, unique = true)
-    private String account;
+    @Column(name = "email", length = 255, nullable = false, unique = true)
+    private String email;
     @Column(name = "password", length = 32, nullable = false)
     private String password;
 
@@ -52,24 +55,15 @@ public class User extends BaseEntity {
     // @Column(name = "email", length = 255)
     // private String email;
 
-    // @JsonIgnore
-    // @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    // @JoinTable(name = "user_address", joinColumns = @JoinColumn(name =
-    // "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"),
-    // uniqueConstraints = @UniqueConstraint(columnNames = {
-    // "user_id", "address_id" }))
-    // private List<Address> addresses;
-
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Address> addresses;
 
-    // @ManyToMany(cascade = CascadeType.ALL)
-    // @JoinTable(name = "love", joinColumns = @JoinColumn(name = "user_id"),
-    // inverseJoinColumns = @JoinColumn(name = "shop_id"), uniqueConstraints =
-    // @UniqueConstraint(columnNames = {
-    // "user_id", "shop_id" }))
-    // private List<Shop> loves;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "favorite_shops", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
+            "user_id", "shop_id" }))
+    private List<Shop> favoriteShops;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -112,8 +106,6 @@ public class User extends BaseEntity {
     // ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     // this.AddressDelivery = orElseThrow;
     // }
-
-
 
     // public Set<ShopResponse> getShopLoveList() {
     // Set<ShopResponse> collect = shopLoveList.stream().map(v->new

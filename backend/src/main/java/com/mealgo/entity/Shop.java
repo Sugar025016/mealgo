@@ -41,27 +41,26 @@ public class Shop extends BaseEntity {
     private String phone;
     @Column(name = "description", length = 512)
     private String description;
+    @Column(name = "delivery_km")
+    private Double deliveryKm = 0.0;
+    @Column(name = "delivery_price")
+    private Integer deliveryPrice = 0;
 
     @Column(name = "is_orderable", nullable = false)
     private boolean isOrderable;
     @Column(name = "is_open", nullable = false)
     private boolean isOpen;
-
-    @Column(name = "delivery_km")
-    private Double deliveryKm = 0.0;
-    @Column(name = "delivery_price")
-    private Integer deliveryPrice = 0;
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     // 地址
-    @Column(name = "city", length = 20)
+    @Column(name = "city", length = 20, nullable = false)
     private String city;
-    @Column(name = "area", length = 20)
+    @Column(name = "area", length = 20, nullable = false)
     private String area;
-    @Column(name = "street", length = 100)
+    @Column(name = "street", length = 100, nullable = false)
     private String street;
-    @Column(name = "detail", length = 255)
+    @Column(name = "detail", length = 255, nullable = false)
     private String detail;
     @Column(name = "lat")
     private Double lat = 0.0;
@@ -73,15 +72,15 @@ public class Shop extends BaseEntity {
     private List<Product> products;
 
     @JsonIgnore
-    @JoinColumn(name = "user_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "shop_category", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "category_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
             "shop_id", "category_id" }))
-    private List<Category> category;
+    private List<Category> categories;
 
     // @JsonIgnore
     // @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy =
