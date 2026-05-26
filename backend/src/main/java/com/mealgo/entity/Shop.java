@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -46,12 +45,14 @@ public class Shop extends BaseEntity {
     @Column(name = "delivery_price")
     private Integer deliveryPrice = 0;
 
-    @Column(name = "is_orderable", nullable = false)
-    private boolean isOrderable;
     @Column(name = "is_open", nullable = false)
     private boolean isOpen;
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    @Column(name = "is_orderable", nullable = false)
+    private boolean isOrderable;
+
+    // 圖片
+    @Column(name = "image_path", length = 255)
+    private String imagePath;
 
     // 地址
     @Column(name = "city", length = 20, nullable = false)
@@ -72,15 +73,15 @@ public class Shop extends BaseEntity {
     private List<Product> products;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "shop_category", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "category_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
             "shop_id", "category_id" }))
     private List<Category> categories;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     // @JsonIgnore
     // @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy =
@@ -90,21 +91,6 @@ public class Shop extends BaseEntity {
     // @JsonIgnore
     // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
     // private List<Order> orders;
-
-    // @JsonIgnore
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop", fetch =
-    // FetchType.LAZY)
-    // private List<Schedule> schedules;
-
-    // @JsonIgnore
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop", fetch =
-    // FetchType.LAZY)
-    // private List<Tab> tabs;
-
-    // @JsonIgnore
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop", fetch =
-    // FetchType.LAZY)
-    // private List<AddMeals> addMeals;
 
     // 給關聯過來的回傳值
     @Override
@@ -128,11 +114,6 @@ public class Shop extends BaseEntity {
     public void close() {
         this.isOpen = false;
         this.isOrderable = false;
-    }
-
-    public void softDelete() {
-        this.deletedAt = LocalDateTime.now();
-        close();
     }
 
     // private void setIsOpen(boolean isOpen) {

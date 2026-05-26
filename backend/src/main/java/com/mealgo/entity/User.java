@@ -32,10 +32,12 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
     @Column(name = "name", length = 255, nullable = false)
     private String name;
     @Column(name = "phone", length = 11)
     private String phone;
+
     @Email
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
@@ -59,26 +61,12 @@ public class User extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Address> addresses;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "favorite_shops", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
-            "user_id", "shop_id" }))
-    private List<Shop> favoriteShops;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Shop> shops;
-
-    // @JsonIgnore
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    // private List<Order> orders;
-
     // 給關聯過來的回傳值
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name=" + name +
+                ", email=" + email +
                 ", name=" + name +
                 ", phone=" + phone +
                 '}';

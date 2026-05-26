@@ -24,19 +24,19 @@ public class CartItem extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(name = "qty", nullable = false)
+    private int qty;
+
+    @Column(name = "remark", length = 255)
+    private String remark;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
-
-    @Column(name = "qty", nullable = false)
-    private int qty = 1;
-
-    @Column(name = "remark", length = 255)
-    private String remark;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Override
     public String toString() {

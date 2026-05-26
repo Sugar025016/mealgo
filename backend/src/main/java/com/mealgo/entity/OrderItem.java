@@ -24,14 +24,6 @@ public class OrderItem extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
-
     @Column(name = "qty", nullable = false)
     private int qty;
 
@@ -40,6 +32,14 @@ public class OrderItem extends BaseEntity {
 
     @Column(name = "customer_note", length = 512)
     private String customerNote;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     // public OrderItem(Cart cart, Order order) {
     // BeanUtils.copyProperties(cart, this);

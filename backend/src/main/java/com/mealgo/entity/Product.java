@@ -33,11 +33,8 @@ public class Product extends BaseEntity {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "is_orderable", nullable = false)
-    private boolean isOrderable;
-    // 軟刪除時間戳
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    @Column(name = "isShelve", nullable = false)
+    private boolean isShelve;
 
     // 圖片
     @Column(name = "image_path", length = 255)

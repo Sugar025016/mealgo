@@ -1,3 +1,5 @@
+package com.mealgo.enums;
+
 public enum OrderStatus {
 
     PENDING(1, "待確認"),

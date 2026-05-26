@@ -1,4 +1,4 @@
-package com.order_lunch.enums;
+package com.mealgo.enums;
 
 public enum Week {
 
