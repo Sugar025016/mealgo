@@ -9,6 +9,7 @@ import com.mealgo.dto.response.CartItemResponse;
 import com.mealgo.entity.Cart;
 import com.mealgo.entity.CartItem;
 import com.mealgo.entity.Product;
+import com.mealgo.exception.ResourceNotFoundException;
 import com.mealgo.repository.ICartItemRepository;
 import com.mealgo.repository.ICartRepository;
 import com.mealgo.repository.IProductRepository;
@@ -20,76 +21,90 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartItemService implements ICartItemService {
 
-    private final ICartItemRepository cartItemRepository;
-    private final ICartRepository cartRepository;
-    private final IProductRepository productRepository;
+        private final ICartItemRepository cartItemRepository;
+        private final ICartRepository cartRepository;
+        private final IProductRepository productRepository;
 
-    @Override
-    public List<CartItemResponse> findAll() {
-        return cartItemRepository.findAll()
-                .stream()
-                .map(CartItemResponse::new)
-                .toList();
-    }
+        @Override
+        public List<CartItemResponse> findAll() {
+                return cartItemRepository.findAll()
+                                .stream()
+                                .map(CartItemResponse::new)
+                                .toList();
+        }
 
-    @Override
-    public List<CartItemResponse> findByCartId(Integer cartId) {
-        return cartItemRepository.findByCartId(cartId)
-                .stream()
-                .map(CartItemResponse::new)
-                .toList();
-    }
+        @Override
+        public List<CartItemResponse> findByCartId(Integer cartId) {
+                return cartItemRepository.findByCartId(cartId)
+                                .stream()
+                                .map(CartItemResponse::new)
+                                .toList();
+        }
 
-    @Override
-    public CartItemResponse findById(Integer id) {
-        CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cart item not found"));
+        @Override
+        public CartItemResponse findById(Integer id) {
 
-        return new CartItemResponse(cartItem);
-    }
+                CartItem cartItem = getCartItem(id);
 
-    @Override
-    public CartItemResponse create(CartItemRequest request) {
-        Cart cart = cartRepository.findById(request.getCartId())
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                return new CartItemResponse(cartItem);
+        }
 
-        Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+        @Override
+        public CartItemResponse create(CartItemRequest request) {
 
-        CartItem cartItem = new CartItem();
+                Cart cart = getCart(request.getCartId());
+                Product product = getProduct(request.getProductId());
 
-        cartItem.setCart(cart);
-        cartItem.setProduct(product);
-        cartItem.setQty(request.getQty());
-        cartItem.setRemark(request.getRemark());
+                CartItem cartItem = new CartItem();
 
-        return new CartItemResponse(cartItemRepository.save(cartItem));
-    }
+                cartItem.setCart(cart);
+                cartItem.setProduct(product);
+                cartItem.setQty(request.getQty());
+                cartItem.setRemark(request.getRemark());
 
-    @Override
-    public CartItemResponse update(Integer id, CartItemRequest request) {
-        CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cart item not found"));
+                return new CartItemResponse(
+                                cartItemRepository.save(cartItem));
+        }
 
-        Cart cart = cartRepository.findById(request.getCartId())
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+        @Override
+        public CartItemResponse update(Integer id, CartItemRequest request) {
 
-        Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                CartItem cartItem = getCartItem(id);
+                Cart cart = getCart(request.getCartId());
+                Product product = getProduct(request.getProductId());
 
-        cartItem.setCart(cart);
-        cartItem.setProduct(product);
-        cartItem.setQty(request.getQty());
-        cartItem.setRemark(request.getRemark());
+                cartItem.setCart(cart);
+                cartItem.setProduct(product);
+                cartItem.setQty(request.getQty());
+                cartItem.setRemark(request.getRemark());
 
-        return new CartItemResponse(cartItemRepository.save(cartItem));
-    }
+                return new CartItemResponse(
+                                cartItemRepository.save(cartItem));
+        }
 
-    @Override
-    public void delete(Integer id) {
-        CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cart item not found"));
+        @Override
+        public void delete(Integer id) {
 
-        cartItemRepository.delete(cartItem);
-    }
+                CartItem cartItem = getCartItem(id);
+
+                cartItemRepository.delete(cartItem);
+        }
+
+        private CartItem getCartItem(Integer id) {
+
+                return cartItemRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("購物車商品"));
+        }
+
+        private Cart getCart(Integer id) {
+
+                return cartRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("購物車"));
+        }
+
+        private Product getProduct(Integer id) {
+
+                return productRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("商品"));
+        }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.mealgo.dto.request.CategoryRequest;
 import com.mealgo.dto.response.CategoryResponse;
 import com.mealgo.entity.Category;
+import com.mealgo.exception.ResourceNotFoundException;
 import com.mealgo.repository.ICategoryRepository;
 import com.mealgo.service.ICategoryService;
 
@@ -16,54 +17,59 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoryService implements ICategoryService {
 
-    private final ICategoryRepository categoryRepository;
+        private final ICategoryRepository categoryRepository;
 
-    @Override
-    public List<CategoryResponse> findAll() {
-        return categoryRepository.findAll()
-                .stream()
-                .map(CategoryResponse::new)
-                .toList();
-    }
+        @Override
+        public List<CategoryResponse> findAll() {
+                return categoryRepository.findAll()
+                                .stream()
+                                .map(CategoryResponse::new)
+                                .toList();
+        }
 
-    @Override
-    public CategoryResponse findById(Integer id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        @Override
+        public CategoryResponse findById(Integer id) {
 
-        return new CategoryResponse(category);
-    }
+                Category category = getCategory(id);
 
-    @Override
-    public CategoryResponse create(CategoryRequest request) {
+                return new CategoryResponse(category);
+        }
 
-        Category category = new Category();
+        @Override
+        public CategoryResponse create(CategoryRequest request) {
 
-        category.setName(request.getName());
+                Category category = new Category();
 
-        return new CategoryResponse(
-                categoryRepository.save(category));
-    }
+                category.setName(request.getName());
 
-    @Override
-    public CategoryResponse update(Integer id,
-            CategoryRequest request) {
+                return new CategoryResponse(
+                                categoryRepository.save(category));
+        }
 
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        @Override
+        public CategoryResponse update(
+                        Integer id,
+                        CategoryRequest request) {
 
-        category.setName(request.getName());
+                Category category = getCategory(id);
 
-        return new CategoryResponse(
-                categoryRepository.save(category));
-    }
+                category.setName(request.getName());
 
-    @Override
-    public void delete(Integer id) {
+                return new CategoryResponse(
+                                categoryRepository.save(category));
+        }
 
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        @Override
+        public void delete(Integer id) {
 
-        categoryRepository.delete(category);
-    }
+                Category category = getCategory(id);
+
+                categoryRepository.delete(category);
+        }
+
+        private Category getCategory(Integer id) {
+
+                return categoryRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("分類"));
+        }
 }

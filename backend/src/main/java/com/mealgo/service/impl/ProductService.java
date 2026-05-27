@@ -8,6 +8,7 @@ import com.mealgo.dto.request.ProductRequest;
 import com.mealgo.dto.response.ProductResponse;
 import com.mealgo.entity.Product;
 import com.mealgo.entity.Shop;
+import com.mealgo.exception.ResourceNotFoundException;
 import com.mealgo.repository.IProductRepository;
 import com.mealgo.repository.IShopRepository;
 import com.mealgo.service.IProductService;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
+
     private final IProductRepository productRepository;
     private final IShopRepository shopRepository;
 
@@ -38,16 +40,16 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductResponse findById(Integer id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Product product = getProduct(id);
 
         return new ProductResponse(product);
     }
 
     @Override
     public ProductResponse create(ProductRequest request) {
-        Shop shop = shopRepository.findById(request.getShopId())
-                .orElseThrow(() -> new RuntimeException("Shop not found"));
+
+        Shop shop = getShop(request.getShopId());
 
         Product product = new Product();
 
@@ -58,18 +60,15 @@ public class ProductService implements IProductService {
         product.setShelve(Boolean.TRUE.equals(request.getIsShelve()));
         product.setShop(shop);
 
-        Product savedProduct = productRepository.save(product);
-
-        return new ProductResponse(savedProduct);
+        return new ProductResponse(
+                productRepository.save(product));
     }
 
     @Override
     public ProductResponse update(Integer id, ProductRequest request) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        Shop shop = shopRepository.findById(request.getShopId())
-                .orElseThrow(() -> new RuntimeException("Shop not found"));
+        Product product = getProduct(id);
+        Shop shop = getShop(request.getShopId());
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -78,16 +77,27 @@ public class ProductService implements IProductService {
         product.setShelve(Boolean.TRUE.equals(request.getIsShelve()));
         product.setShop(shop);
 
-        Product savedProduct = productRepository.save(product);
-
-        return new ProductResponse(savedProduct);
+        return new ProductResponse(
+                productRepository.save(product));
     }
 
     @Override
     public void delete(Integer id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Product product = getProduct(id);
 
         productRepository.delete(product);
+    }
+
+    private Product getProduct(Integer id) {
+
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("商品"));
+    }
+
+    private Shop getShop(Integer id) {
+
+        return shopRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("店家"));
     }
 }

@@ -2,6 +2,8 @@ package com.mealgo.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mealgo.dto.ApiResponse;
 import com.mealgo.dto.request.UserRequest;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.service.IUserService;
@@ -26,36 +29,58 @@ public class UserController {
     private final IUserService userService;
 
     @GetMapping
-    public List<UserResponse> findAll() {
-        return userService.findAll();
+    public ResponseEntity<ApiResponse<List<UserResponse>>> findAll() {
+
+        List<UserResponse> users = userService.findAll();
+
+        return ResponseEntity.ok(
+                ApiResponse.success("查詢成功", users)
+        );
     }
 
     @GetMapping("/{id}")
-    public UserResponse findById(
+    public ResponseEntity<ApiResponse<UserResponse>> findById(
             @PathVariable Integer id) {
 
-        return userService.findById(id);
+        UserResponse user = userService.findById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("查詢成功", user)
+        );
     }
 
     @PostMapping
-    public UserResponse create(
+    public ResponseEntity<ApiResponse<UserResponse>> create(
             @Valid @RequestBody UserRequest request) {
 
-        return userService.create(request);
+        UserResponse user = userService.create(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        ApiResponse.success("新增成功", user)
+                );
     }
 
     @PutMapping("/{id}")
-    public UserResponse update(
+    public ResponseEntity<ApiResponse<UserResponse>> update(
             @PathVariable Integer id,
             @Valid @RequestBody UserRequest request) {
 
-        return userService.update(id, request);
+        UserResponse user = userService.update(id, request);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("修改成功", user)
+        );
     }
 
     @DeleteMapping("/{id}")
-    public void delete(
+    public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable Integer id) {
 
         userService.delete(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("刪除成功")
+        );
     }
 }

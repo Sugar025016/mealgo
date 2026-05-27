@@ -1,17 +1,12 @@
 package com.mealgo.controller;
 
-
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import com.mealgo.dto.ApiResponse;
 import com.mealgo.dto.request.ProductRequest;
 import com.mealgo.dto.response.ProductResponse;
 import com.mealgo.service.IProductService;
@@ -27,35 +22,67 @@ public class ProductController {
     private final IProductService productService;
 
     @GetMapping
-    public List<ProductResponse> findAll() {
-        return productService.findAll();
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> findAll() {
+
+        List<ProductResponse> products = productService.findAll();
+
+        return ResponseEntity.ok(
+                ApiResponse.success("查詢成功", products));
     }
 
     @GetMapping("/{id}")
-    public ProductResponse findById(@PathVariable Integer id) {
-        return productService.findById(id);
+    public ResponseEntity<ApiResponse<ProductResponse>> findById(
+            @PathVariable Integer id) {
+
+        ProductResponse product = productService.findById(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("查詢成功", product));
     }
 
     @GetMapping("/shop/{shopId}")
-    public List<ProductResponse> findByShopId(@PathVariable Integer shopId) {
-        return productService.findByShopId(shopId);
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> findByShopId(
+            @PathVariable Integer shopId) {
+
+        List<ProductResponse> products = productService.findByShopId(shopId);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("查詢成功", products));
     }
 
     @PostMapping
-    public ProductResponse create(@Valid @RequestBody ProductRequest request) {
-        return productService.create(request);
+    public ResponseEntity<ApiResponse<ProductResponse>> create(
+            @Valid @RequestBody ProductRequest request) {
+
+        ProductResponse product = productService.create(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        ApiResponse.success(
+                                "新增成功",
+                                product));
     }
 
     @PutMapping("/{id}")
-    public ProductResponse update(
+    public ResponseEntity<ApiResponse<ProductResponse>> update(
             @PathVariable Integer id,
             @Valid @RequestBody ProductRequest request) {
 
-        return productService.update(id, request);
+        ProductResponse product = productService.update(id, request);
+
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "修改成功",
+                        product));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable Integer id) {
+
         productService.delete(id);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("刪除成功"));
     }
 }
