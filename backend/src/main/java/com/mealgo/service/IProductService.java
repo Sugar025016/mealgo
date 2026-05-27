@@ -1,30 +1,21 @@
 package com.mealgo.service;
 
+import java.util.List;
+
+import com.mealgo.dto.request.ProductRequest;
+import com.mealgo.dto.response.ProductResponse;
+
 public interface IProductService {
-    // List<Product> findAll();
 
-    // Product getProductById(int id);
+    List<ProductResponse> findAll();
 
-    // List<Product> getProductsByShopId(int shopId);
+    List<ProductResponse> findByShopId(Integer shopId);
 
-    // // Product deleteProductById(int id) throws NotFoundException;
+    ProductResponse findById(Integer id);
 
-    // // Product putProductById(int id);
-    // Page<BackstageProductResponse> getByPage(Integer shopId, Pageable pageable);
+    ProductResponse create(ProductRequest request);
 
-    // boolean putShop(BackstageProductPutRequest productPutRequest);
+    ProductResponse update(Integer id, ProductRequest request);
 
-    // boolean addProduct(BackstageProductAddRequest productAddRequest);
-
-    // boolean deleteProductById(int productId, int userId);
-
-    // boolean setOrderable(int productId, boolean isOrderable, int userId);
-
-    // List<Product> getProductsByShopIdAndUserID(int productId, int userId);
-
-    // boolean putSellProduct(SellProductRequest sellProductRequest,int
-    // productId,int userId) ;
-
-    // boolean addSellProduct(SellProductRequest sellProductRequest,int shopId, int
-    // userId) ;
+    void delete(Integer id);
 }
