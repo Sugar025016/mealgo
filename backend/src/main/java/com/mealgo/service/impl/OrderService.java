@@ -87,6 +87,9 @@ public class OrderService implements IOrderService {
         Shop shop = cart.getShop();
         Address address = getAddress(request.getAddressId());
         List<CartItem> cartItemList = cart.getCartItems();
+        if (cartItemList == null || cartItemList.isEmpty()) {
+            throw new RuntimeException("購物車沒有商品");
+        }
         int deliveryPrice = shop.getDeliveryPrice();
         int subtotal = cartItemList.stream()
                 .mapToInt(cartItem -> cartItem.getProduct().getPrice()
@@ -96,7 +99,7 @@ public class OrderService implements IOrderService {
         Order order = new Order();
         order.setOrderNumber(generateOrderNumber());
         order.setOrderNote(request.getOrderNote());
-        order.setDeliveryPrice(shop.getDeliveryPrice());
+        order.setDeliveryPrice(deliveryPrice);
 
         order.setSubtotal(subtotal);
         order.setTotalPrice(subtotal + deliveryPrice);
