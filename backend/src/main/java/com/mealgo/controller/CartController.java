@@ -17,9 +17,12 @@ import com.mealgo.dto.request.CartRequest;
 import com.mealgo.dto.response.CartResponse;
 import com.mealgo.service.ICartService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Cart", description = "購物車 API")
 @RestController
 @RequestMapping("/carts")
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class CartController {
 
     private final ICartService cartService;
 
+    @Operation(summary = "查詢全部購物車")
     @GetMapping
     public ResponseEntity<ApiResponse<List<CartResponse>>> findAll() {
 
@@ -38,6 +42,7 @@ public class CartController {
                         carts));
     }
 
+    @Operation(summary = "查詢單一購物車")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CartResponse>> findById(
             @PathVariable Integer id) {
@@ -50,6 +55,7 @@ public class CartController {
                         cart));
     }
 
+    @Operation(summary = "新增購物車")
     @PostMapping
     public ResponseEntity<ApiResponse<CartResponse>> create(
             @Valid @RequestBody CartRequest request) {
@@ -63,6 +69,7 @@ public class CartController {
                                 cart));
     }
 
+    @Operation(summary = "刪除購物車")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable Integer id) {

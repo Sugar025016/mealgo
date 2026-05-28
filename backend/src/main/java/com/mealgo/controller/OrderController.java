@@ -18,121 +18,133 @@ import com.mealgo.dto.request.OrderRequest;
 import com.mealgo.dto.response.OrderResponse;
 import com.mealgo.service.IOrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Order", description = "訂單 API")
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
-        private final IOrderService orderService;
+    private final IOrderService orderService;
 
-        @GetMapping
-        public ResponseEntity<ApiResponse<List<OrderResponse>>> findAll() {
+    @Operation(summary = "查詢全部訂單")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> findAll() {
 
-                List<OrderResponse> orders = orderService.findAll();
+        List<OrderResponse> orders = orderService.findAll();
 
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "查詢成功",
-                                                orders));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "查詢成功",
+                        orders));
+    }
 
-        @GetMapping("/{id}")
-        public ResponseEntity<ApiResponse<OrderResponse>> findById(
-                        @PathVariable Integer id) {
+    @Operation(summary = "查詢單一訂單")
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<OrderResponse>> findById(
+            @PathVariable Integer id) {
 
-                OrderResponse order = orderService.findById(id);
+        OrderResponse order = orderService.findById(id);
 
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "查詢成功",
-                                                order));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "查詢成功",
+                        order));
+    }
 
-        @GetMapping("/number/{orderNumber}")
-        public ResponseEntity<ApiResponse<OrderResponse>> findByOrderNumber(
-                        @PathVariable String orderNumber) {
+    @Operation(summary = "根據訂單編號查詢訂單")
+    @GetMapping("/number/{orderNumber}")
+    public ResponseEntity<ApiResponse<OrderResponse>> findByOrderNumber(
+            @PathVariable String orderNumber) {
 
-                OrderResponse order = orderService.findByOrderNumber(orderNumber);
+        OrderResponse order = orderService.findByOrderNumber(orderNumber);
 
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "查詢成功",
-                                                order));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "查詢成功",
+                        order));
+    }
 
-        @GetMapping("/user/{userId}")
-        public ResponseEntity<ApiResponse<List<OrderResponse>>> findByUserId(
-                        @PathVariable Integer userId) {
+    @Operation(summary = "根據使用者 ID 查詢訂單")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> findByUserId(
+            @PathVariable Integer userId) {
 
-                List<OrderResponse> orders = orderService.findByUserId(userId);
+        List<OrderResponse> orders = orderService.findByUserId(userId);
 
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "查詢成功",
-                                                orders));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "查詢成功",
+                        orders));
+    }
 
-        @GetMapping("/shop/{shopId}")
-        public ResponseEntity<ApiResponse<List<OrderResponse>>> findByShopId(
-                        @PathVariable Integer shopId) {
+    @Operation(summary = "根據商店 ID 查詢訂單")
+    @GetMapping("/shop/{shopId}")
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> findByShopId(
+            @PathVariable Integer shopId) {
 
-                List<OrderResponse> orders = orderService.findByShopId(shopId);
+        List<OrderResponse> orders = orderService.findByShopId(shopId);
 
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "查詢成功",
-                                                orders));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "查詢成功",
+                        orders));
+    }
 
-        @PostMapping
-        public ResponseEntity<ApiResponse<OrderResponse>> create(
-                        @Valid @RequestBody OrderRequest request) {
+    @Operation(summary = "新增訂單")
+    @PostMapping
+    public ResponseEntity<ApiResponse<OrderResponse>> create(
+            @Valid @RequestBody OrderRequest request) {
 
-                OrderResponse order = orderService.create(request);
+        OrderResponse order = orderService.create(request);
 
-                return ResponseEntity.status(HttpStatus.CREATED)
-                                .body(
-                                                ApiResponse.success(
-                                                                "新增成功",
-                                                                order));
-        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        ApiResponse.success(
+                                "新增成功",
+                                order));
+    }
 
-        @PutMapping("/{id}")
-        public ResponseEntity<ApiResponse<OrderResponse>> update(
-                        @PathVariable Integer id,
-                        @Valid @RequestBody OrderRequest request) {
+    @Operation(summary = "修改訂單")
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<OrderResponse>> update(
+            @PathVariable Integer id,
+            @Valid @RequestBody OrderRequest request) {
 
-                OrderResponse order = orderService.update(id, request);
+        OrderResponse order = orderService.update(id, request);
 
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "修改成功",
-                                                order));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "修改成功",
+                        order));
+    }
 
-        @PutMapping("/{id}/{statusCode}")
-        public ResponseEntity<ApiResponse<OrderResponse>> update(
-                        @PathVariable Integer id,
-                        @PathVariable Integer StatusCode) {
+    @Operation(summary = "修改訂單狀態")
+    @PutMapping("/{id}/{statusCode}")
+    public ResponseEntity<ApiResponse<OrderResponse>> update(
+            @PathVariable Integer id,
+            @PathVariable Integer StatusCode) {
 
-                OrderResponse order = orderService.updateStatus(id, StatusCode);
+        OrderResponse order = orderService.updateStatus(id, StatusCode);
 
-                return ResponseEntity.ok(
-                                ApiResponse.success(
-                                                "狀態修改成功",
-                                                order));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "狀態修改成功",
+                        order));
+    }
 
-        @DeleteMapping("/{id}")
-        public ResponseEntity<ApiResponse<Void>> delete(
-                        @PathVariable Integer id) {
+    @Operation(summary = "刪除訂單")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable Integer id) {
 
-                orderService.delete(id);
+        orderService.delete(id);
 
-                return ResponseEntity.ok(
-                                ApiResponse.success("刪除成功"));
-        }
+        return ResponseEntity.ok(
+                ApiResponse.success("刪除成功"));
+    }
 }

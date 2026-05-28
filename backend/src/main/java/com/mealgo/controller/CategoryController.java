@@ -17,10 +17,12 @@ import com.mealgo.dto.ApiResponse;
 import com.mealgo.dto.request.CategoryRequest;
 import com.mealgo.dto.response.CategoryResponse;
 import com.mealgo.service.ICategoryService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Category", description = "類別 API")
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
@@ -28,67 +30,60 @@ public class CategoryController {
 
     private final ICategoryService categoryService;
 
+    @Operation(summary = "查詢全部類別")
     @GetMapping
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> findAll() {
 
-        List<CategoryResponse> categories =
-                categoryService.findAll();
+        List<CategoryResponse> categories = categoryService.findAll();
 
         return ResponseEntity.ok(
                 ApiResponse.success(
                         "查詢成功",
-                        categories
-                )
-        );
+                        categories));
     }
 
+    @Operation(summary = "查詢單一類別")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> findById(
             @PathVariable Integer id) {
 
-        CategoryResponse category =
-                categoryService.findById(id);
+        CategoryResponse category = categoryService.findById(id);
 
         return ResponseEntity.ok(
                 ApiResponse.success(
                         "查詢成功",
-                        category
-                )
-        );
+                        category));
     }
 
+    @Operation(summary = "新增類別")
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> create(
             @Valid @RequestBody CategoryRequest request) {
 
-        CategoryResponse category =
-                categoryService.create(request);
+        CategoryResponse category = categoryService.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
                         ApiResponse.success(
                                 "新增成功",
-                                category
-                        )
-                );
+                                category));
     }
 
+    @Operation(summary = "修改類別")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> update(
             @PathVariable Integer id,
             @Valid @RequestBody CategoryRequest request) {
 
-        CategoryResponse category =
-                categoryService.update(id, request);
+        CategoryResponse category = categoryService.update(id, request);
 
         return ResponseEntity.ok(
                 ApiResponse.success(
                         "修改成功",
-                        category
-                )
-        );
+                        category));
     }
 
+    @Operation(summary = "刪除類別")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable Integer id) {
@@ -96,7 +91,6 @@ public class CategoryController {
         categoryService.delete(id);
 
         return ResponseEntity.ok(
-                ApiResponse.success("刪除成功")
-        );
+                ApiResponse.success("刪除成功"));
     }
 }

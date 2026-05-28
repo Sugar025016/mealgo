@@ -13,8 +13,11 @@ import com.mealgo.dto.ApiResponse;
 import com.mealgo.dto.response.OrderItemResponse;
 import com.mealgo.service.IOrderItemService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "OrderItem", description = "訂單項目 API")
 @RestController
 @RequestMapping("/order-items")
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class OrderItemController {
 
     private final IOrderItemService orderItemService;
 
+    @Operation(summary = "查詢全部訂單項目")
     @GetMapping
     public ResponseEntity<ApiResponse<List<OrderItemResponse>>> findAll() {
 
@@ -33,6 +37,7 @@ public class OrderItemController {
                         orderItems));
     }
 
+    @Operation(summary = "查詢單一訂單項目")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OrderItemResponse>> findById(
             @PathVariable Integer id) {
@@ -45,6 +50,7 @@ public class OrderItemController {
                         orderItem));
     }
 
+    @Operation(summary = "根據訂單 ID 查詢訂單項目")
     @GetMapping("/order/{orderId}")
     public ResponseEntity<ApiResponse<List<OrderItemResponse>>> findByOrderId(
             @PathVariable Integer orderId) {
@@ -57,6 +63,7 @@ public class OrderItemController {
                         orderItems));
     }
 
+    @Operation(summary = "刪除訂單項目")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable Integer id) {

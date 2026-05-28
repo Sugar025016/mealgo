@@ -18,9 +18,12 @@ import com.mealgo.dto.request.UserRequest;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.service.IUserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "User", description = "用戶 API")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -28,16 +31,17 @@ public class UserController {
 
     private final IUserService userService;
 
+    @Operation(summary = "查詢全部用戶")
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserResponse>>> findAll() {
 
         List<UserResponse> users = userService.findAll();
 
         return ResponseEntity.ok(
-                ApiResponse.success("查詢成功", users)
-        );
+                ApiResponse.success("查詢成功", users));
     }
 
+    @Operation(summary = "查詢單一用戶")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> findById(
             @PathVariable Integer id) {
@@ -45,10 +49,10 @@ public class UserController {
         UserResponse user = userService.findById(id);
 
         return ResponseEntity.ok(
-                ApiResponse.success("查詢成功", user)
-        );
+                ApiResponse.success("查詢成功", user));
     }
 
+    @Operation(summary = "新增用戶")
     @PostMapping
     public ResponseEntity<ApiResponse<UserResponse>> create(
             @Valid @RequestBody UserRequest request) {
@@ -57,10 +61,10 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
-                        ApiResponse.success("新增成功", user)
-                );
+                        ApiResponse.success("新增成功", user));
     }
 
+    @Operation(summary = "修改用戶")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> update(
             @PathVariable Integer id,
@@ -69,10 +73,10 @@ public class UserController {
         UserResponse user = userService.update(id, request);
 
         return ResponseEntity.ok(
-                ApiResponse.success("修改成功", user)
-        );
+                ApiResponse.success("修改成功", user));
     }
 
+    @Operation(summary = "刪除用戶")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable Integer id) {
@@ -80,7 +84,6 @@ public class UserController {
         userService.delete(id);
 
         return ResponseEntity.ok(
-                ApiResponse.success("刪除成功")
-        );
+                ApiResponse.success("刪除成功"));
     }
 }
