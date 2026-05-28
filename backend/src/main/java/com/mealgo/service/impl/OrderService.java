@@ -18,6 +18,7 @@ import com.mealgo.entity.OrderItem;
 import com.mealgo.entity.Shop;
 import com.mealgo.entity.User;
 import com.mealgo.enums.OrderStatus;
+import com.mealgo.exception.InvalidOrderStatusException;
 import com.mealgo.exception.ResourceNotFoundException;
 import com.mealgo.repository.IAddressRepository;
 import com.mealgo.repository.ICartRepository;
@@ -160,8 +161,15 @@ public class OrderService implements IOrderService {
     public OrderResponse updateStatus(Integer id, Integer statusCode) {
 
         Order order = getOrder(id);
-
-        OrderStatus.fromCode(statusCode);
+        OrderStatus currentStatus = OrderStatus.fromCode(order.getStatus());
+        OrderStatus nextStatus = OrderStatus.fromCode(statusCode);
+        if (!currentStatus.canUpdateStatus(nextStatus)) {
+            throw new InvalidOrderStatusException(
+                    "訂單狀態不能從 "
+                            + currentStatus.getDescription()
+                            + " 變更為 "
+                            + nextStatus.getDescription());
+        }
 
         order.setStatus(statusCode);
 
@@ -209,4 +217,14 @@ public class OrderService implements IOrderService {
         return addressRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("地址"));
     }
+
+    // private void validateStatusChange(Integer currentStatus, Integer newStatus) {
+    // if (currentStatus.isFinished()) {
+    // throw new RuntimeException("訂單已結束");
+    // }
+
+    // if (currentStatus.equals(newStatus)) {
+    // throw new RuntimeException("訂單狀態沒有變更");
+    // }
+    // }
 }

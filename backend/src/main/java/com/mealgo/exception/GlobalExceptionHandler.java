@@ -14,39 +14,55 @@ import com.mealgo.dto.ApiResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-        @ExceptionHandler(ResourceNotFoundException.class)
-        public ResponseEntity<ApiResponse<Void>> handleResourceNotFoundException(
-                        ResourceNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceNotFoundException(
+            ResourceNotFoundException ex) {
 
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body(ApiResponse.fail(ex.getMessage()));
-        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.fail(ex.getMessage()));
+    }
 
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(
-                        MethodArgumentNotValidException ex) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationException(
+            MethodArgumentNotValidException ex) {
 
-                Map<String, String> errors = new HashMap<>();
+        Map<String, String> errors = new HashMap<>();
 
-                ex.getBindingResult()
-                                .getFieldErrors()
-                                .forEach(error -> errors.put(
-                                                error.getField(),
-                                                error.getDefaultMessage()));
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error -> errors.put(
+                        error.getField(),
+                        error.getDefaultMessage()));
 
-                return ResponseEntity.badRequest()
-                                .body(
-                                                ApiResponse.fail(
-                                                                "資料驗證失敗",
-                                                                errors));
-        }
+        return ResponseEntity.badRequest()
+                .body(
+                        ApiResponse.fail(
+                                "資料驗證失敗",
+                                errors));
+    }
 
-        @ExceptionHandler(Exception.class)
-        public ResponseEntity<ApiResponse<Void>> handleException(
-                        Exception ex) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<Void>> handleException(
+            Exception ex) {
 
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body(ApiResponse.fail("系統發生錯誤"));
-        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.fail("系統發生錯誤"));
+    }
+
+    @ExceptionHandler(InvalidOrderStatusException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidOrderStatus(
+            InvalidOrderStatusException ex) {
+
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.fail(ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(
+            IllegalArgumentException ex) {
+
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.fail(ex.getMessage()));
+    }
 
 }

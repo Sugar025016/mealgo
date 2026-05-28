@@ -38,4 +38,30 @@ public enum OrderStatus {
         }
         throw new IllegalArgumentException("Unknown status: " + code);
     }
+
+    public boolean isFinished() {
+        return this == COMPLETED
+                || this == CANCELLED
+                || this == STORE_NOT_ACCEPT
+                || this == STORE_REFUSED;
+    }
+
+    public boolean canUpdateStatus(OrderStatus nextStatus) {
+
+        return switch (this) {
+            case PENDING -> nextStatus == ACCEPTED
+                    || nextStatus == CANCELLED
+                    || nextStatus == STORE_REFUSED;
+
+            case ACCEPTED -> nextStatus == COOKING;
+
+            case COOKING -> nextStatus == READY_FOR_PICKUP
+                    || nextStatus == ON_THE_WAY;
+
+            case ON_THE_WAY -> nextStatus == COMPLETED;
+
+            default -> false;
+        };
+    }
+
 }
