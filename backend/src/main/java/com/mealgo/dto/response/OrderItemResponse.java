@@ -29,7 +29,7 @@ public class OrderItemResponse {
         this.qty = orderItem.getQty();
         this.price = orderItem.getPrice();
         this.subtotal = orderItem.getQty() * orderItem.getPrice();
-        this.customerNote = orderItem.getCustomerNote();
+        this.customerNote = orderItem.getRemark();
 
         if (orderItem.getOrder() != null) {
             this.orderId = orderItem.getOrder().getId();

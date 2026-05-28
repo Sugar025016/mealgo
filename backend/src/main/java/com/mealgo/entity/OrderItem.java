@@ -30,8 +30,8 @@ public class OrderItem extends BaseEntity {
     @Column(name = "price", nullable = false)
     private int price;
 
-    @Column(name = "customer_note", length = 512)
-    private String customerNote;
+    @Column(name = "remark", length = 512)
+    private String remark;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
