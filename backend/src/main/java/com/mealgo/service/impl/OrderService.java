@@ -127,9 +127,9 @@ public class OrderService implements IOrderService {
 
         order.setUser(user);
         order.setShop(shop);
-
+        Order savedOrder = orderRepository.save(order);
         cartRepository.delete(cart);
-        return new OrderResponse(orderRepository.save(order));
+        return new OrderResponse(savedOrder);
     }
 
     @Override
