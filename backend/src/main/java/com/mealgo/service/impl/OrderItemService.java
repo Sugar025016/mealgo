@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mealgo.dto.request.OrderItemRequest;
 import com.mealgo.dto.response.OrderItemResponse;
 import com.mealgo.entity.OrderItem;
 import com.mealgo.exception.ResourceNotFoundException;
