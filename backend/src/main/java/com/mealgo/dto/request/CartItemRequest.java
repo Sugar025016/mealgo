@@ -1,21 +1,12 @@
 package com.mealgo.dto.request;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CartItemRequest {
 
-    @NotNull
-    private Integer cartId;
-
-    @NotNull
-    private Integer productId;
-
-    @Min(1)
+    @Min(value = 1, message = "數量必須大於0")
     private int qty = 1;
 
     private String remark;

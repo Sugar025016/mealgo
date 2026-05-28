@@ -30,7 +30,7 @@ public enum OrderStatus {
         return description;
     }
 
-    public static OrderStatus fromCode(int code) {
+    public static OrderStatus fromCode(Integer code) {
         for (OrderStatus status : values()) {
             if (status.code == code) {
                 return status;

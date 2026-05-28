@@ -21,5 +21,7 @@ public interface IOrderService {
 
     OrderResponse update(Integer id, OrderRequest request);
 
+    OrderResponse updateStatus(Integer id, Integer statusCode);
+
     void delete(Integer id);
 }

@@ -13,8 +13,6 @@ public interface ICartItemService {
 
     CartItemResponse findById(Integer id);
 
-    CartItemResponse create(CartItemRequest request);
-
     CartItemResponse update(Integer id, CartItemRequest request);
 
     void delete(Integer id);

@@ -1,13 +1,11 @@
 package com.mealgo.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CategoryRequest {
 
-    @NotBlank
+    @NotBlank(message = "類別名稱不可為空")
     private String name;
 }

@@ -2,24 +2,22 @@ package com.mealgo.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class OrderItemRequest {
 
-    @NotNull
+    @NotNull(message = "訂單ID不可為空")
     private Integer orderId;
 
-    @NotNull
+    @NotNull(message = "商品ID不可為空")
     private Integer productId;
 
-    @Min(1)
-    private int qty = 1;
+    @NotNull(message = "數量不可為空")
+    @Min(value = 1, message = "數量必須大於0")
+    private Integer qty;
 
-    @Min(0)
-    private int price = 0;
-
+    @Size(max = 200, message = "備註不可超過200字")
     private String customerNote;
 }

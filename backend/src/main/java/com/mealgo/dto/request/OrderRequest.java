@@ -1,54 +1,25 @@
 package com.mealgo.dto.request;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class OrderRequest {
 
-    @NotBlank
-    private String orderNumber;
-
-    private String orderNote;
-
-    @NotNull
+    @NotNull(message = "用戶ID不可為空")
     private Integer userId;
 
-    @NotNull
-    private Integer shopId;
+    @NotNull(message = "購物車不可為空")
+    private Integer cartId;
 
-    @NotNull
-    @Min(0)
-    private Integer deliveryFee;
-
-    @NotNull
-    @Min(0)
-    private Integer subtotal;
-
-    @NotNull
-    @Min(0)
-    private Integer totalPrice;
-
-    private Integer status;
-
+    @NotNull(message = "付款方式不可為空")
     private Integer payMethod;
 
-    @NotBlank
-    private String city;
+    @NotNull(message = "地址ID不可為空")
+    private Integer addressId;
 
-    @NotBlank
-    private String area;
+    @Size(max = 200, message = "備註不可超過200字")
+    private String orderNote;
 
-    @NotBlank
-    private String street;
-
-    private String detail;
-
-    private Double lat;
-
-    private Double lng;
 }

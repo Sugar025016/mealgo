@@ -12,4 +12,5 @@ import com.mealgo.entity.Cart;
 public interface ICartRepository extends JpaRepository<Cart, Integer> {
 
     Optional<Cart> findByUserIdAndShopId(Integer userId, Integer shopId);
+
 }

@@ -15,7 +15,7 @@ public class OrderResponse {
     private String orderNumber;
     private String orderNote;
 
-    private int deliveryFee;
+    private int deliveryPrice;
     private int subtotal;
     private int totalPrice;
     private int status;
@@ -39,7 +39,7 @@ public class OrderResponse {
         this.orderNumber = order.getOrderNumber();
         this.orderNote = order.getOrderNote();
 
-        this.deliveryFee = order.getDeliveryFee();
+        this.deliveryPrice = order.getDeliveryPrice();
         this.subtotal = order.getSubtotal();
         this.totalPrice = order.getTotalPrice();
         this.status = order.getStatus();

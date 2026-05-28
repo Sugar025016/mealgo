@@ -13,7 +13,5 @@ public interface ICartService {
 
     CartResponse create(CartRequest request);
 
-    CartResponse update(Integer id, CartRequest request);
-
     void delete(Integer id);
 }

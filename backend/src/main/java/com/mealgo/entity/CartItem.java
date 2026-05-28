@@ -25,7 +25,7 @@ public class CartItem extends BaseEntity {
     private Integer id;
 
     @Column(name = "qty", nullable = false)
-    private int qty;
+    private Integer qty;
 
     @Column(name = "remark", length = 255)
     private String remark;

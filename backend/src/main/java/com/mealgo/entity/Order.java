@@ -34,8 +34,8 @@ public class Order extends BaseEntity {
     @Column(name = "order_note", length = 512)
     private String orderNote;
 
-    @Column(name = "delivery_fee", nullable = false)
-    private int deliveryFee;
+    @Column(name = "delivery_price", nullable = false)
+    private int deliveryPrice;
     @Column(name = "subtotal", nullable = false)
     private int subtotal;
     @Column(name = "total_price", nullable = false)

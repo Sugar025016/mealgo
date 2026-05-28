@@ -2,45 +2,43 @@ package com.mealgo.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ShopRequest {
 
-    @NotBlank
+    @NotBlank(message = "商店名稱不可為空")
     private String brand;
 
     private String branch;
 
-    @NotBlank
+    @NotBlank(message = "電話不可為空")
     private String phone;
 
     private String description;
 
-    @NotNull
+    @NotNull(message = "營業開始時間不可為空")
     private Double deliveryKm;
 
-    @NotNull
+    @NotNull(message = "運費不可為空")
     private Integer deliveryPrice;
 
-    @NotNull
+    @NotNull(message = "是否可訂餐不可為空")
     private Boolean isOrderable;
 
-    @NotNull
+    @NotNull(message = "是否營業不可為空")
     private Boolean isOpen;
 
-    @NotBlank
+    @NotBlank(message = "城市不可為空")
     private String city;
 
-    @NotBlank
+    @NotBlank(message = "區域不可為空")
     private String area;
 
-    @NotBlank
+    @NotBlank(message = "街道不可為空")
     private String street;
 
-    @NotBlank
+    @NotBlank(message = "詳細地址不可為空")
     private String detail;
 
     private Double lat;

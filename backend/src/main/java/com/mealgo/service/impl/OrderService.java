@@ -1,19 +1,26 @@
 package com.mealgo.service.impl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mealgo.dto.request.OrderRequest;
 import com.mealgo.dto.response.OrderResponse;
+import com.mealgo.entity.Address;
+import com.mealgo.entity.Cart;
+import com.mealgo.entity.CartItem;
 import com.mealgo.entity.Order;
 import com.mealgo.entity.Shop;
 import com.mealgo.entity.User;
 import com.mealgo.enums.OrderStatus;
-import com.mealgo.enums.PayMethod;
 import com.mealgo.exception.ResourceNotFoundException;
+import com.mealgo.repository.IAddressRepository;
+import com.mealgo.repository.ICartRepository;
 import com.mealgo.repository.IOrderRepository;
-import com.mealgo.repository.IShopRepository;
 import com.mealgo.repository.IUserRepository;
 import com.mealgo.service.IOrderService;
 
@@ -25,7 +32,8 @@ public class OrderService implements IOrderService {
 
         private final IOrderRepository orderRepository;
         private final IUserRepository userRepository;
-        private final IShopRepository shopRepository;
+        private final IAddressRepository addressRepository;
+        private final ICartRepository cartRepository;
 
         @Override
         public List<OrderResponse> findAll() {
@@ -37,9 +45,7 @@ public class OrderService implements IOrderService {
 
         @Override
         public OrderResponse findById(Integer id) {
-                Order order = orderRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Order not found"));
-
+                Order order = getOrder(id);
                 return new OrderResponse(order);
         }
 
@@ -68,78 +74,79 @@ public class OrderService implements IOrderService {
         }
 
         @Override
+        @Transactional
         public OrderResponse create(OrderRequest request) {
-                User user = userRepository.findById(request.getUserId())
-                                .orElseThrow(() -> new RuntimeException("User not found"));
 
-                Shop shop = shopRepository.findById(request.getShopId())
-                                .orElseThrow(() -> new RuntimeException("Shop not found"));
+                User user = getUser(request.getUserId());
+                Cart cart = getCart(request.getCartId());
+                if (!cart.getUser().getId().equals(request.getUserId())) {
+                        throw new RuntimeException("找不到購物車");
+                }
+
+                Shop shop = cart.getShop();
+                Address address = getAddress(request.getAddressId());
+                List<CartItem> cartItemList = cart.getCartItems();
+                int deliveryPrice = shop.getDeliveryPrice();
+                int subtotal = cartItemList.stream()
+                                .mapToInt(cartItem -> cartItem.getProduct().getPrice()
+                                                * cartItem.getQty())
+                                .sum();
 
                 Order order = new Order();
-
-                order.setOrderNumber(request.getOrderNumber());
+                order.setOrderNumber(generateOrderNumber());
                 order.setOrderNote(request.getOrderNote());
+                order.setDeliveryPrice(shop.getDeliveryPrice());
 
-                order.setDeliveryFee(request.getDeliveryFee());
-                order.setSubtotal(request.getSubtotal());
-                order.setTotalPrice(request.getTotalPrice());
+                order.setSubtotal(subtotal);
+                order.setTotalPrice(subtotal + deliveryPrice);
 
-                order.setStatus(request.getStatus() != null
-                                ? request.getStatus()
-                                : OrderStatus.PENDING.getCode());
+                order.setStatus(OrderStatus.PENDING.getCode());
 
-                order.setPayMethod(request.getPayMethod() != null
-                                ? request.getPayMethod()
-                                : PayMethod.CASH.getCode());
+                order.setPayMethod(request.getPayMethod());
 
-                order.setCity(request.getCity());
-                order.setArea(request.getArea());
-                order.setStreet(request.getStreet());
-                order.setDetail(request.getDetail());
-                order.setLat(request.getLat());
-                order.setLng(request.getLng());
+                order.setCity(address.getCity());
+                order.setArea(address.getArea());
+                order.setStreet(address.getStreet());
+                order.setDetail(address.getDetail());
+                order.setLat(address.getLat());
+                order.setLng(address.getLng());
 
                 order.setUser(user);
                 order.setShop(shop);
 
+                cartRepository.delete(cart);
                 return new OrderResponse(orderRepository.save(order));
         }
 
         @Override
         public OrderResponse update(Integer id, OrderRequest request) {
-                Order order = orderRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Order not found"));
+                Order order = getOrder(id);
 
-                User user = userRepository.findById(request.getUserId())
-                                .orElseThrow(() -> new RuntimeException("User not found"));
-
-                Shop shop = shopRepository.findById(request.getShopId())
-                                .orElseThrow(() -> new RuntimeException("Shop not found"));
-
-                order.setOrderNumber(request.getOrderNumber());
+                Address address = getAddress(request.getAddressId());
                 order.setOrderNote(request.getOrderNote());
-
-                order.setDeliveryFee(request.getDeliveryFee());
-                order.setSubtotal(request.getSubtotal());
-                order.setTotalPrice(request.getTotalPrice());
-
-                if (request.getStatus() != null) {
-                        order.setStatus(request.getStatus());
-                }
 
                 if (request.getPayMethod() != null) {
                         order.setPayMethod(request.getPayMethod());
                 }
 
-                order.setCity(request.getCity());
-                order.setArea(request.getArea());
-                order.setStreet(request.getStreet());
-                order.setDetail(request.getDetail());
-                order.setLat(request.getLat());
-                order.setLng(request.getLng());
+                order.setCity(address.getCity());
+                order.setArea(address.getArea());
+                order.setStreet(address.getStreet());
+                order.setDetail(address.getDetail());
+                order.setLat(address.getLat());
+                order.setLng(address.getLng());
 
-                order.setUser(user);
-                order.setShop(shop);
+                return new OrderResponse(orderRepository.save(order));
+        }
+
+        @Override
+        public OrderResponse updateStatus(Integer id, Integer statusCode) {
+
+                Order order = getOrder(id);
+
+                OrderStatus.fromCode(statusCode);
+
+                order.setStatus(statusCode);
 
                 return new OrderResponse(orderRepository.save(order));
         }
@@ -155,5 +162,34 @@ public class OrderService implements IOrderService {
 
                 return orderRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException("訂單"));
+        }
+
+        private String generateOrderNumber() {
+
+                String time = LocalDateTime.now()
+                                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+                int random = ThreadLocalRandom.current()
+                                .nextInt(100, 999);
+
+                return "MG" + time + random;
+        }
+
+        private User getUser(Integer id) {
+
+                return userRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("使用者"));
+        }
+
+        private Cart getCart(Integer id) {
+
+                return cartRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("購物車"));
+        }
+
+        private Address getAddress(Integer id) {
+
+                return addressRepository.findById(id)
+                                .orElseThrow(() -> new ResourceNotFoundException("地址"));
         }
 }

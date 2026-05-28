@@ -1,16 +1,21 @@
 package com.mealgo.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mealgo.dto.request.CartRequest;
 import com.mealgo.dto.response.CartResponse;
 import com.mealgo.entity.Cart;
+import com.mealgo.entity.CartItem;
+import com.mealgo.entity.Product;
 import com.mealgo.entity.Shop;
 import com.mealgo.entity.User;
 import com.mealgo.exception.ResourceNotFoundException;
 import com.mealgo.repository.ICartRepository;
+import com.mealgo.repository.IProductRepository;
 import com.mealgo.repository.IShopRepository;
 import com.mealgo.repository.IUserRepository;
 import com.mealgo.service.ICartService;
@@ -21,82 +26,93 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartService implements ICartService {
 
-        private final ICartRepository cartRepository;
-        private final IUserRepository userRepository;
-        private final IShopRepository shopRepository;
+    private final ICartRepository cartRepository;
+    private final IUserRepository userRepository;
+    private final IShopRepository shopRepository;
+    private final IProductRepository productRepository;
 
-        @Override
-        public List<CartResponse> findAll() {
-                return cartRepository.findAll()
-                                .stream()
-                                .map(CartResponse::new)
-                                .toList();
-        }
+    @Override
+    public List<CartResponse> findAll() {
+        return cartRepository.findAll()
+                .stream()
+                .map(CartResponse::new)
+                .toList();
+    }
 
-        @Override
-        public CartResponse findById(Integer id) {
+    @Override
+    public CartResponse findById(Integer id) {
 
-                Cart cart = getCart(id);
+        Cart cart = getCart(id);
 
-                return new CartResponse(cart);
-        }
+        return new CartResponse(cart);
+    }
 
-        @Override
-        public CartResponse create(CartRequest request) {
+    @Override
+    @Transactional
+    public CartResponse create(CartRequest request) {
 
-                User user = getUser(request.getUserId());
-                Shop shop = getShop(request.getShopId());
+        User user = getUser(request.getUserId());
+        Shop shop = getShop(request.getShopId());
+        Product product = productRepository.findByShopIdAndId(request.getShopId(), request.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("商品"));
 
-                Cart cart = cartRepository.findByUserIdAndShopId(
-                                request.getUserId(),
-                                request.getShopId())
-                                .orElseGet(Cart::new);
+        Cart cart = cartRepository.findByUserIdAndShopId(
+                request.getUserId(),
+                request.getShopId())
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    newCart.setShop(shop);
+                    return newCart;
+                });
 
-                cart.setUser(user);
-                cart.setShop(shop);
+        CartItem cartItem = cart.getCartItems()
+                .stream()
+                .filter(item -> item.getProduct().getId().equals(product.getId())
+                        && Objects.equals(
+                                item.getRemark(),
+                                request.getRemark()))
+                .findFirst()
+                .orElseGet(() -> {
+                    CartItem newCartItem = new CartItem();
+                    newCartItem.setCart(cart);
+                    newCartItem.setProduct(product);
+                    newCartItem.setRemark(request.getRemark());
+                    newCartItem.setQty(0);
+                    cart.getCartItems().add(newCartItem);
+                    return newCartItem;
+                });
 
-                return new CartResponse(
-                                cartRepository.save(cart));
-        }
+        cartItem.setQty(cartItem.getQty() + request.getQty());
 
-        @Override
-        public CartResponse update(Integer id, CartRequest request) {
+        return new CartResponse(
+                cartRepository.save(cart));
+    }
 
-                Cart cart = getCart(id);
+    @Override
+    public void delete(Integer id) {
 
-                User user = getUser(request.getUserId());
-                Shop shop = getShop(request.getShopId());
+        Cart cart = getCart(id);
 
-                cart.setUser(user);
-                cart.setShop(shop);
+        cartRepository.delete(cart);
+    }
 
-                return new CartResponse(
-                                cartRepository.save(cart));
-        }
+    private Cart getCart(Integer id) {
 
-        @Override
-        public void delete(Integer id) {
+        return cartRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("購物車"));
+    }
 
-                Cart cart = getCart(id);
+    private User getUser(Integer id) {
 
-                cartRepository.delete(cart);
-        }
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("使用者"));
+    }
 
-        private Cart getCart(Integer id) {
+    private Shop getShop(Integer id) {
 
-                return cartRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException("購物車"));
-        }
+        return shopRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("店家"));
+    }
 
-        private User getUser(Integer id) {
-
-                return userRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException("使用者"));
-        }
-
-        private Shop getShop(Integer id) {
-
-                return shopRepository.findById(id)
-                                .orElseThrow(() -> new ResourceNotFoundException("店家"));
-        }
 }
