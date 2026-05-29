@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class UserRequest {
+public class UserUpdateRequest {
 
     @NotBlank(message = "姓名不可為空")
     private String name;
@@ -16,6 +16,4 @@ public class UserRequest {
     @NotBlank(message = "電子郵件不可為空")
     private String email;
 
-    @NotBlank(message = "密碼不可為空")
-    private String password;
 }

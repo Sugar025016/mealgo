@@ -23,17 +23,17 @@ public class AddressService implements IAddressService {
     private final IUserRepository userRepository;
 
     @Override
-    public List<AddressResponse> findAll() {
-        return addressRepository.findAll()
+    public List<AddressResponse> findByUserId(Integer userId) {
+        return addressRepository.findByUserId(userId)
                 .stream()
                 .map(AddressResponse::new)
                 .toList();
     }
 
     @Override
-    public AddressResponse findById(Integer id) {
+    public AddressResponse findByUserIdAndId(Integer userId, Integer id) {
 
-        Address address = getAddress(id);
+        Address address = getAddress(userId, id);
 
         return new AddressResponse(address);
     }
@@ -58,11 +58,9 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public AddressResponse update(
-            Integer id,
-            AddressRequest request) {
+    public AddressResponse update(Integer userId, Integer id, AddressRequest request) {
 
-        Address address = getAddress(id);
+        Address address = getAddress(userId, id);
         User user = getUser(request.getUserId());
 
         address.setCity(request.getCity());
@@ -78,16 +76,16 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer userId, Integer id) {
 
-        Address address = getAddress(id);
+        Address address = getAddress(userId, id);
 
         addressRepository.delete(address);
     }
 
-    private Address getAddress(Integer id) {
+    private Address getAddress(Integer userId, Integer id) {
 
-        return addressRepository.findById(id)
+        return addressRepository.findByUserIdAndId(userId, id)
                 .orElseThrow(() -> new ResourceNotFoundException("地址"));
     }
 

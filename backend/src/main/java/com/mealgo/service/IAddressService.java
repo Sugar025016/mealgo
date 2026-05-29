@@ -7,13 +7,13 @@ import com.mealgo.dto.response.AddressResponse;
 
 public interface IAddressService {
 
-    List<AddressResponse> findAll();
+    List<AddressResponse> findByUserId(Integer userId);
 
-    AddressResponse findById(Integer id);
+    AddressResponse findByUserIdAndId(Integer userId, Integer id);
 
     AddressResponse create(AddressRequest request);
 
-    AddressResponse update(Integer id, AddressRequest request);
+    AddressResponse update(Integer userId, Integer id, AddressRequest request);
 
-    void delete(Integer id);
+    void delete(Integer userId, Integer id);
 }

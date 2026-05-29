@@ -2,9 +2,12 @@ package com.mealgo.service.impl;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.mealgo.dto.request.UserRequest;
+import com.mealgo.dto.request.PasswordRequest;
+import com.mealgo.dto.request.UserCreateRequest;
+import com.mealgo.dto.request.UserUpdateRequest;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.entity.User;
 import com.mealgo.exception.ResourceNotFoundException;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService implements IUserService {
 
     private final IUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserResponse> findAll() {
@@ -36,33 +40,27 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserResponse create(UserRequest request) {
+    public UserResponse create(UserCreateRequest request) {
 
         User user = new User();
 
         user.setName(request.getName());
         user.setPhone(request.getPhone());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return new UserResponse(
                 userRepository.save(user));
     }
 
     @Override
-    public UserResponse update(Integer id, UserRequest request) {
+    public UserResponse update(Integer id, UserUpdateRequest request) {
 
         User user = getUser(id);
 
         user.setName(request.getName());
         user.setPhone(request.getPhone());
         user.setEmail(request.getEmail());
-
-        if (request.getPassword() != null &&
-                !request.getPassword().isBlank()) {
-
-            user.setPassword(request.getPassword());
-        }
 
         return new UserResponse(
                 userRepository.save(user));
@@ -82,4 +80,26 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "使用者"));
     }
+
+    @Override
+    public void updatePassword(
+            Integer userId,
+            PasswordRequest request) {
+
+        User user = getUser(userId);
+
+        if (!passwordEncoder.matches(
+                request.getOldPassword(),
+                user.getPassword())) {
+
+            throw new RuntimeException("舊密碼錯誤");
+        }
+
+        user.setPassword(
+                passwordEncoder.encode(
+                        request.getNewPassword()));
+
+        userRepository.save(user);
+    }
+
 }

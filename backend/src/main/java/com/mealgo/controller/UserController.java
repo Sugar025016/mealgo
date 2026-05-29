@@ -1,12 +1,10 @@
 package com.mealgo.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealgo.dto.ApiResponse;
-import com.mealgo.dto.request.UserRequest;
+import com.mealgo.dto.request.PasswordRequest;
+import com.mealgo.dto.request.UserCreateRequest;
+import com.mealgo.dto.request.UserUpdateRequest;
 import com.mealgo.dto.response.UserResponse;
+import com.mealgo.security.CustomUserDetails;
 import com.mealgo.service.IUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,22 +32,22 @@ public class UserController {
 
     private final IUserService userService;
 
-    @Operation(summary = "查詢全部用戶")
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<UserResponse>>> findAll() {
+    // @Operation(summary = "查詢全部用戶")
+    // @GetMapping
+    // public ResponseEntity<ApiResponse<List<UserResponse>>> findAll() {
 
-        List<UserResponse> users = userService.findAll();
+    // List<UserResponse> users = userService.findAll();
 
-        return ResponseEntity.ok(
-                ApiResponse.success("查詢成功", users));
-    }
+    // return ResponseEntity.ok(
+    // ApiResponse.success("查詢成功", users));
+    // }
 
     @Operation(summary = "查詢單一用戶")
-    @GetMapping("/{id}")
+    @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> findById(
-            @PathVariable Integer id) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        UserResponse user = userService.findById(id);
+        UserResponse user = userService.findById(userDetails.getId());
 
         return ResponseEntity.ok(
                 ApiResponse.success("查詢成功", user));
@@ -55,7 +56,7 @@ public class UserController {
     @Operation(summary = "新增用戶")
     @PostMapping
     public ResponseEntity<ApiResponse<UserResponse>> create(
-            @Valid @RequestBody UserRequest request) {
+            @Valid @RequestBody UserCreateRequest request) {
 
         UserResponse user = userService.create(request);
 
@@ -65,25 +66,39 @@ public class UserController {
     }
 
     @Operation(summary = "修改用戶")
-    @PutMapping("/{id}")
+    @PutMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> update(
-            @PathVariable Integer id,
-            @Valid @RequestBody UserRequest request) {
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody UserUpdateRequest request) {
 
-        UserResponse user = userService.update(id, request);
+        UserResponse user = userService.update(userDetails.getId(), request);
 
         return ResponseEntity.ok(
                 ApiResponse.success("修改成功", user));
     }
 
-    @Operation(summary = "刪除用戶")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(
-            @PathVariable Integer id) {
+    @Operation(summary = "修改密碼")
+    @PatchMapping("/me/password")
+    public ResponseEntity<ApiResponse<Void>> updatePassword(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody PasswordRequest request) {
 
-        userService.delete(id);
+        userService.updatePassword(
+                userDetails.getId(),
+                request);
 
         return ResponseEntity.ok(
-                ApiResponse.success("刪除成功"));
+                ApiResponse.success("密碼修改成功"));
     }
+
+    // @Operation(summary = "刪除用戶")
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<ApiResponse<Void>> delete(
+    // @PathVariable Integer id) {
+
+    // userService.delete(id);
+
+    // return ResponseEntity.ok(
+    // ApiResponse.success("刪除成功"));
+    // }
 }
