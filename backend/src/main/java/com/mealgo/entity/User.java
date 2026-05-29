@@ -28,7 +28,7 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column(name = "name", length = 255, nullable = false)
     private String name;
     @Column(name = "phone", length = 11)
@@ -37,7 +37,7 @@ public class User extends BaseEntity {
     @Email
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
-    @Column(name = "password", length = 32, nullable = false)
+    @Column(name = "password", length = 255, nullable = false)
     private String password;
 
     @Column(name = "email_verified_at")
