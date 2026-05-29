@@ -10,7 +10,13 @@ import com.mealgo.entity.Order;
 
 @Repository
 public interface IOrderRepository extends JpaRepository<Order, Integer> {
-    Optional<Order> findByOrderNumber(String orderNumber);
+    // Optional<Order> findByOrderNumber(String orderNumber);
+
+    Optional<Order> findByUserIdAndId(Integer userId, Integer id);
+
+    Optional<Order> findByUserIdAndOrderNumber(Integer userId, String orderNumber);
+
+    List<Order> findByUserIdAndShopId(Integer userId, Integer shopId);
 
     List<Order> findByUserId(Integer userId);
 

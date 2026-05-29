@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class OrderRequest {
 
-    @NotNull(message = "用戶ID不可為空")
-    private Integer userId;
+    // @NotNull(message = "用戶ID不可為空")
+    // private Integer userId;
 
     @NotNull(message = "購物車不可為空")
     private Integer cartId;

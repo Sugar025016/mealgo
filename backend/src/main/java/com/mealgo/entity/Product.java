@@ -31,7 +31,7 @@ public class Product extends BaseEntity {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "isShelve", nullable = false)
+    @Column(name = "is_shelve", nullable = false)
     private boolean isShelve;
 
     // 圖片

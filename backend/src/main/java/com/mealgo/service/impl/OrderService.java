@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mealgo.dto.request.OrderRequest;
+import com.mealgo.dto.request.OrderNoteRequest;
 import com.mealgo.dto.response.OrderResponse;
 import com.mealgo.entity.Address;
 import com.mealgo.entity.Cart;
@@ -46,15 +47,15 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderResponse findById(Integer id) {
-        Order order = getOrder(id);
+    public OrderResponse findByUserIdAndId(Integer userId, Integer id) {
+        Order order = getOrderByUserIdAndOrderId(userId, id);
         return new OrderResponse(order);
     }
 
     @Override
-    public OrderResponse findByOrderNumber(String orderNumber) {
-        Order order = orderRepository.findByOrderNumber(orderNumber)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+    public OrderResponse findByUserIdAndOrderNumber(Integer userId, String orderNumber) {
+        Order order = orderRepository.findByUserIdAndOrderNumber(userId, orderNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("訂單"));
 
         return new OrderResponse(order);
     }
@@ -68,8 +69,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<OrderResponse> findByShopId(Integer shopId) {
-        return orderRepository.findByShopId(shopId)
+    public List<OrderResponse> findByShopId(Integer userId, Integer shopId) {
+        return orderRepository.findByUserIdAndShopId(userId, shopId)
                 .stream()
                 .map(OrderResponse::new)
                 .toList();
@@ -77,11 +78,11 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public OrderResponse create(OrderRequest request) {
+    public OrderResponse create(Integer userId, OrderRequest request) {
 
-        User user = getUser(request.getUserId());
+        User user = getUser(userId);
         Cart cart = getCart(request.getCartId());
-        if (!cart.getUser().getId().equals(request.getUserId())) {
+        if (!cart.getUser().getId().equals(userId)) {
             throw new RuntimeException("找不到購物車");
         }
 
@@ -137,25 +138,37 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderResponse update(Integer id, OrderRequest request) {
-        Order order = getOrder(id);
-
-        Address address = getAddress(request.getAddressId());
-        order.setOrderNote(request.getOrderNote());
-
-        if (request.getPayMethod() != null) {
-            order.setPayMethod(request.getPayMethod());
+    public OrderResponse updateOrderNote(Integer userId, Integer id, OrderNoteRequest request) {
+        Order order = getOrderByUserIdAndOrderId(userId, id);
+        if (!OrderStatus.fromCode(order.getStatus()).canUpdateNote()) {
+            throw new RuntimeException("訂單狀態不允許修改備註");
         }
 
-        order.setCity(address.getCity());
-        order.setArea(address.getArea());
-        order.setStreet(address.getStreet());
-        order.setDetail(address.getDetail());
-        order.setLat(address.getLat());
-        order.setLng(address.getLng());
+        order.setOrderNote(request.getOrderNote());
 
         return new OrderResponse(orderRepository.save(order));
     }
+
+    // @Override
+    // public OrderResponse update(Integer id, OrderNoteRequest request) {
+    // Order order = getOrder(id);
+
+    // // Address address = getAddress(request.getAddressId());
+    // order.setOrderNote(request.getOrderNote());
+
+    // // if (request.getPayMethod() != null) {
+    // // order.setPayMethod(request.getPayMethod());
+    // // }
+
+    // // order.setCity(address.getCity());
+    // // order.setArea(address.getArea());
+    // // order.setStreet(address.getStreet());
+    // // order.setDetail(address.getDetail());
+    // // order.setLat(address.getLat());
+    // // order.setLng(address.getLng());
+
+    // return new OrderResponse(orderRepository.save(order));
+    // }
 
     @Override
     public OrderResponse updateStatus(Integer id, Integer statusCode) {
@@ -171,7 +184,20 @@ public class OrderService implements IOrderService {
                             + nextStatus.getDescription());
         }
 
-        order.setStatus(statusCode);
+        order.setStatus(nextStatus.getCode());
+
+        return new OrderResponse(orderRepository.save(order));
+    }
+
+    @Override
+    public OrderResponse cancel(Integer userId, Integer id) {
+        Order order = getOrderByUserIdAndOrderId(userId, id);
+
+        if (!OrderStatus.fromCode(order.getStatus()).canCancel()) {
+            throw new InvalidOrderStatusException(" 訂單狀態不允許取消");
+        }
+
+        order.setStatus(OrderStatus.CANCELLED.getCode());
 
         return new OrderResponse(orderRepository.save(order));
     }
@@ -216,6 +242,12 @@ public class OrderService implements IOrderService {
 
         return addressRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("地址"));
+    }
+
+    private Order getOrderByUserIdAndOrderId(Integer userId, Integer orderId) {
+
+        return orderRepository.findByUserIdAndId(userId, orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("訂單"));
     }
 
     // private void validateStatusChange(Integer currentStatus, Integer newStatus) {

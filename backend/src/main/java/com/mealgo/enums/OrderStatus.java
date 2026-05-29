@@ -22,6 +22,20 @@ public enum OrderStatus {
         this.description = description;
     }
 
+    public boolean canUpdateNote() {
+        return this == PENDING
+                || this == ACCEPTED
+                || this == COOKING;
+    }
+
+    public boolean canCancel() {
+        return this == PENDING
+                || this == ACCEPTED
+                || this == COOKING
+                || this == READY_FOR_PICKUP
+                || this == ON_THE_WAY;
+    }
+
     public int getCode() {
         return code;
     }

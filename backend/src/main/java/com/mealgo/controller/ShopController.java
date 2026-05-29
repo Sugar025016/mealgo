@@ -19,9 +19,11 @@ import com.mealgo.dto.response.ShopResponse;
 import com.mealgo.service.IShopService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Shop", description = "店家 API")
 @RestController
 @RequestMapping("/shops")
