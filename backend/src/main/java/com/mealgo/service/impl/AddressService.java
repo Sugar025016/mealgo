@@ -39,9 +39,9 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public AddressResponse create(AddressRequest request) {
+    public AddressResponse create(Integer userId, AddressRequest request) {
 
-        User user = getUser(request.getUserId());
+        User user = getUser(userId);
 
         Address address = new Address();
 
@@ -61,7 +61,6 @@ public class AddressService implements IAddressService {
     public AddressResponse update(Integer userId, Integer id, AddressRequest request) {
 
         Address address = getAddress(userId, id);
-        User user = getUser(request.getUserId());
 
         address.setCity(request.getCity());
         address.setArea(request.getArea());
@@ -69,7 +68,6 @@ public class AddressService implements IAddressService {
         address.setDetail(request.getDetail());
         address.setLat(request.getLat());
         address.setLng(request.getLng());
-        address.setUser(user);
 
         return new AddressResponse(
                 addressRepository.save(address));

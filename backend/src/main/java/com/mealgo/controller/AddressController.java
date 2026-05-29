@@ -33,7 +33,7 @@ public class AddressController {
 
     private final IAddressService addressService;
 
-    @Operation(summary = "查詢全部地址")
+    @Operation(summary = "查詢自己的全部地址")
     @GetMapping
     public ResponseEntity<ApiResponse<List<AddressResponse>>> findAll(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -44,7 +44,7 @@ public class AddressController {
                 ApiResponse.success("查詢成功", addresses));
     }
 
-    @Operation(summary = "查詢單一地址")
+    @Operation(summary = "查詢自己的單一地址")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<AddressResponse>> findById(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -59,9 +59,10 @@ public class AddressController {
     @Operation(summary = "新增地址")
     @PostMapping
     public ResponseEntity<ApiResponse<AddressResponse>> create(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody AddressRequest request) {
 
-        AddressResponse address = addressService.create(request);
+        AddressResponse address = addressService.create(userDetails.getId(), request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
@@ -72,9 +73,10 @@ public class AddressController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<AddressResponse>> update(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @Valid @RequestBody AddressRequest request) {
+            @Valid @RequestBody AddressRequest request,
+            @PathVariable Integer id) {
 
-        AddressResponse address = addressService.update(userDetails.getId(), userDetails.getId(), request);
+        AddressResponse address = addressService.update(userDetails.getId(), id, request);
 
         return ResponseEntity.ok(
                 ApiResponse.success("修改成功", address));

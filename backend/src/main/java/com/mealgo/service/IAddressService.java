@@ -11,7 +11,7 @@ public interface IAddressService {
 
     AddressResponse findByUserIdAndId(Integer userId, Integer id);
 
-    AddressResponse create(AddressRequest request);
+    AddressResponse create(Integer userId, AddressRequest request);
 
     AddressResponse update(Integer userId, Integer id, AddressRequest request);
 
