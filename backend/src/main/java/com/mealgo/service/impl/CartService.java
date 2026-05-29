@@ -31,33 +31,41 @@ public class CartService implements ICartService {
     private final IShopRepository shopRepository;
     private final IProductRepository productRepository;
 
+    // @Override
+    // public List<CartResponse> findAll() {
+
+    // List<Cart> carts = cartRepository.findAll();
+
+    // return carts.stream().map(CartResponse::new).toList();
+    // }
+
     @Override
-    public List<CartResponse> findAll() {
-        return cartRepository.findAll()
-                .stream()
-                .map(CartResponse::new)
-                .toList();
+    public List<CartResponse> findAllByUserId(Integer userId) {
+
+        List<Cart> carts = cartRepository.findAllByUserId(userId);
+
+        return carts.stream().map(CartResponse::new).toList();
     }
 
     @Override
-    public CartResponse findById(Integer id) {
+    public CartResponse findByUserIdAndId(Integer userId, Integer id) {
 
-        Cart cart = getCart(id);
+        Cart cart = getCart(userId, id);
 
         return new CartResponse(cart);
     }
 
     @Override
     @Transactional
-    public CartResponse create(CartRequest request) {
+    public CartResponse create(Integer userId, CartRequest request) {
 
-        User user = getUser(request.getUserId());
+        User user = getUser(userId);
         Shop shop = getShop(request.getShopId());
         Product product = productRepository.findByShopIdAndId(request.getShopId(), request.getProductId())
                 .orElseThrow(() -> new ResourceNotFoundException("商品"));
 
         Cart cart = cartRepository.findByUserIdAndShopId(
-                request.getUserId(),
+                userId,
                 request.getShopId())
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
@@ -90,16 +98,16 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer userId, Integer id) {
 
-        Cart cart = getCart(id);
+        Cart cart = getCart(userId, id);
 
         cartRepository.delete(cart);
     }
 
-    private Cart getCart(Integer id) {
+    private Cart getCart(Integer userId, Integer id) {
 
-        return cartRepository.findById(id)
+        return cartRepository.findByUserIdAndId(userId, id)
                 .orElseThrow(() -> new ResourceNotFoundException("購物車"));
     }
 

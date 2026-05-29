@@ -46,7 +46,6 @@ public class Cart extends BaseEntity {
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", cartItems=" + cartItems +
                 '}';
     }
 

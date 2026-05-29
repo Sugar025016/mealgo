@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mealgo.dto.ApiResponse;
 import com.mealgo.dto.request.CartRequest;
 import com.mealgo.dto.response.CartResponse;
+import com.mealgo.security.CustomUserDetails;
 import com.mealgo.service.ICartService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,11 +32,12 @@ public class CartController {
 
     private final ICartService cartService;
 
-    @Operation(summary = "查詢全部購物車")
+    @Operation(summary = "查詢自己的全部購物車")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CartResponse>>> findAll() {
+    public ResponseEntity<ApiResponse<List<CartResponse>>> findAll(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        List<CartResponse> carts = cartService.findAll();
+        List<CartResponse> carts = cartService.findAllByUserId(userDetails.getId());
 
         return ResponseEntity.ok(
                 ApiResponse.success(
@@ -45,9 +48,10 @@ public class CartController {
     @Operation(summary = "查詢單一購物車")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CartResponse>> findById(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Integer id) {
 
-        CartResponse cart = cartService.findById(id);
+        CartResponse cart = cartService.findByUserIdAndId(userDetails.getId(), id);
 
         return ResponseEntity.ok(
                 ApiResponse.success(
@@ -58,9 +62,10 @@ public class CartController {
     @Operation(summary = "新增購物車")
     @PostMapping
     public ResponseEntity<ApiResponse<CartResponse>> create(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody CartRequest request) {
 
-        CartResponse cart = cartService.create(request);
+        CartResponse cart = cartService.create(userDetails.getId(), request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
@@ -72,9 +77,10 @@ public class CartController {
     @Operation(summary = "刪除購物車")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Integer id) {
 
-        cartService.delete(id);
+        cartService.delete(userDetails.getId(), id);
 
         return ResponseEntity.ok(
                 ApiResponse.success("刪除成功"));

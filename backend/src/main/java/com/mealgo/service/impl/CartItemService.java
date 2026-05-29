@@ -48,9 +48,9 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
-    public CartItemResponse update(Integer id, CartItemRequest request) {
+    public CartItemResponse update(Integer userId, Integer id, CartItemRequest request) {
 
-        CartItem cartItem = getCartItem(id);
+        CartItem cartItem = getCartItem(userId, id);
 
         cartItem.setQty(request.getQty());
         cartItem.setRemark(request.getRemark());
@@ -61,9 +61,9 @@ public class CartItemService implements ICartItemService {
 
     @Override
     @Transactional
-    public void delete(Integer id) {
+    public void delete(Integer userId, Integer id) {
 
-        CartItem cartItem = getCartItem(id);
+        CartItem cartItem = getCartItem(userId, id);
         Cart cart = cartItem.getCart();
         cart.getCartItems().remove(cartItem);
         cartItemRepository.delete(cartItem);
@@ -71,6 +71,12 @@ public class CartItemService implements ICartItemService {
         if (cart.getCartItems() == null || cart.getCartItems().isEmpty()) {
             cartRepository.delete(cart);
         }
+    }
+
+    private CartItem getCartItem(Integer userId, Integer id) {
+
+        return cartItemRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("購物車商品"));
     }
 
     private CartItem getCartItem(Integer id) {

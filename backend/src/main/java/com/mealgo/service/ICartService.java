@@ -7,11 +7,13 @@ import com.mealgo.dto.response.CartResponse;
 
 public interface ICartService {
 
-    List<CartResponse> findAll();
+    // List<CartResponse> findAll();
 
-    CartResponse findById(Integer id);
+    List<CartResponse> findAllByUserId(Integer userId);
 
-    CartResponse create(CartRequest request);
+    CartResponse findByUserIdAndId(Integer userId, Integer id);
 
-    void delete(Integer id);
+    CartResponse create(Integer userId, CartRequest request);
+
+    void delete(Integer userId, Integer id);
 }
