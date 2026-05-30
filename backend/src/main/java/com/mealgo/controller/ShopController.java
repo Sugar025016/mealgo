@@ -107,6 +107,7 @@ public class ShopController {
     /**
      * 刪除店家
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "刪除店家")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
