@@ -80,6 +80,7 @@ public class OrderController {
                         order));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "根據使用者 ID 查詢訂單")
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<OrderResponse>>> findByUserId(
