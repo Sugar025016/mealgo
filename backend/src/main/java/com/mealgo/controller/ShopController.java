@@ -22,6 +22,7 @@ import com.mealgo.service.IShopService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @SecurityRequirement(name = "bearerAuth")
@@ -42,11 +43,7 @@ public class ShopController {
 
         List<ShopResponse> shops = shopService.findAll();
 
-        return ResponseEntity.ok(
-                new ApiResponse<>(
-                        true,
-                        "查詢成功",
-                        shops));
+        return ResponseEntity.ok(ApiResponse.success("查詢成功", shops));
     }
 
     /**
@@ -60,10 +57,10 @@ public class ShopController {
         ShopResponse shop = shopService.findById(id);
 
         return ResponseEntity.ok(
-                new ApiResponse<>(
-                        true,
+                ApiResponse.success(
                         "查詢成功",
                         shop));
+
     }
 
     /**
@@ -73,14 +70,13 @@ public class ShopController {
     @Operation(summary = "新增店家")
     @PostMapping
     public ResponseEntity<ApiResponse<ShopResponse>> create(
-            @RequestBody ShopRequest request) {
+            @Valid @RequestBody ShopRequest request) {
 
         ShopResponse shop = shopService.create(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
-                        new ApiResponse<>(
-                                true,
+                        ApiResponse.success(
                                 "新增成功",
                                 shop));
     }
@@ -93,13 +89,12 @@ public class ShopController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ShopResponse>> update(
             @PathVariable Integer id,
-            @RequestBody ShopRequest request) {
+            @Valid @RequestBody ShopRequest request) {
 
         ShopResponse shop = shopService.update(id, request);
 
         return ResponseEntity.ok(
-                new ApiResponse<>(
-                        true,
+                ApiResponse.success(
                         "修改成功",
                         shop));
     }
@@ -116,8 +111,7 @@ public class ShopController {
         shopService.delete(id);
 
         return ResponseEntity.ok(
-                new ApiResponse<>(
-                        true,
+                ApiResponse.success(
                         "刪除成功",
                         null));
     }
