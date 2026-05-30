@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +64,7 @@ public class ProductController {
                 ApiResponse.success("查詢成功", products));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "根據類別 ID 查詢產品")
     @PostMapping
     public ResponseEntity<ApiResponse<ProductResponse>> create(
@@ -77,6 +79,7 @@ public class ProductController {
                                 product));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "修改產品")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> update(
@@ -91,6 +94,7 @@ public class ProductController {
                         product));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "刪除產品")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(

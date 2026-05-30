@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import com.mealgo.security.CustomUserDetails;
 import com.mealgo.service.IOrderService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,19 +36,21 @@ public class OrderController {
 
     private final IOrderService orderService;
 
-    // @Operation(summary = "查詢全部訂單")
-    // @GetMapping
-    // public ResponseEntity<ApiResponse<List<OrderResponse>>> findAll(
-    // @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "查詢全部訂單")
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> findAll(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-    // List<OrderResponse> orders = orderService.findAll();
+        List<OrderResponse> orders = orderService.findAll();
 
-    // return ResponseEntity.ok(
-    // ApiResponse.success(
-    // "查詢成功",
-    // orders));
-    // }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "查詢成功",
+                        orders));
+    }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "查詢單一訂單")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OrderResponse>> findById(
@@ -60,6 +65,7 @@ public class OrderController {
                         order));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "根據訂單編號查詢訂單")
     @GetMapping("/number/{orderNumber}")
     public ResponseEntity<ApiResponse<OrderResponse>> findByOrderNumber(
@@ -87,6 +93,7 @@ public class OrderController {
                         orders));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "根據商店 ID 查詢訂單")
     @GetMapping("/shop/{shopId}")
     public ResponseEntity<ApiResponse<List<OrderResponse>>> findByShopId(
@@ -101,6 +108,7 @@ public class OrderController {
                         orders));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "新增訂單")
     @PostMapping
     public ResponseEntity<ApiResponse<OrderResponse>> create(
@@ -116,6 +124,7 @@ public class OrderController {
                                 order));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "修改自己的訂單備註")
     @PatchMapping("/{id}/note")
     public ResponseEntity<ApiResponse<OrderResponse>> updateOrderNote(
@@ -132,6 +141,7 @@ public class OrderController {
                 ApiResponse.success("修改成功", order));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "取消自己的訂單")
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<ApiResponse<OrderResponse>> cancel(
@@ -159,19 +169,21 @@ public class OrderController {
     // order));
     // }
 
-    // @Operation(summary = "修改訂單狀態")
-    // @PutMapping("/{id}/{statusCode}")
-    // public ResponseEntity<ApiResponse<OrderResponse>> update(
-    // @PathVariable Integer id,
-    // @PathVariable Integer StatusCode) {
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "修改訂單狀態")
+    @PatchMapping("/{id}/status/{statusCode}")
+    public ResponseEntity<ApiResponse<OrderResponse>> update(
+            @PathVariable Integer id,
+            @PathVariable Integer statusCode) {
 
-    // OrderResponse order = orderService.updateStatus(id, StatusCode);
+        OrderResponse order = orderService.updateStatus(id, statusCode);
 
-    // return ResponseEntity.ok(
-    // ApiResponse.success(
-    // "狀態修改成功",
-    // order));
-    // }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "狀態修改成功",
+                        order));
+    }
 
     // @Operation(summary = "刪除訂單")
     // @DeleteMapping("/{id}")

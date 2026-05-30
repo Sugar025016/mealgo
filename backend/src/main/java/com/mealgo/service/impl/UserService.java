@@ -6,7 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mealgo.dto.request.PasswordRequest;
-import com.mealgo.dto.request.UserCreateRequest;
 import com.mealgo.dto.request.UserUpdateRequest;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.entity.User;
@@ -37,20 +36,6 @@ public class UserService implements IUserService {
         User user = getUser(id);
 
         return new UserResponse(user);
-    }
-
-    @Override
-    public UserResponse create(UserCreateRequest request) {
-
-        User user = new User();
-
-        user.setName(request.getName());
-        user.setPhone(request.getPhone());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        return new UserResponse(
-                userRepository.save(user));
     }
 
     @Override

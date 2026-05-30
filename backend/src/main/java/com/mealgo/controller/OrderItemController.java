@@ -3,6 +3,7 @@ package com.mealgo.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class OrderItemController {
 
     private final IOrderItemService orderItemService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "查詢全部訂單項目")
     @GetMapping
     public ResponseEntity<ApiResponse<List<OrderItemResponse>>> findAll() {
@@ -37,6 +39,7 @@ public class OrderItemController {
                         orderItems));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "查詢單一訂單項目")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OrderItemResponse>> findById(
@@ -63,14 +66,14 @@ public class OrderItemController {
                         orderItems));
     }
 
-    @Operation(summary = "刪除訂單項目")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> delete(
-            @PathVariable Integer id) {
+    // @Operation(summary = "刪除訂單項目")
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<ApiResponse<Void>> delete(
+    // @PathVariable Integer id) {
 
-        orderItemService.delete(id);
+    // orderItemService.delete(id);
 
-        return ResponseEntity.ok(
-                ApiResponse.success("刪除成功"));
-    }
+    // return ResponseEntity.ok(
+    // ApiResponse.success("刪除成功"));
+    // }
 }

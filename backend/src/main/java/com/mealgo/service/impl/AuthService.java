@@ -4,16 +4,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mealgo.dto.request.LoginRequest;
+import com.mealgo.dto.request.UserCreateRequest;
 import com.mealgo.dto.response.LoginResponse;
+import com.mealgo.dto.response.UserResponse;
 import com.mealgo.entity.User;
 import com.mealgo.repository.IUserRepository;
 import com.mealgo.security.JwtUtil;
+import com.mealgo.service.IAuthService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements IAuthService {
 
     private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -37,5 +40,25 @@ public class AuthService {
                 user.getName(),
                 user.getEmail(),
                 token);
+    }
+
+    // public static BodyBuilder status(HttpStatusCode status) {
+    // Assert.notNull(status, "HttpStatusCode must not be null");
+    // return new DefaultBuilder(status);
+    // }
+
+    @Override
+    public UserResponse register(UserCreateRequest request) {
+
+        User user = new User();
+
+        user.setName(request.getName());
+        user.setPhone(request.getPhone());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("USER");
+
+        return new UserResponse(
+                userRepository.save(user));
     }
 }

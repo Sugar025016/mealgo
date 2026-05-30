@@ -23,11 +23,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Users
 -- =========================
 INSERT INTO users
-(id, name, phone, email, password, email_verified_at, verify_token, verify_expire_at, create_time, update_time)
+(id, name, phone, email, password, role, email_verified_at, verify_token, verify_expire_at, create_time, update_time)
 VALUES
-(1, '測試使用者', '0911111111', 'user@test.com', '$2a$10$yB1VTQW2oB6tKpcdULD0gOdXvfy/YO39Y8b5gSOZkuMCYwMrQhQ5K', NOW(), NULL, NULL, NOW(), NOW()),
-(2, '店家管理員', '0922222222', 'shop@test.com', '$2a$10$yB1VTQW2oB6tKpcdULD0gOdXvfy/YO39Y8b5gSOZkuMCYwMrQhQ5K', NOW(), NULL, NULL, NOW(), NOW());
-
+(1, '測試使用者', '0911111111', 'user@test.com', '$2a$10$yB1VTQW2oB6tKpcdULD0gOdXvfy/YO39Y8b5gSOZkuMCYwMrQhQ5K', 'USER', NOW(), NULL, NULL, NOW(), NOW()),
+(2, '店家管理員', '0922222222', 'shop@test.com', '$2a$10$yB1VTQW2oB6tKpcdULD0gOdXvfy/YO39Y8b5gSOZkuMCYwMrQhQ5K', 'ADMIN', NOW(), NULL, NULL, NOW(), NOW());
 -- =========================
 -- Addresses
 -- =========================

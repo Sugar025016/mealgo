@@ -34,10 +34,17 @@ public class JwtUtil {
                 .subject(user.getId().toString())
                 .claim("email", user.getEmail())
                 .claim("name", user.getName())
+                .claim("role", user.getRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey())
                 .compact();
+    }
+
+    public String extractRole(String token) {
+
+        return extractClaims(token)
+                .get("role", String.class);
     }
 
     public Integer extractUserId(String token) {

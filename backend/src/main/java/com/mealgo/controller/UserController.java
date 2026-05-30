@@ -1,11 +1,9 @@
 package com.mealgo.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mealgo.dto.ApiResponse;
 import com.mealgo.dto.request.PasswordRequest;
-import com.mealgo.dto.request.UserCreateRequest;
 import com.mealgo.dto.request.UserUpdateRequest;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.security.CustomUserDetails;
@@ -51,18 +48,6 @@ public class UserController {
 
         return ResponseEntity.ok(
                 ApiResponse.success("查詢成功", user));
-    }
-
-    @Operation(summary = "新增用戶")
-    @PostMapping
-    public ResponseEntity<ApiResponse<UserResponse>> create(
-            @Valid @RequestBody UserCreateRequest request) {
-
-        UserResponse user = userService.create(request);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(
-                        ApiResponse.success("新增成功", user));
     }
 
     @Operation(summary = "修改用戶")

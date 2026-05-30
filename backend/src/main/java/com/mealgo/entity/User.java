@@ -49,9 +49,8 @@ public class User extends BaseEntity {
     @Column(name = "verify_expire_at")
     private LocalDateTime verifyExpireAt;
 
-    // @Email
-    // @Column(name = "email", length = 255)
-    // private String email;
+    @Column(name = "role", nullable = false, length = 20)
+    private String role = "USER";
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class CategoryController {
                         category));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "新增類別")
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> create(
@@ -69,6 +71,7 @@ public class CategoryController {
                                 category));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "修改類別")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> update(
