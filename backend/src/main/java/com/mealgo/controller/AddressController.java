@@ -22,10 +22,12 @@ import com.mealgo.security.CustomUserDetails;
 import com.mealgo.service.IAddressService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Address", description = "地址 API")
 @RestController
 @PreAuthorize("hasRole('USER')")

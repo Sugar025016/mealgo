@@ -29,7 +29,9 @@ import com.mealgo.repository.IUserRepository;
 import com.mealgo.service.IOrderService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService implements IOrderService {
@@ -131,6 +133,11 @@ public class OrderService implements IOrderService {
         order.setUser(user);
         order.setShop(shop);
         Order savedOrder = orderRepository.save(order);
+        log.info(
+                "Order Create Success | orderNumber={} | userId={} | totalPrice={}",
+                savedOrder.getOrderNumber(),
+                userId,
+                savedOrder.getTotalPrice());
         cartRepository.delete(cart);
         return new OrderResponse(savedOrder);
     }
@@ -183,8 +190,13 @@ public class OrderService implements IOrderService {
         }
 
         order.setStatus(nextStatus.getCode());
+        Order savedOrder = orderRepository.save(order);
+        log.info(
+                "Order Status Update | orderId={} | status={}",
+                savedOrder.getId(),
+                statusCode);
 
-        return new OrderResponse(orderRepository.save(order));
+        return new OrderResponse();
     }
 
     @Override

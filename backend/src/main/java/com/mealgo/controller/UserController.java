@@ -17,10 +17,12 @@ import com.mealgo.security.CustomUserDetails;
 import com.mealgo.service.IUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "User", description = "用戶 API")
 @RestController
 @RequestMapping("/users")

@@ -25,7 +25,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Shop", description = "店家 API")
 @RestController
 @RequestMapping("/shops")
@@ -66,7 +65,7 @@ public class ShopController {
     /**
      * 新增店家
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "新增店家")
     @PostMapping
     public ResponseEntity<ApiResponse<ShopResponse>> create(
@@ -84,7 +83,7 @@ public class ShopController {
     /**
      * 修改店家
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "修改店家")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ShopResponse>> update(
@@ -102,7 +101,7 @@ public class ShopController {
     /**
      * 刪除店家
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "刪除店家")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(

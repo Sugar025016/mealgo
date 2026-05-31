@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class LoginRequest {
 
-    @Schema(description = "使用者 Email", example = "shop@test.com")
+    @Schema(description = "使用者 Email", example = "user@test.com")
     @NotBlank(message = "Email不能為空")
     @Email(message = "Email格式錯誤")
     private String email;

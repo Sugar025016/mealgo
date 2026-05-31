@@ -14,7 +14,9 @@ import com.mealgo.security.JwtUtil;
 import com.mealgo.service.IAuthService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService implements IAuthService {
@@ -22,6 +24,27 @@ public class AuthService implements IAuthService {
     private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+
+    @Override
+    public UserResponse register(UserCreateRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException("Email 已被使用");
+        }
+        User user = new User();
+        user.setName(request.getName());
+        user.setPhone(request.getPhone());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("USER");
+        User savedUser = userRepository.save(user);
+
+        log.info(
+                "User Register Success | userId={} | email={}",
+                savedUser.getId(),
+                savedUser.getEmail());
+
+        return new UserResponse(savedUser);
+    }
 
     public LoginResponse login(LoginRequest request) {
 
@@ -48,19 +71,4 @@ public class AuthService implements IAuthService {
     // return new DefaultBuilder(status);
     // }
 
-    @Override
-    public UserResponse register(UserCreateRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email 已被使用");
-        }
-        User user = new User();
-        user.setName(request.getName());
-        user.setPhone(request.getPhone());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole("USER");
-
-        return new UserResponse(
-                userRepository.save(user));
-    }
 }

@@ -14,9 +14,11 @@ import com.mealgo.dto.response.OrderItemResponse;
 import com.mealgo.service.IOrderItemService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "OrderItem", description = "訂單項目 API")
 @RestController
 @RequestMapping("/order-items")
@@ -25,7 +27,6 @@ public class OrderItemController {
 
     private final IOrderItemService orderItemService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "查詢全部訂單項目")
     @GetMapping
     public ResponseEntity<ApiResponse<List<OrderItemResponse>>> findAll() {
@@ -38,7 +39,6 @@ public class OrderItemController {
                         orderItems));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "查詢單一訂單項目")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OrderItemResponse>> findById(

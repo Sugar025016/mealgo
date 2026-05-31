@@ -17,10 +17,12 @@ import com.mealgo.security.CustomUserDetails;
 import com.mealgo.service.ICartItemService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "CartItem", description = "購物車商品 API")
 @RestController
 @PreAuthorize("hasRole('USER')")

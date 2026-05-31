@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Order", description = "訂單 API")
 @RestController
 @RequestMapping("/orders")
@@ -169,7 +170,6 @@ public class OrderController {
     // order));
     // }
 
-    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "修改訂單狀態")
     @PatchMapping("/{id}/status/{statusCode}")

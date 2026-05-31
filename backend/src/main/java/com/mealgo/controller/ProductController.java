@@ -20,6 +20,7 @@ import com.mealgo.dto.response.ProductResponse;
 import com.mealgo.service.IProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,7 @@ public class ProductController {
                 ApiResponse.success("查詢成功", products));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "新增產品")
     @PostMapping
     public ResponseEntity<ApiResponse<ProductResponse>> create(
@@ -79,7 +80,7 @@ public class ProductController {
                                 product));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "修改產品")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> update(
@@ -94,7 +95,7 @@ public class ProductController {
                         product));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "刪除產品")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(

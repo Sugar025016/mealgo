@@ -18,7 +18,9 @@ import com.mealgo.dto.ApiResponse;
 import com.mealgo.dto.request.CategoryRequest;
 import com.mealgo.dto.response.CategoryResponse;
 import com.mealgo.service.ICategoryService;
+
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +58,7 @@ public class CategoryController {
                         category));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "新增類別")
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponse>> create(
@@ -71,7 +73,7 @@ public class CategoryController {
                                 category));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "修改類別")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponse>> update(
@@ -86,7 +88,7 @@ public class CategoryController {
                         category));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "刪除類別")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
