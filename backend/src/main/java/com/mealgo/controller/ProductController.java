@@ -65,7 +65,7 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "根據類別 ID 查詢產品")
+    @Operation(summary = "新增產品")
     @PostMapping
     public ResponseEntity<ApiResponse<ProductResponse>> create(
             @Valid @RequestBody ProductRequest request) {

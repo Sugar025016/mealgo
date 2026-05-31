@@ -8,6 +8,7 @@ import com.mealgo.dto.request.UserCreateRequest;
 import com.mealgo.dto.response.LoginResponse;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.entity.User;
+import com.mealgo.exception.BadRequestException;
 import com.mealgo.repository.IUserRepository;
 import com.mealgo.security.JwtUtil;
 import com.mealgo.service.IAuthService;
@@ -25,12 +26,12 @@ public class AuthService implements IAuthService {
     public LoginResponse login(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("帳號或密碼錯誤"));
+                .orElseThrow(() -> new BadRequestException("帳號或密碼錯誤"));
         // System.out.println("user.getPassword() = " + user.getPassword());
         // System.out.println("request.getPassword() = " + request.getPassword());
         // System.out.println(new BCryptPasswordEncoder().encode("123456"));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("帳號或密碼錯誤");
+            throw new BadRequestException("帳號或密碼錯誤");
         }
 
         String token = jwtUtil.generateToken(user);
@@ -49,9 +50,10 @@ public class AuthService implements IAuthService {
 
     @Override
     public UserResponse register(UserCreateRequest request) {
-
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException("Email 已被使用");
+        }
         User user = new User();
-
         user.setName(request.getName());
         user.setPhone(request.getPhone());
         user.setEmail(request.getEmail());

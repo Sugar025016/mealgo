@@ -8,8 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mealgo.dto.request.OrderRequest;
 import com.mealgo.dto.request.OrderNoteRequest;
+import com.mealgo.dto.request.OrderRequest;
 import com.mealgo.dto.response.OrderResponse;
 import com.mealgo.entity.Address;
 import com.mealgo.entity.Cart;
@@ -19,6 +19,7 @@ import com.mealgo.entity.OrderItem;
 import com.mealgo.entity.Shop;
 import com.mealgo.entity.User;
 import com.mealgo.enums.OrderStatus;
+import com.mealgo.exception.BadRequestException;
 import com.mealgo.exception.InvalidOrderStatusException;
 import com.mealgo.exception.ResourceNotFoundException;
 import com.mealgo.repository.IAddressRepository;
@@ -81,16 +82,13 @@ public class OrderService implements IOrderService {
     public OrderResponse create(Integer userId, OrderRequest request) {
 
         User user = getUser(userId);
-        Cart cart = getCart(request.getCartId());
-        if (!cart.getUser().getId().equals(userId)) {
-            throw new RuntimeException("找不到購物車");
-        }
+        Cart cart = getCartByUserIdAndCartId(userId, request.getCartId());
 
         Shop shop = cart.getShop();
         Address address = getAddress(request.getAddressId());
         List<CartItem> cartItemList = cart.getCartItems();
         if (cartItemList == null || cartItemList.isEmpty()) {
-            throw new RuntimeException("購物車沒有商品");
+            throw new BadRequestException("購物車沒有商品");
         }
         int deliveryPrice = shop.getDeliveryPrice();
         int subtotal = cartItemList.stream()
@@ -141,7 +139,7 @@ public class OrderService implements IOrderService {
     public OrderResponse updateOrderNote(Integer userId, Integer id, OrderNoteRequest request) {
         Order order = getOrderByUserIdAndOrderId(userId, id);
         if (!OrderStatus.fromCode(order.getStatus()).canUpdateNote()) {
-            throw new RuntimeException("訂單狀態不允許修改備註");
+            throw new BadRequestException("訂單狀態不允許修改備註");
         }
 
         order.setOrderNote(request.getOrderNote());
@@ -232,11 +230,11 @@ public class OrderService implements IOrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("使用者"));
     }
 
-    private Cart getCart(Integer id) {
+    // private Cart getCart(Integer id) {
 
-        return cartRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("購物車"));
-    }
+    // return cartRepository.findById(id)
+    // .orElseThrow(() -> new ResourceNotFoundException("購物車"));
+    // }
 
     private Address getAddress(Integer id) {
 
@@ -248,6 +246,12 @@ public class OrderService implements IOrderService {
 
         return orderRepository.findByUserIdAndId(userId, orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("訂單"));
+    }
+
+    private Cart getCartByUserIdAndCartId(Integer userId, Integer cartId) {
+
+        return cartRepository.findByUserIdAndId(userId, cartId)
+                .orElseThrow(() -> new ResourceNotFoundException("購物車"));
     }
 
     // private void validateStatusChange(Integer currentStatus, Integer newStatus) {

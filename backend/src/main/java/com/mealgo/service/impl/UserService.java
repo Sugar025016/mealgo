@@ -9,6 +9,7 @@ import com.mealgo.dto.request.PasswordRequest;
 import com.mealgo.dto.request.UserUpdateRequest;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.entity.User;
+import com.mealgo.exception.BadRequestException;
 import com.mealgo.exception.ResourceNotFoundException;
 import com.mealgo.repository.IUserRepository;
 import com.mealgo.service.IUserService;
@@ -77,7 +78,7 @@ public class UserService implements IUserService {
                 request.getOldPassword(),
                 user.getPassword())) {
 
-            throw new RuntimeException("舊密碼錯誤");
+            throw new BadRequestException("舊密碼錯誤");
         }
 
         user.setPassword(

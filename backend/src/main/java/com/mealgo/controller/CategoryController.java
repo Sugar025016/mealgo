@@ -86,6 +86,7 @@ public class CategoryController {
                         category));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "刪除類別")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(

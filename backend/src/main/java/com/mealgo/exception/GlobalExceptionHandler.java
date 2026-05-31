@@ -3,6 +3,7 @@ package com.mealgo.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -60,6 +61,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(
             IllegalArgumentException ex) {
+
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.fail(ex.getMessage()));
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBadRequestException(
+            BadRequestException ex) {
 
         return ResponseEntity.badRequest()
                 .body(ApiResponse.fail(ex.getMessage()));
