@@ -1,5 +1,7 @@
 package com.mealgo.dto.response;
 
+import java.util.List;
+
 import com.mealgo.entity.Cart;
 
 import lombok.Getter;
@@ -18,10 +20,11 @@ public class CartResponse {
 
     private Integer shopId;
     private String shopName;
+    private List<CartItemResponse> cartItems;
 
     public CartResponse(Cart cart) {
         this.id = cart.getId();
-
+        this.cartItems = cart.getCartItems().stream().map(CartItemResponse::new).toList();
         if (cart.getUser() != null) {
             this.userId = cart.getUser().getId();
             this.userName = cart.getUser().getName();
