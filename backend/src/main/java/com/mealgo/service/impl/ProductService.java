@@ -3,6 +3,7 @@ package com.mealgo.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mealgo.dto.request.ProductRequest;
 import com.mealgo.dto.response.ProductResponse;
@@ -64,6 +65,7 @@ public class ProductService implements IProductService {
                 productRepository.save(product));
     }
 
+    @Transactional
     @Override
     public ProductResponse update(Integer id, ProductRequest request) {
 

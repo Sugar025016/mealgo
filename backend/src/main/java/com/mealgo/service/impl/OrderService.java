@@ -142,6 +142,7 @@ public class OrderService implements IOrderService {
         return new OrderResponse(savedOrder);
     }
 
+    @Transactional
     @Override
     public OrderResponse updateOrderNote(Integer userId, Integer id, OrderNoteRequest request) {
         Order order = getOrderByUserIdAndOrderId(userId, id);
@@ -174,7 +175,7 @@ public class OrderService implements IOrderService {
 
     // return new OrderResponse(orderRepository.save(order));
     // }
-
+    @Transactional
     @Override
     public OrderResponse updateStatus(Integer id, Integer statusCode) {
 
