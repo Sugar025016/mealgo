@@ -39,8 +39,7 @@ public class OrderController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "查詢全部訂單")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<OrderResponse>>> findAll(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<ApiResponse<List<OrderResponse>>> findAll() {
 
         List<OrderResponse> orders = orderService.findAll();
 
@@ -50,7 +49,6 @@ public class OrderController {
                         orders));
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "查詢單一訂單")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OrderResponse>> findById(
@@ -65,7 +63,6 @@ public class OrderController {
                         order));
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "根據訂單編號查詢訂單")
     @GetMapping("/number/{orderNumber}")
     public ResponseEntity<ApiResponse<OrderResponse>> findByOrderNumber(
@@ -80,7 +77,6 @@ public class OrderController {
                         order));
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "根據使用者 ID 查詢訂單")
     @GetMapping("/my")
     public ResponseEntity<ApiResponse<List<OrderResponse>>> findByUserId(
@@ -94,7 +90,6 @@ public class OrderController {
                         orders));
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "根據商店 ID 查詢訂單")
     @GetMapping("/shop/{shopId}")
     public ResponseEntity<ApiResponse<List<OrderResponse>>> findByShopId(
@@ -109,7 +104,6 @@ public class OrderController {
                         orders));
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "新增訂單")
     @PostMapping
     public ResponseEntity<ApiResponse<OrderResponse>> create(
@@ -125,7 +119,6 @@ public class OrderController {
                                 order));
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "修改自己的訂單備註")
     @PatchMapping("/{id}/note")
     public ResponseEntity<ApiResponse<OrderResponse>> updateOrderNote(
@@ -142,7 +135,6 @@ public class OrderController {
                 ApiResponse.success("修改成功", order));
     }
 
-    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "取消自己的訂單")
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<ApiResponse<OrderResponse>> cancel(

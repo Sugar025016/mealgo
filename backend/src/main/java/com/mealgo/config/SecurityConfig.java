@@ -66,6 +66,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/categories/**",
                                 "/products/**",
+                                "/shop-items/**",
                                 "/shops/**")
                         .hasRole("ADMIN")
                         .anyRequest().authenticated())

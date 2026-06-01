@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Address", description = "地址 API")
 @RestController
-@PreAuthorize("hasRole('USER')")
 @RequestMapping("/addresses")
 @RequiredArgsConstructor
 public class AddressController {

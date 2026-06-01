@@ -29,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Cart", description = "購物車 API")
 @RestController
-@PreAuthorize("hasRole('USER')")
 @RequestMapping("/carts")
 @RequiredArgsConstructor
 public class CartController {
