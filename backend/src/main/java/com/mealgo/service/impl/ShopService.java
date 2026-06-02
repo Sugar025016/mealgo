@@ -2,6 +2,9 @@ package com.mealgo.service.impl;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import com.mealgo.dto.request.ShopRequest;
@@ -20,6 +23,7 @@ public class ShopService implements IShopService {
     private final IShopRepository shopRepository;
 
     @Override
+    @Cacheable(value = "shops", key = "'all'")
     public List<ShopResponse> findAll() {
         return shopRepository.findAll()
                 .stream()
@@ -28,6 +32,7 @@ public class ShopService implements IShopService {
     }
 
     @Override
+    @Cacheable(value = "shop", key = "#id")
     public ShopResponse findById(Integer id) {
 
         Shop shop = getShop(id);
@@ -36,6 +41,7 @@ public class ShopService implements IShopService {
     }
 
     @Override
+    @CacheEvict(value = "shops", allEntries = true)
     public ShopResponse create(ShopRequest request) {
 
         Shop shop = new Shop();
@@ -61,6 +67,10 @@ public class ShopService implements IShopService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "shop", key = "#id"),
+            @CacheEvict(value = "shops", allEntries = true)
+    })
     public ShopResponse update(Integer id, ShopRequest request) {
 
         Shop shop = getShop(id);
@@ -83,6 +93,10 @@ public class ShopService implements IShopService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "shop", key = "#id"),
+            @CacheEvict(value = "shops", allEntries = true)
+    })
     public void delete(Integer id) {
 
         Shop shop = getShop(id);

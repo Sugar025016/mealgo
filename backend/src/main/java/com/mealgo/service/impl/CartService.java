@@ -99,7 +99,7 @@ public class CartService implements ICartService {
 
     @Override
     public void delete(Integer userId, Integer id) {
-
+        // 驗證購物車是否存在且屬於該使用者
         Cart cart = getCart(userId, id);
 
         cartRepository.delete(cart);

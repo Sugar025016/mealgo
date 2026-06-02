@@ -2,6 +2,9 @@ package com.mealgo.service.impl;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,7 @@ public class ProductService implements IProductService {
     private final IShopRepository shopRepository;
 
     @Override
+    @Cacheable(value = "products")
     public List<ProductResponse> findAll() {
         return productRepository.findAll()
                 .stream()
@@ -40,6 +44,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Cacheable(value = "product", key = "#id")
     public ProductResponse findById(Integer id) {
 
         Product product = getProduct(id);
@@ -48,6 +53,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @CacheEvict(value = "products", allEntries = true)
     public ProductResponse create(ProductRequest request) {
 
         Shop shop = getShop(request.getShopId());
@@ -67,6 +73,10 @@ public class ProductService implements IProductService {
 
     @Transactional
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "product", key = "#id"),
+            @CacheEvict(value = "products", allEntries = true)
+    })
     public ProductResponse update(Integer id, ProductRequest request) {
 
         Product product = getProduct(id);
@@ -84,6 +94,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "product", key = "#id"),
+            @CacheEvict(value = "products", allEntries = true)
+    })
     public void delete(Integer id) {
 
         Product product = getProduct(id);

@@ -1,5 +1,7 @@
 package com.mealgo.dto.response;
 
+import java.io.Serializable;
+
 import com.mealgo.entity.Product;
 
 import lombok.Getter;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductResponse {
+public class ProductResponse implements Serializable {
 
     private Integer id;
     private String name;
