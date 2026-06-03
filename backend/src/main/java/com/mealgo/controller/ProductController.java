@@ -96,11 +96,12 @@ public class ProductController {
 
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "刪除產品")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/shop/{shopId}/products/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable Integer shopId,
             @PathVariable Integer id) {
 
-        productService.delete(id);
+        productService.delete(shopId, id);
 
         return ResponseEntity.ok(
                 ApiResponse.success("刪除成功"));
