@@ -1,6 +1,9 @@
 # Spring Boot
 backend/target/
 
+## application
+backend/src/main/resources/application.properties
+
 # Vue
 frontend/node_modules/
 frontend/dist/
