@@ -43,11 +43,11 @@ public class User extends BaseEntity {
     @Column(name = "email_verified_at")
     private LocalDateTime emailVerifiedAt;
 
-    @Column(name = "verify_token", length = 255)
-    private String verifyToken;
+    // @Column(name = "verify_token", length = 255)
+    // private String verifyToken;
 
-    @Column(name = "verify_expire_at")
-    private LocalDateTime verifyExpireAt;
+    // @Column(name = "verify_expire_at")
+    // private LocalDateTime verifyExpireAt;
 
     @Column(name = "role", nullable = false, length = 20)
     private String role = "USER";
@@ -55,6 +55,10 @@ public class User extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<Address> addresses;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VerificationToken> verificationTokens;
 
     // 給關聯過來的回傳值
     @Override

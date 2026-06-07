@@ -10,4 +10,6 @@ public interface IAuthService {
     UserResponse register(UserCreateRequest request);
 
     LoginResponse login(LoginRequest request);
+
+    void verifyEmail(String token);
 }
