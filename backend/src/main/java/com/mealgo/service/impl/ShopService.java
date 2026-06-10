@@ -26,7 +26,23 @@ public class ShopService implements IShopService {
     private final IShopRepository shopRepository;
 
     @Override
-    @Cacheable(value = "shops", key = "'all'")
+    @Cacheable(value = "shops", key = "'keyword:' + (#keyword == null ? '' : #keyword) + ',page:' + #page + ',size:' + #size")
+    public Page<ShopResponse> search(String keyword, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Shop> shops;
+
+        if (keyword == null || keyword.isBlank()) {
+            shops = shopRepository.findAll(pageable);
+        } else {
+            shops = shopRepository.search(keyword, pageable);
+        }
+
+        return shops.map(ShopResponse::new);
+    }
+
+    @Override
     public List<ShopResponse> findAll() {
         return shopRepository.findAll()
                 .stream()
@@ -113,19 +129,4 @@ public class ShopService implements IShopService {
                 .orElseThrow(() -> new ResourceNotFoundException("店家"));
     }
 
-    @Override
-    public Page<ShopResponse> search(String keyword, int page, int size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        Page<Shop> shops;
-
-        if (keyword == null || keyword.isBlank()) {
-            shops = shopRepository.findAll(pageable);
-        } else {
-            shops = shopRepository.search(keyword, pageable);
-        }
-
-        return shops.map(ShopResponse::new);
-    }
 }
