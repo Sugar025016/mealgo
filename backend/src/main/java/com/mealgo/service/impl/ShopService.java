@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mealgo.dto.request.ShopRequest;
@@ -108,5 +111,21 @@ public class ShopService implements IShopService {
 
         return shopRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("店家"));
+    }
+
+    @Override
+    public Page<ShopResponse> search(String keyword, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Shop> shops;
+
+        if (keyword == null || keyword.isBlank()) {
+            shops = shopRepository.findAll(pageable);
+        } else {
+            shops = shopRepository.search(keyword, pageable);
+        }
+
+        return shops.map(ShopResponse::new);
     }
 }

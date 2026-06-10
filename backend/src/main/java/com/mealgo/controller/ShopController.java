@@ -2,6 +2,7 @@ package com.mealgo.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealgo.dto.ApiResponse;
@@ -33,15 +35,18 @@ public class ShopController {
     private final IShopService shopService;
 
     /**
-     * 查詢全部店家
+     * 店家搜尋 (依品牌模糊搜尋)
      */
-    @Operation(summary = "查詢全部店家")
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<ShopResponse>>> findAll() {
+    @Operation(summary = "店家搜尋 (依品牌模糊搜尋)")
+    @GetMapping()
+    public ResponseEntity<ApiResponse<Page<ShopResponse>>> search(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        List<ShopResponse> shops = shopService.findAll();
+        Page<ShopResponse> shopPage = shopService.search(keyword, page, size);
 
-        return ResponseEntity.ok(ApiResponse.success("查詢成功", shops));
+        return ResponseEntity.ok(ApiResponse.success("查詢成功", shopPage));
     }
 
     /**
