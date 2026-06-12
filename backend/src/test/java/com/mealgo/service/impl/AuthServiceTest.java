@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -20,8 +21,11 @@ import com.mealgo.dto.request.UserCreateRequest;
 import com.mealgo.dto.response.LoginResponse;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.entity.User;
+import com.mealgo.entity.VerificationToken;
+import com.mealgo.enums.VerificationType;
 import com.mealgo.exception.BadRequestException;
 import com.mealgo.repository.IUserRepository;
+import com.mealgo.repository.IVerificationTokenRepository;
 import com.mealgo.security.JwtUtil;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,19 +40,20 @@ class AuthServiceTest {
     @Mock
     private JwtUtil jwtUtil;
 
+    @Mock
+    private IVerificationTokenRepository verificationTokenRepository;
+
     @InjectMocks
     private AuthService authService;
 
     @Test
     void register_emailNotExists_shouldCreateUser() {
-        // 建立測試資料
         UserCreateRequest request = new UserCreateRequest();
         request.setName("Jessie");
         request.setPhone("0912345678");
         request.setEmail("test@example.com");
         request.setPassword("123456");
 
-        // 模擬userRepository.save()回傳的User物件
         User savedUser = new User();
         savedUser.setId(1);
         savedUser.setName("Jessie");
@@ -57,55 +62,50 @@ class AuthServiceTest {
         savedUser.setPassword("encodedPassword");
         savedUser.setRole("USER");
 
-        // 設定模擬行為
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(false);
         when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
+        VerificationToken token = new VerificationToken();
+        token.setToken("test-token");
+        when(verificationTokenRepository.save(any()))
+                .thenReturn(token);
 
-        // 執行測試方法
         UserResponse response = authService.register(request);
 
-        // 驗證結果
         assertThat(response).isNotNull();
 
-        // 使用ArgumentCaptor捕捉傳入userRepository.save()的User物件
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        // 驗證userRepository.save()被呼叫一次，並捕捉參數
+
         verify(userRepository).save(userCaptor.capture());
 
-        // 取得被捕捉的User物件
         User userToSave = userCaptor.getValue();
 
-        // 驗證User物件的屬性
         assertThat(userToSave.getName()).isEqualTo("Jessie");
         assertThat(userToSave.getPhone()).isEqualTo("0912345678");
         assertThat(userToSave.getEmail()).isEqualTo("test@example.com");
         assertThat(userToSave.getPassword()).isEqualTo("encodedPassword");
         assertThat(userToSave.getRole()).isEqualTo("USER");
 
-        // 驗證回傳的UserResponse物件
         verify(userRepository).existsByEmail("test@example.com");
         verify(passwordEncoder).encode("123456");
+        verify(verificationTokenRepository).save(any());
     }
 
     @Test
     void register_emailAlreadyExists_shouldThrowBadRequestException() {
-        // 建立測試資料
         UserCreateRequest request = new UserCreateRequest();
         request.setEmail("test@example.com");
 
-        // 設定模擬行為
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
 
-        // 執行測試方法並驗證例外
         assertThatThrownBy(() -> authService.register(request))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Email 已被使用");
 
-        // 驗證userRepository.existsByEmail()被呼叫一次，且userRepository.save()和passwordEncoder.encode()不被呼叫
         verify(userRepository).existsByEmail("test@example.com");
         verify(userRepository, never()).save(any(User.class));
         verify(passwordEncoder, never()).encode(any());
+        verify(verificationTokenRepository, never()).save(any());
     }
 
     @Test
@@ -114,11 +114,7 @@ class AuthServiceTest {
         request.setEmail("test@example.com");
         request.setPassword("123456");
 
-        User user = new User();
-        user.setId(1);
-        user.setName("Jessie");
-        user.setEmail("test@example.com");
-        user.setPassword("encodedPassword");
+        User user = createVerifiedUser();
 
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("123456", "encodedPassword")).thenReturn(true);
@@ -160,10 +156,7 @@ class AuthServiceTest {
         request.setEmail("test@example.com");
         request.setPassword("wrongPassword");
 
-        User user = new User();
-        user.setId(1);
-        user.setEmail("test@example.com");
-        user.setPassword("encodedPassword");
+        User user = createVerifiedUser();
 
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("wrongPassword", "encodedPassword")).thenReturn(false);
@@ -175,5 +168,56 @@ class AuthServiceTest {
         verify(userRepository).findByEmail("test@example.com");
         verify(passwordEncoder).matches("wrongPassword", "encodedPassword");
         verify(jwtUtil, never()).generateToken(any());
+    }
+
+    @Test
+    void login_emailNotVerified_shouldThrowBadRequestException() {
+        LoginRequest request = new LoginRequest();
+        request.setEmail("test@example.com");
+        request.setPassword("123456");
+
+        User user = createUnverifiedUser();
+
+        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> authService.login(request))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("請先完成信箱驗證");
+
+        verify(userRepository).findByEmail("test@example.com");
+        verify(passwordEncoder, never()).matches(any(), any());
+        verify(jwtUtil, never()).generateToken(any());
+    }
+
+    private User createVerifiedUser() {
+        User user = new User();
+        user.setId(1);
+        user.setName("Jessie");
+        user.setEmail("test@example.com");
+        user.setPassword("encodedPassword");
+        user.setEmailVerifiedAt(LocalDateTime.now());
+        return user;
+    }
+
+    private User createUnverifiedUser() {
+        User user = new User();
+        user.setId(1);
+        user.setName("Jessie");
+        user.setEmail("test@example.com");
+        user.setPassword("encodedPassword");
+        user.setEmailVerifiedAt(null);
+        return user;
+    }
+
+    private VerificationToken createToken(
+            User user,
+            VerificationType type) {
+
+        VerificationToken token = new VerificationToken();
+
+        token.setUser(user);
+        token.setType(type);
+
+        return verificationTokenRepository.save(token);
     }
 }
