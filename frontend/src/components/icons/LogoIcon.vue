@@ -1,0 +1,189 @@
+<script setup lang="ts">
+defineProps({
+  size: {
+    type: Number,
+    default: 40,
+  },
+  color: {
+    type: String,
+    default: "#ff5a00",
+  },
+});
+</script>
+
+<template>
+  <svg
+    :height="size"
+    width="auto"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 92 470 352"
+    fill="none"
+  >
+    <g transform="translate(480, 0) scale(-1,1)">
+      <!-- <g transform="translate(-10 0)" > --><!-- 車頭轉向-->
+      <line
+        x1="25"
+        y1="305"
+        x2="75"
+        y2="305"
+        :stroke="color"
+        stroke-width="10"
+        stroke-linecap="round"
+      />
+      <line
+        x1="15"
+        y1="343"
+        x2="70"
+        y2="343"
+        :stroke="color"
+        stroke-width="10"
+        stroke-linecap="round"
+      />
+      <line
+        x1="35"
+        y1="380"
+        x2="80"
+        y2="380"
+        :stroke="color"
+        stroke-width="10"
+        stroke-linecap="round"
+      />
+
+      <path
+        d="M140 155 L132 148 Q125 141 132 133 L152 110 Q168 93 186 106 Q198 115 204 141 Q207 153 220 153 H300"
+        :stroke="color"
+        stroke-width="16"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+
+      <path
+        d="M280 153 L390 153 Q430 153 440 200"
+        :stroke="color"
+        stroke-width="16"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"
+      />
+
+      <path
+        d="M440 200 L470 330 Q475 365 460 373"
+        :stroke="color"
+        stroke-width="16"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"
+      />
+
+      <path
+        d="M365 380 L225 380"
+        :stroke="color"
+        stroke-width="16"
+        stroke-linecap="round"
+      />
+
+      <path
+        d="M140 370 Q120 370 110 340 Q100 315 115 285 L165 190 Q175 170 195 160"
+        :stroke="color"
+        stroke-width="16"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"
+      />
+
+      <path
+        d="M180 240 Q210 235 220 260"
+        :stroke="color"
+        stroke-width="16"
+        stroke-linecap="round"
+        fill="none"
+      />
+
+      <rect
+        x="270"
+        y="212"
+        width="120"
+        height="125"
+        rx="15"
+        :stroke="color"
+        stroke-width="16"
+      />
+
+      <path
+        d="M310 212 Q310 182 330 182 Q350 182 350 212"
+        :stroke="color"
+        stroke-width="16"
+        fill="none"
+        stroke-linecap="round"
+      />
+
+      <line
+        x1="295"
+        y1="268"
+        x2="317"
+        y2="268"
+        :stroke="color"
+        stroke-width="14"
+        stroke-linecap="round"
+      />
+      <line
+        x1="306"
+        y1="269"
+        x2="306"
+        y2="309"
+        :stroke="color"
+        stroke-width="14"
+        stroke-linecap="round"
+      />
+      <line
+        x1="306"
+        y1="239"
+        x2="306"
+        y2="266"
+        :stroke="color"
+        stroke-width="10"
+        stroke-linecap="round"
+      />
+      <line
+        x1="293"
+        y1="239"
+        x2="293"
+        y2="266"
+        :stroke="color"
+        stroke-width="10"
+        stroke-linecap="round"
+      />
+      <line
+        x1="319"
+        y1="239"
+        x2="319"
+        y2="266"
+        :stroke="color"
+        stroke-width="10"
+        stroke-linecap="round"
+      />
+
+      <ellipse
+        cx="352"
+        cy="254"
+        rx="14"
+        ry="18"
+        :stroke="color"
+        stroke-width="14"
+        fill="none"
+      />
+      <line
+        x1="352"
+        y1="274"
+        x2="352"
+        y2="309"
+        :stroke="color"
+        stroke-width="14"
+        stroke-linecap="round"
+      />
+
+      <circle cx="180" cy="390" r="45" :stroke="color" stroke-width="16" />
+      <circle cx="410" cy="390" r="45" :stroke="color" stroke-width="16" />
+    </g>
+  </svg>
+</template>

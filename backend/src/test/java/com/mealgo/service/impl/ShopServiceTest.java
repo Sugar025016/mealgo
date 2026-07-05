@@ -35,7 +35,7 @@ public class ShopServiceTest {
     @Test
     void search_ShouldReturnAllShops_WhenKeywordIsBlank() {
 
-        Pageable pageable = PageRequest.of(0, 10);
+        // Pageable pageable = PageRequest.of(0, 10);
 
         Shop shop = new Shop();
         shop.setId(1);

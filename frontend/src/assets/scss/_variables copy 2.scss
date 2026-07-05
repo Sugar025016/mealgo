@@ -1,0 +1,234 @@
+:root {
+  /* =========================
+     Brand 品牌主色
+  ========================= */
+  --mg-primary: #ff5a1f;
+  --mg-primary-hover: #ff6a3d;
+  --mg-primary-active: #e94b12;
+
+  --mg-primary-soft: #fff1e8;
+  --mg-primary-border: #ffc7ad;
+
+  /* =========================
+     Delivery 外送色
+     外送和品牌色接近，但獨立保留
+  ========================= */
+  --mg-delivery: #ff5a1f;
+  --mg-delivery-hover: #ff6a3d;
+  --mg-delivery-active: #e94b12;
+
+  --mg-delivery-soft: #fff1e8;
+  --mg-delivery-border: #ffc7ad;
+
+  /* =========================
+     Pickup 自取色
+  ========================= */
+  --mg-pickup: #22c55e;
+  --mg-pickup-hover: #16a34a;
+  --mg-pickup-active: #15803d;
+
+  --mg-pickup-soft: #dcfce7;
+  --mg-pickup-border: #86efac;
+
+  /* =========================
+     UI 背景與文字
+  ========================= */
+  --mg-bg: #f8fafc;
+  --mg-surface: #ffffff;
+  --mg-surface-soft: #fffaf7;
+
+  --mg-text: #1f2937;
+  --mg-text-muted: #6b7280;
+  --mg-text-light: #9ca3af;
+
+  --mg-border: #e5e7eb;
+  --mg-border-soft: #f1f5f9;
+
+  /* =========================
+     狀態色
+  ========================= */
+  --mg-success: #22c55e;
+  --mg-success-soft: #dcfce7;
+
+  --mg-warning: #f59e0b;
+  --mg-warning-soft: #fef3c7;
+
+  --mg-danger: #ef4444;
+  --mg-danger-soft: #fee2e2;
+
+  --mg-info: #0ea5e9;
+  --mg-info-soft: #e0f2fe;
+
+  /* =========================
+     陰影
+  ========================= */
+  --mg-shadow-sm: 0 2px 8px rgb(0 0 0 / 0.08);
+  --mg-shadow-md: 0 6px 18px rgb(0 0 0 / 0.12);
+  --mg-shadow-lg: 0 12px 32px rgb(0 0 0 / 0.16);
+
+  --mg-primary-shadow-sm: rgba(255, 90, 31, 0.16);
+  --mg-primary-shadow-lg: rgba(255, 90, 31, 0.22);
+
+  --mg-pickup-shadow-sm: rgba(34, 197, 94, 0.16);
+  --mg-pickup-shadow-lg: rgba(34, 197, 94, 0.2);
+
+  /* =========================
+     Layout 尺寸
+  ========================= */
+  --header-height: 72px;
+  --mg-category-size: 140px;
+}
+
+/* =========================
+   Theme Orange 預設橘色
+========================= */
+// .theme-orange {
+//   --btn-bg: #ff5a1f;
+//   --btn-hover: #ff6a3d;
+//   --btn-active: #e94b12;
+//   --btn-text: #ffffff;
+
+//   --btn-soft: #fff1e8;
+//   --btn-soft-hover: #ffe2d3;
+
+//   --btn-shadow-sm: rgba(255, 90, 31, 0.16);
+//   --btn-shadow-lg: rgba(255, 90, 31, 0.22);
+// }
+
+.theme-orange {
+  --btn-bg: #ff6b35;
+  --btn-hover: #f45b24;
+  --btn-active: #dd4b16;
+  --btn-text: #ffffff;
+
+  --btn-soft: #fff1e8;
+  --btn-soft-hover: #ffe2d3;
+
+  --btn-shadow-sm: rgba(255, 90, 31, 0.14);
+  --btn-shadow-lg: rgba(255, 90, 31, 0.18);
+}
+
+/* =========================
+   Theme Delivery 外送
+========================= */
+.theme-delivery {
+  --btn-bg: var(--mg-delivery);
+  --btn-hover: var(--mg-delivery-hover);
+  --btn-active: var(--mg-delivery-active);
+  --btn-text: #ffffff;
+
+  --btn-soft: var(--mg-delivery-soft);
+  --btn-soft-hover: #ffe2d3;
+
+  --btn-shadow-sm: rgba(255, 90, 31, 0.16);
+  --btn-shadow-lg: rgba(255, 90, 31, 0.22);
+}
+
+/* =========================
+   Theme Pickup 自取
+========================= */
+.theme-pickup {
+  --btn-bg: var(--mg-pickup);
+  --btn-hover: var(--mg-pickup-hover);
+  --btn-active: var(--mg-pickup-active);
+  --btn-text: #ffffff;
+
+  --btn-soft: var(--mg-pickup-soft);
+  --btn-soft-hover: #bbf7d0;
+
+  --btn-shadow-sm: rgba(34, 197, 94, 0.16);
+  --btn-shadow-lg: rgba(34, 197, 94, 0.2);
+}
+
+/* =========================
+   Theme Blue 藍色
+========================= */
+.theme-blue {
+  --btn-bg: #2563eb;
+  --btn-hover: #1d4ed8;
+  --btn-active: #1e40af;
+  --btn-text: #ffffff;
+
+  --btn-soft: #dbeafe;
+  --btn-soft-hover: #bfdbfe;
+
+  --btn-shadow-sm: rgba(37, 99, 235, 0.16);
+  --btn-shadow-lg: rgba(37, 99, 235, 0.22);
+}
+
+/* =========================
+   Theme Purple 紫色
+========================= */
+.theme-purple {
+  --btn-bg: #8b5cf6;
+  --btn-hover: #7c3aed;
+  --btn-active: #6d28d9;
+  --btn-text: #ffffff;
+
+  --btn-soft: #ede9fe;
+  --btn-soft-hover: #ddd6fe;
+
+  --btn-shadow-sm: rgba(139, 92, 246, 0.16);
+  --btn-shadow-lg: rgba(139, 92, 246, 0.22);
+}
+
+/* =========================
+   Theme Rose 粉紅
+========================= */
+.theme-rose {
+  --btn-bg: #f43f5e;
+  --btn-hover: #e11d48;
+  --btn-active: #be123c;
+  --btn-text: #ffffff;
+
+  --btn-soft: #ffe4e6;
+  --btn-soft-hover: #fecdd3;
+
+  --btn-shadow-sm: rgba(244, 63, 94, 0.16);
+  --btn-shadow-lg: rgba(244, 63, 94, 0.22);
+}
+
+/* =========================
+   Theme Amber 黃橘
+========================= */
+.theme-amber {
+  --btn-bg: #f59e0b;
+  --btn-hover: #d97706;
+  --btn-active: #b45309;
+  --btn-text: #ffffff;
+
+  --btn-soft: #fef3c7;
+  --btn-soft-hover: #fde68a;
+
+  --btn-shadow-sm: rgba(245, 158, 11, 0.16);
+  --btn-shadow-lg: rgba(245, 158, 11, 0.22);
+}
+
+/* =========================
+   Theme Dark 深色
+========================= */
+.theme-dark {
+  --btn-bg: #1f2937;
+  --btn-hover: #111827;
+  --btn-active: #030712;
+  --btn-text: #ffffff;
+
+  --btn-soft: #f3f4f6;
+  --btn-soft-hover: #e5e7eb;
+
+  --btn-shadow-sm: rgba(31, 41, 55, 0.16);
+  --btn-shadow-lg: rgba(31, 41, 55, 0.22);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 116px;
+    --mg-category-size: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --mg-category-size: 100px;
+  }
+}

@@ -22,7 +22,7 @@ import com.mealgo.dto.response.LoginResponse;
 import com.mealgo.dto.response.UserResponse;
 import com.mealgo.entity.User;
 import com.mealgo.entity.VerificationToken;
-import com.mealgo.enums.VerificationType;
+// import com.mealgo.enums.VerificationType;
 import com.mealgo.exception.BadRequestException;
 import com.mealgo.repository.IUserRepository;
 import com.mealgo.repository.IVerificationTokenRepository;
@@ -209,15 +209,15 @@ class AuthServiceTest {
         return user;
     }
 
-    private VerificationToken createToken(
-            User user,
-            VerificationType type) {
+    // private VerificationToken createToken(
+    // User user,
+    // VerificationType type) {
 
-        VerificationToken token = new VerificationToken();
+    // VerificationToken token = new VerificationToken();
 
-        token.setUser(user);
-        token.setType(type);
+    // token.setUser(user);
+    // token.setType(type);
 
-        return verificationTokenRepository.save(token);
-    }
+    // return verificationTokenRepository.save(token);
+    // }
 }

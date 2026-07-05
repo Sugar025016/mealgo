@@ -1,0 +1,172 @@
+:root {
+  /* =========================
+     Base 背景與文字
+  ========================= */
+  --mg-bg: #f8fafc;
+  --mg-surface: #ffffff;
+  --mg-surface-soft: #fffaf7;
+
+  --mg-text: #1f2937;
+  --mg-text-muted: #6b7280;
+  --mg-text-light: #9ca3af;
+
+  --mg-border: #e5e7eb;
+  --mg-border-soft: #f1f5f9;
+
+  /* =========================
+     Status 狀態色
+  ========================= */
+  --mg-success: #22c55e;
+  --mg-success-soft: #dcfce7;
+
+  --mg-warning: #f59e0b;
+  --mg-warning-soft: #fef3c7;
+
+  --mg-danger: #ef4444;
+  --mg-danger-soft: #fee2e2;
+
+  --mg-info: #0ea5e9;
+  --mg-info-soft: #e0f2fe;
+
+  /* =========================
+     Shadow 陰影
+  ========================= */
+  --mg-shadow-sm: 0 2px 8px rgb(0 0 0 / 0.08);
+  --mg-shadow-md: 0 6px 18px rgb(0 0 0 / 0.12);
+  --mg-shadow-lg: 0 12px 32px rgb(0 0 0 / 0.16);
+
+  /* =========================
+     Layout 尺寸
+  ========================= */
+  --header-height: 72px;
+  --mg-category-size: 140px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 116px;
+    --mg-category-size: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --mg-category-size: 100px;
+  }
+}
+
+/* =========================
+   Theme Orange
+   MealGo 預設主題
+========================= */
+
+.theme-orange {
+  /* 品牌主色 */
+  --mg-primary: #ff5a1f;
+  --mg-primary-hover: #ff6a3d;
+  --mg-primary-active: #e94b12;
+
+  --mg-primary-soft: #fff1e8;
+  --mg-primary-soft-hover: #ffe2d3;
+  --mg-primary-border: #ffc7ad;
+
+  /* 外送 Delivery */
+  --mg-delivery: #ff5a1f;
+  --mg-delivery-hover: #ff6a3d;
+  --mg-delivery-active: #e94b12;
+
+  --mg-delivery-soft: #fff1e8;
+  --mg-delivery-border: #ffc7ad;
+
+  /* 自取 Pickup */
+  --mg-pickup: #22c55e;
+  --mg-pickup-hover: #16a34a;
+  --mg-pickup-active: #15803d;
+
+  --mg-pickup-soft: #dcfce7;
+  --mg-pickup-border: #86efac;
+
+  /* Button */
+  --btn-bg: #ff6b35;
+  --btn-hover: #f45b24;
+  --btn-active: #dd4b16;
+  --btn-text: #ffffff;
+
+  --btn-soft: #fff1e8;
+  --btn-soft-hover: #ffe2d3;
+
+  --btn-shadow-sm: rgba(255, 90, 31, 0.14);
+  --btn-shadow-lg: rgba(255, 90, 31, 0.18);
+
+  /* Hero / Badge */
+  --hero-badge-bg: linear-gradient(135deg, #ff6b35, #ff4f1f);
+  --hero-badge-text: #ffffff;
+
+  /* Link */
+  --mg-link: #ff5a1f;
+  --mg-link-hover: #e94b12;
+}
+
+/* =========================
+   Theme Dark
+   深色主題
+========================= */
+
+.theme-dark {
+  /* 基礎背景 */
+  --mg-bg: #0f172a;
+  --mg-surface: #111827;
+  --mg-surface-soft: #1f2937;
+
+  --mg-text: #f9fafb;
+  --mg-text-muted: #cbd5e1;
+  --mg-text-light: #94a3b8;
+
+  --mg-border: rgba(255, 255, 255, 0.1);
+  --mg-border-soft: rgba(255, 255, 255, 0.06);
+
+  /* 品牌主色 */
+  --mg-primary: #ff6b35;
+  --mg-primary-hover: #ff7a45;
+  --mg-primary-active: #f45b24;
+
+  --mg-primary-soft: rgba(255, 107, 53, 0.12);
+  --mg-primary-soft-hover: rgba(255, 107, 53, 0.18);
+  --mg-primary-border: rgba(255, 107, 53, 0.35);
+
+  /* 外送 Delivery */
+  --mg-delivery: #ff6b35;
+  --mg-delivery-hover: #ff7a45;
+  --mg-delivery-active: #f45b24;
+
+  --mg-delivery-soft: rgba(255, 107, 53, 0.12);
+  --mg-delivery-border: rgba(255, 107, 53, 0.35);
+
+  /* 自取 Pickup */
+  --mg-pickup: #22c55e;
+  --mg-pickup-hover: #16a34a;
+  --mg-pickup-active: #15803d;
+
+  --mg-pickup-soft: rgba(34, 197, 94, 0.14);
+  --mg-pickup-border: rgba(34, 197, 94, 0.35);
+
+  /* Button */
+  --btn-bg: #ff6b35;
+  --btn-hover: #ff7a45;
+  --btn-active: #f45b24;
+  --btn-text: #ffffff;
+
+  --btn-soft: rgba(255, 107, 53, 0.12);
+  --btn-soft-hover: rgba(255, 107, 53, 0.18);
+
+  --btn-shadow-sm: rgba(255, 107, 53, 0.18);
+  --btn-shadow-lg: rgba(255, 107, 53, 0.24);
+
+  /* Hero / Badge */
+  --hero-badge-bg: linear-gradient(135deg, #ff7a45, #ff5a1f);
+  --hero-badge-text: #ffffff;
+
+  /* Link */
+  --mg-link: #ff7a45;
+  --mg-link-hover: #ff9a6b;
+}

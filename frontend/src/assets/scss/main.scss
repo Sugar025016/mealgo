@@ -1,0 +1,12 @@
+
+// @import "variables";
+// @import "bootstrap/scss/bootstrap";
+// @import "layout";
+// @import "components";
+
+//注意順序
+
+@use "bootstrap/scss/bootstrap";
+@use "variables";
+@use "layout";
+@use "components";

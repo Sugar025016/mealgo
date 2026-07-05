@@ -1,0 +1,127 @@
+:root {
+  /* =========================
+     品牌 Brand
+  ========================= */
+  --mg-primary: #ff5f07;
+  --mg-primary-hover: #e65500;
+  --mg-primary-active: #cc4d00;
+
+  --mg-primary-soft: #fff2ea;
+  --mg-primary-border: #ffb380;
+
+  /* =========================
+     自取 Pickup
+  ========================= */
+  --mg-pickup: #22c55e;
+  --mg-pickup-hover: #16a34a;
+  --mg-pickup-active: #15803d;
+
+  --mg-pickup-soft: #dcfce7;
+  --mg-pickup-border: #86efac;
+
+  /* =========================
+     外送 Delivery
+  ========================= */
+
+    --mg-delivery: #ff5a00;
+//   --mg-delivery: #ff5f07;
+  --mg-delivery-hover: #e65500;
+  --mg-delivery-active: #cc4d00;
+
+  --mg-delivery-soft: #fff2ea;
+  --mg-delivery-border: #ffb380;
+
+  --mg-primary: #ff5a1f;
+  --mg-primary-hover: #ff6a3d;
+  --mg-primary-active: #e94b12;
+  --mg-primary-soft: #fff1e8;
+
+
+  /* =========================
+     背景與文字
+  ========================= */
+  --mg-bg: #f8fafc;
+  --mg-surface: #ffffff;
+
+  --mg-text: #1f2937;
+  --mg-text-muted: #6b7280;
+
+  --mg-border: #e5e7eb;
+
+  /* =========================
+     狀態色
+  ========================= */
+  --mg-success: #22c55e;
+  --mg-warning: #f59e0b;
+  --mg-danger: #ef4444;
+  --mg-info: #0ea5e9;
+
+  /* =========================
+     按鈕陰影
+  ========================= */
+  --mg-shadow-sm: 0 2px 8px rgb(0 0 0 / 0.08);
+  --mg-shadow-md: 0 6px 18px rgb(0 0 0 / 0.12);
+  --mg-shadow-lg: 0 12px 32px rgb(0 0 0 / 0.16);
+
+
+
+  --mg-category-size: 140px;
+  --header-height: 72px;
+}
+
+.theme-orange {
+  --btn-bg: #ff7a45;
+  --btn-hover: #ff6b35;
+  --btn-active: #e85d2c;
+  --btn-text: #ffffff;
+
+  --btn-shadow-sm: rgba(249, 115, 22, 0.16);
+  --btn-shadow-lg: rgba(249, 115, 22, 0.2);
+}
+
+.theme-green {
+  --btn-bg: #2bb673;
+  --btn-hover: #24a366;
+  --btn-active: #1f8f59;
+  --btn-text: #ffffff;
+
+  --btn-shadow-sm: rgba(34, 197, 94, 0.16);
+  --btn-shadow-lg: rgba(34, 197, 94, 0.18);
+}
+
+.theme-delivery {
+  --btn-bg: #ff6b35;
+  --btn-hover: #f55a22;
+  --btn-active: #df4a13;
+  --btn-text: #fff;
+  --btn-soft: #fff0e8;
+  --btn-soft-hover: #ffe2d3;
+
+  --btn-shadow-sm: rgba(249, 115, 22, 0.16);
+  --btn-shadow-lg: rgba(249, 115, 22, 0.2);
+}
+
+.theme-pickup {
+  --btn-bg: #22c55e;
+  --btn-hover: #16a34a;
+  --btn-active: #15803d;
+  --btn-text: #fff;
+  --btn-soft: #dcfce7;
+  --btn-soft-hover: #bbf7d0;
+
+  --btn-shadow-sm: rgba(34, 197, 94, 0.16);
+  --btn-shadow-lg: rgba(34, 197, 94, 0.18);
+}
+
+
+@media (max-width: 768px) {
+  :root {
+    --mg-category-size: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --mg-category-size:  100px;
+  }
+}
