@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 
 import HomeView from "@/views/HomeView.vue";
-// import ShopList from "@/pages/ShopList.vue";
+import ShopsView from "@/views/ShopsView.vue";
 // import ShopDetail from "@/pages/ShopDetail.vue";
 // import Cart from "@/pages/Cart.vue";
 // import Checkout from "@/pages/Checkout.vue";
@@ -24,11 +24,11 @@ const router = createRouter({
           name: "home",
           component: HomeView,
         },
-        // {
-        //   path: "shops",
-        //   name: "shops",
-        //   component: ShopList,
-        // },
+        {
+          path: "shops",
+          name: "shops",
+          component: ShopsView,
+        },
         // {
         //   path: "shops/:id",
         //   name: "shop-detail",

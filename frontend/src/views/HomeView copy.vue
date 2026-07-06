@@ -22,7 +22,6 @@ import Dessert from "@/assets/images/category/Dessert.png";
 import Sushi from "@/assets/images/category/Sushi.png";
 import Rice from "@/assets/images/category/Rice.png";
 import Cutlery from "@/assets/images/category/Cutlery2.png";
-import ShopHorizontalList from "@/components/shop/ShopHorizontalList.vue";
 
 const categories = [
   { id: 1, name: "全部", image: Cutlery },
@@ -63,7 +62,24 @@ const categories = [
       />
       <!-- <HorizontalScroll class=" hot-shops-cards"> -->
       <HorizontalScroll :cardWidth="100" :keepCards="1">
-        <ShopHorizontalList />
+        <div class="px-2 px-lg-3 col-9 col-sm-6 col-lg-4 col-xl-3">
+          <ShopCard image="https://picsum.photos/300/200?random=123" />
+        </div>
+        <div class="px-2 px-lg-3 col-9 col-sm-6 col-lg-4 col-xl-3">
+          <ShopCard image="https://picsum.photos/300/200?random=456" />
+        </div>
+        <div class="px-2 px-lg-3 col-9 col-sm-6 col-lg-4 col-xl-3">
+          <ShopCard image="https://picsum.photos/300/200?random=101" />
+        </div>
+        <div class="px-2 px-lg-3 col-9 col-sm-6 col-lg-4 col-xl-3">
+          <ShopCard image="https://picsum.photos/300/200?random=102" />
+        </div>
+        <div class="px-2 px-lg-3 col-9 col-sm-6 col-lg-4 col-xl-3">
+          <ShopCard image="https://picsum.photos/300/200?random=103" />
+        </div>
+        <div class="px-2 px-lg-3 col-9 col-sm-6 col-lg-4 col-xl-3">
+          <ShopCard image="https://picsum.photos/300/200?random=104" />
+        </div>
       </HorizontalScroll>
     </div>
   </main>
@@ -80,17 +96,6 @@ main {
     z-index: 2;
     margin-top: -40px;
     // padding: 0 32px;
-  }
-  .home-hot-shops__shop-card {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    padding: 0 32px;
-  }
-  .shop-scroll-list {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 24px;
   }
 }
 </style>

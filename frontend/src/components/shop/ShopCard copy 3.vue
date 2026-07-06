@@ -86,23 +86,22 @@ defineProps({
   cursor: pointer;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.075);
   transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.11);
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
   }
 }
 
 .shop-card__image {
   position: relative;
-  aspect-ratio: 16 / 9;
   overflow: hidden;
 
   img {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     display: block;
     transition: transform 0.35s ease;
@@ -110,15 +109,15 @@ defineProps({
 }
 
 .shop-card:hover .shop-card__image img {
-  transform: scale(1.04);
+  transform: scale(1.06);
 }
 
 .shop-card__badge {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 12px;
+  left: 12px;
   height: 26px;
-  padding: 0 10px;
+  padding: 0 9px;
   border-radius: 999px;
   background: rgba(255, 90, 0, 0.95);
   color: #fff;
@@ -131,8 +130,8 @@ defineProps({
 
 .shop-card__favorite {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   width: 34px;
   height: 34px;
   border: 0;
@@ -140,9 +139,6 @@ defineProps({
   background: rgba(255, 255, 255, 0.94);
   color: var(--mg-primary);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.14);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
@@ -154,24 +150,24 @@ defineProps({
 }
 
 .shop-card__body {
-  padding: 12px 16px 14px;
+  //   padding: 16px 18px 14px;
+  padding: 12px 16px;
 }
 
 .shop-card__title {
-  margin: 0 0 7px;
+  margin: 0 0 8px;
   color: #222;
-  font-size: 1.08rem;
+  font-size: 1.15rem;
   font-weight: 900;
-  line-height: 1.25;
 }
 
 .shop-card__meta {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 7px;
+  gap: 7px;
+  margin-bottom: 8px;
   color: #666;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
 }
 
 .shop-card__rating {
@@ -179,7 +175,7 @@ defineProps({
   font-weight: 800;
 
   i {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
   }
 }
 
@@ -193,24 +189,37 @@ defineProps({
   white-space: nowrap;
 }
 
+.shop-card__tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.shop-card__tag {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #fff3eb;
+  color: var(--mg-primary);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
 .shop-card__description {
-  margin: 0 0 10px;
   color: #666;
-  font-size: 0.9rem;
-  line-height: 1.35;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  margin: 0 0 14px;
+  margin-bottom: 8px;
 }
 
 .shop-card__footer {
   display: flex;
   justify-content: space-between;
   color: #444;
-  font-size: 0.9rem;
-
-  span {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
+  font-size: 0.92rem;
+//   padding-top: 4px;
+  padding-top: 6px;
 
   i {
     color: var(--mg-primary);

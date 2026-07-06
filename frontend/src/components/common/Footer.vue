@@ -92,7 +92,7 @@ import MgLogo from "@/components/ui/Logo.vue";
   color: #cbd5e1;
 
 
-  margin-top: 56px;
+//   margin-top: 56px;
   padding: 48px 0 22px;
 }
 

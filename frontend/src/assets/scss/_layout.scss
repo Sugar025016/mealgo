@@ -12,11 +12,11 @@ body,
   max-width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
 
 body {
   min-height: 100vh;
+  overflow-x: clip;
 }
 /* 一般內容用 */
 .mg-container {
@@ -26,27 +26,27 @@ body {
 
 /* 滑動區塊用，例如 HorizontalScroll */
 .mg-scroll-container {
-  width: min(90% + 30px, 1280px);
+  width: min(90% + 30px, 1380px);
   margin-inline: auto;
 }
 
 /* 平板 */
-// @media (max-width: 768px) {
-//   .mg-container {
-//     width: min(100% - 52px, 1280px);
-//   }
-//   .mg-scroll-container {
-//     width: min(100% - 32px, 1280px);
-//   }
-// }
+@media (max-width: 768px) {
+  .mg-container {
+    width: min(100% - 52px, 1380px);
+  }
+  .mg-scroll-container {
+    width: min(100% - 32px, 1380px);
+  }
+}
 
-// /* 手機 */
-// @media (max-width: 576px) {
-//   .mg-container {
-//     width: min(90% , 1280px);
-//   }
+/* 手機 */
+@media (max-width: 576px) {
+  .mg-container {
+    width: min(100% - 24px, 1280px);
+  }
 
-//   .mg-scroll-container {
-//     width: 100%;
-//   }
-// }
+  .mg-scroll-container {
+    width: 100%;
+  }
+}

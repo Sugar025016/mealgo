@@ -67,11 +67,7 @@ onBeforeUnmount(() => {
       <i class="bi bi-chevron-left"></i>
     </button>
 
-    <div
-      ref="scrollRef"
-      class="mg-scroll-content"
-      @scroll="updateScrollState"
-    >
+    <div ref="scrollRef" class="mg-scroll-content" @scroll="updateScrollState">
       <slot />
     </div>
 
@@ -91,7 +87,8 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   max-width: 100%;
-  overflow: hidden;
+  overflow: visible;
+  padding: 0 8px;
 }
 
 .mg-scroll-content {
@@ -109,7 +106,7 @@ onBeforeUnmount(() => {
 .mg-scroll-arrow {
   position: absolute;
   top: 50%;
-  z-index: 5;
+  z-index: 10000;
   transform: translateY(-50%);
 
   width: 44px;
@@ -118,6 +115,7 @@ onBeforeUnmount(() => {
   border-radius: 50%;
 
   background: #fff;
+  //   background: red;
   color: #333;
 
   display: inline-flex;
@@ -138,26 +136,29 @@ onBeforeUnmount(() => {
 }
 
 .mg-scroll-arrow.left {
-  left: -12px;
+  left: -16px;
 }
 
 .mg-scroll-arrow.right {
-  right: -12px;
+  right: -16px;
 }
 
 @media (max-width: 768px) {
-//   .mg-scroll-arrow {
-//     width: 32px;
-//     height: 32px;
-//     opacity: 0.65;
-//   }
+  .mg-horizontal-scroll {
+    padding: 0 8px;
+  }
+  //   .mg-scroll-arrow {
+  //     width: 32px;
+  //     height: 32px;
+  //     opacity: 0.65;
+  //   }
 
-//   .mg-scroll-arrow.left {
-//     left: -12px;
-//   }
+  .mg-scroll-arrow.left {
+    left: -10px;
+  }
 
-//   .mg-scroll-arrow.right {
-//     right: -12px;
-//   }
+  .mg-scroll-arrow.right {
+    right: -10px;
+  }
 }
 </style>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 defineProps<{
   title: string;
   icon?: string;
@@ -7,16 +8,17 @@ defineProps<{
 </script>
 
 <template>
+  <!-- <RouterLink to="/" class="mg-section-title"> -->
   <div class="mg-section-title">
     <div class="mg-section-title__left">
       <i v-if="icon" :class="['bi', icon]"></i>
       <h2>{{ title }}</h2>
     </div>
 
-    <button v-if="more" class="mg-section-title__more">
+    <RouterLink v-if="more" to="/shops" class="mg-section-title__more">
       查看全部
       <i class="bi bi-chevron-right"></i>
-    </button>
+    </RouterLink>
   </div>
 </template>
 <style scoped lang="scss">
@@ -26,6 +28,11 @@ defineProps<{
   align-items: center;
   //   margin-bottom: 20px;
 }
+
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 8px;
+//   text-decoration: non
 
 .mg-section-title__left {
   display: flex;
@@ -46,18 +53,15 @@ defineProps<{
 }
 
 .mg-section-title__more {
-  border: 0;
-  background: transparent;
-  color: var(--mg-primary);
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 0.95rem;
-
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
-  //   .button{
-  padding: 0;
-  //   }
+
+  border: 0;
+  background: transparent;
+  color: var(--mg-primary, #ff5a1f);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import MgLogoIcon from "@/components/icons/LogoIcon.vue";
 
 defineProps({
@@ -18,7 +19,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="mealgo-logo">
+  <RouterLink to="/" class="mealgo-logo">
     <MgLogoIcon :size="size" :color="color" />
 
     <span
@@ -30,7 +31,7 @@ defineProps({
     >
       MealGo
     </span>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped lang="scss">
@@ -38,6 +39,8 @@ defineProps({
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .brand-text {
