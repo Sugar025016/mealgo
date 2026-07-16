@@ -7,7 +7,12 @@ import MgLogo from "@/components/ui/Logo.vue";
     <div class="mg-container">
       <div class="mg-footer__top">
         <div class="mg-footer__brand">
-          <MgLogo :size="56" :text-size="42" color="var(--mg-primary)" />
+          <MgLogo
+            :size="56"
+            :text-size="42"
+            color="var(--mg-primary)"
+            meal-color="#ffffff"
+          />
 
           <p class="mg-footer__description">
             MealGo 致力於打造快速、方便的線上點餐體驗。<br />
@@ -80,8 +85,8 @@ import MgLogo from "@/components/ui/Logo.vue";
 
 <style scoped lang="scss">
 .mg-footer {
-//   margin-top: 64px;
-//   padding: 56px 0 24px;
+  //   margin-top: 64px;
+  //   padding: 56px 0 24px;
   background:
     radial-gradient(
       circle at 15% 20%,
@@ -91,8 +96,7 @@ import MgLogo from "@/components/ui/Logo.vue";
     linear-gradient(135deg, #111827 0%, #1f2937 100%);
   color: #cbd5e1;
 
-
-//   margin-top: 56px;
+  //   margin-top: 56px;
   padding: 48px 0 22px;
 }
 
@@ -197,7 +201,6 @@ import MgLogo from "@/components/ui/Logo.vue";
     transform: translateY(-2px) !important;
     box-shadow: 0 10px 22px rgba(255, 90, 31, 0.28);
   }
-
 
   height: 34px;
   padding: 0 14px;

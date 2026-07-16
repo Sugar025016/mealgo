@@ -96,7 +96,7 @@ onBeforeUnmount(() => {
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
-  padding: 8px 0;
+  padding: 8px 8px;
 
   &::-webkit-scrollbar {
     display: none;

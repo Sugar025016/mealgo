@@ -89,6 +89,7 @@ defineProps({
     transform 0.22s ease,
     box-shadow 0.22s ease;
 
+  margin-top: 4px;
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.11);
@@ -154,11 +155,11 @@ defineProps({
 }
 
 .shop-card__body {
-  padding: 12px 16px 14px;
+  padding: 8px 16px 12px;
 }
 
 .shop-card__title {
-  margin: 0 0 7px;
+  margin: 0 0 4px;
   color: #222;
   font-size: 1.08rem;
   font-weight: 900;
@@ -169,7 +170,7 @@ defineProps({
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 7px;
+  margin-bottom: 4px;
   color: #666;
   font-size: 0.88rem;
 }
@@ -194,7 +195,7 @@ defineProps({
 }
 
 .shop-card__description {
-  margin: 0 0 10px;
+  margin: 0 0 7px;
   color: #666;
   font-size: 0.9rem;
   line-height: 1.35;

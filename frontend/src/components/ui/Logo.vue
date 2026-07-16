@@ -2,34 +2,47 @@
 import { RouterLink } from "vue-router";
 import MgLogoIcon from "@/components/icons/LogoIcon.vue";
 
-defineProps({
-  size: {
-    type: Number,
-    default: 32,
+withDefaults(
+  defineProps<{
+    size?: number;
+    textSize?: number;
+    iconColor?: string;
+    mealColor?: string;
+    goColor?: string;
+  }>(),
+  {
+    size: 32,
+    textSize: 28,
+    iconColor: "#ff5a1f",
+    mealColor: "#252525",
+    goColor: "#ff5a1f",
   },
-  textSize: {
-    type: Number,
-    default: 28,
-  },
-  color: {
-    type: String,
-    default: "#ff5a1f",
-  },
-});
+);
 </script>
 
 <template>
-  <RouterLink to="/" class="mealgo-logo">
-    <MgLogoIcon :size="size" :color="color" />
+  <RouterLink
+    to="/"
+    class="mealgo-logo"
+  >
+    <MgLogoIcon
+      :size="size"
+      :color="iconColor"
+    />
 
     <span
       class="brand-text"
       :style="{
-        color,
         fontSize: `${textSize}px`,
       }"
     >
-      MealGo
+      <span :style="{ color: mealColor }">
+        Meal
+      </span>
+
+      <span :style="{ color: goColor }">
+        Go
+      </span>
     </span>
   </RouterLink>
 </template>
@@ -44,6 +57,8 @@ defineProps({
 }
 
 .brand-text {
+  display: inline-flex;
+  align-items: center;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.5px;

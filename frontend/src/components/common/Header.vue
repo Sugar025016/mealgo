@@ -3,6 +3,13 @@ import MgSwitche from "@/components/ui/Switche.vue";
 import MgLogo from "@/components/ui/Logo.vue";
 import { useBreakpoints } from "@vueuse/core";
 import MgButton from "@/components/ui/Button.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+function goToLogin() {
+  router.push("/login");
+}
 
 const breakpoints = useBreakpoints({
   md: 768,
@@ -24,7 +31,8 @@ const isLogin = false; // 之後改 Pinia：authStore.isLogin
       <MgLogo
         :size="50"
         :text-size="23"
-        color="var(--mg-primary)"
+        meal-color="var(--mg-primary)"
+        go-color="var(--mg-primary)"
         class="app-header__logo"
       />
 
@@ -45,9 +53,13 @@ const isLogin = false; // 之後改 Pinia：authStore.isLogin
       </div>
 
       <!-- 未登入 -->
-      <button v-if="!isLogin" class="app-header__nav-btn">
+      <button
+        v-if="!isLogin"
+        type="button"
+        class="app-header__nav-btn"
+        @click="goToLogin"
+      >
         <i class="bi bi-person"></i>
-
         <span>登入</span>
       </button>
 
