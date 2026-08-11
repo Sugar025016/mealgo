@@ -70,10 +70,10 @@ const isLogin = false; // 之後改 Pinia：authStore.isLogin
           <i class="bi bi-person"></i>
           <span>會員中心</span>
         </button>
-        <button class="app-header__nav-btn">
+        <!-- <button class="app-header__nav-btn">
           <i class="bi bi-clock-history"></i>
           <span>歷史訂單</span>
-        </button>
+        </button> -->
       </template>
 
       <button class="app-header__nav-btn">

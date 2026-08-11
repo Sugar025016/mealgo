@@ -102,9 +102,7 @@ function validateForm() {
 
   const name = form.name.trim();
   const email = form.email.trim();
-  const phone = form.phone
-    .trim()
-    .replace(/[-\s]/g, "");
+  const phone = form.phone.trim().replace(/[-\s]/g, "");
 
   if (!name) {
     errors.name = "請輸入姓名";
@@ -114,9 +112,7 @@ function validateForm() {
 
   if (!email) {
     errors.email = "請輸入電子郵件";
-  } else if (
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  ) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.email = "電子郵件格式不正確";
   }
 
@@ -134,9 +130,7 @@ function validateForm() {
 
   if (!form.confirmPassword) {
     errors.confirmPassword = "請再次輸入密碼";
-  } else if (
-    form.confirmPassword !== form.password
-  ) {
+  } else if (form.confirmPassword !== form.password) {
     errors.confirmPassword = "兩次輸入的密碼不一致";
   }
 
@@ -156,9 +150,7 @@ async function handleSubmit() {
     emit("submit", {
       name: form.name.trim(),
       email: form.email.trim(),
-      phone: form.phone
-        .trim()
-        .replace(/[-\s]/g, ""),
+      phone: form.phone.trim().replace(/[-\s]/g, ""),
       password: form.password,
       confirmPassword: form.confirmPassword,
       agreed: form.agreed,
@@ -182,22 +174,15 @@ async function handleSubmit() {
       </div>
     </header>
 
-    <form
-      class="register-form__body"
-      novalidate
-      @submit.prevent="handleSubmit"
-    >
+    <form class="register-form__body" novalidate @submit.prevent="handleSubmit">
       <!-- 姓名 -->
       <div class="register-form__field">
-        <label for="register-name">
-          姓名
-        </label>
+        <label for="register-name"> 姓名 </label>
 
         <div
           class="register-form__input"
           :class="{
-            'register-form__input--error':
-              errors.name,
+            'register-form__input--error': errors.name,
           }"
         >
           <i class="bi bi-person"></i>
@@ -212,25 +197,19 @@ async function handleSubmit() {
           />
         </div>
 
-        <p
-          v-if="errors.name"
-          class="register-form__error"
-        >
+        <p v-if="errors.name" class="register-form__error">
           {{ errors.name }}
         </p>
       </div>
 
       <!-- 電子郵件 -->
       <div class="register-form__field">
-        <label for="register-email">
-          電子郵件
-        </label>
+        <label for="register-email"> 電子郵件 </label>
 
         <div
           class="register-form__input"
           :class="{
-            'register-form__input--error':
-              errors.email,
+            'register-form__input--error': errors.email,
           }"
         >
           <i class="bi bi-envelope"></i>
@@ -245,10 +224,7 @@ async function handleSubmit() {
           />
         </div>
 
-        <p
-          v-if="errors.email"
-          class="register-form__error"
-        >
+        <p v-if="errors.email" class="register-form__error">
           {{ errors.email }}
         </p>
       </div>
@@ -257,16 +233,13 @@ async function handleSubmit() {
       <div class="register-form__field">
         <label for="register-phone">
           手機號碼
-          <span class="register-form__optional">
-            （選填）
-          </span>
+          <span class="register-form__optional"> （選填） </span>
         </label>
 
         <div
           class="register-form__input"
           :class="{
-            'register-form__input--error':
-              errors.phone,
+            'register-form__input--error': errors.phone,
           }"
         >
           <i class="bi bi-telephone"></i>
@@ -283,25 +256,19 @@ async function handleSubmit() {
           />
         </div>
 
-        <p
-          v-if="errors.phone"
-          class="register-form__error"
-        >
+        <p v-if="errors.phone" class="register-form__error">
           {{ errors.phone }}
         </p>
       </div>
 
       <!-- 密碼 -->
       <div class="register-form__field">
-        <label for="register-password">
-          密碼
-        </label>
+        <label for="register-password"> 密碼 </label>
 
         <div
           class="register-form__input"
           :class="{
-            'register-form__input--error':
-              errors.password,
+            'register-form__input--error': errors.password,
           }"
         >
           <i class="bi bi-lock"></i>
@@ -309,9 +276,7 @@ async function handleSubmit() {
           <input
             id="register-password"
             v-model="form.password"
-            :type="
-              showPassword ? 'text' : 'password'
-            "
+            :type="showPassword ? 'text' : 'password'"
             autocomplete="new-password"
             maxlength="16"
             placeholder="請輸入 8–16 位元的密碼"
@@ -321,27 +286,14 @@ async function handleSubmit() {
           <button
             type="button"
             class="register-form__input-action"
-            :aria-label="
-              showPassword
-                ? '隱藏密碼'
-                : '顯示密碼'
-            "
+            :aria-label="showPassword ? '隱藏密碼' : '顯示密碼'"
             @click="showPassword = !showPassword"
           >
-            <i
-              :class="
-                showPassword
-                  ? 'bi bi-eye-slash'
-                  : 'bi bi-eye'
-              "
-            ></i>
+            <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
           </button>
         </div>
 
-        <p
-          v-if="errors.password"
-          class="register-form__error"
-        >
+        <p v-if="errors.password" class="register-form__error">
           {{ errors.password }}
         </p>
 
@@ -371,15 +323,12 @@ async function handleSubmit() {
 
       <!-- 確認密碼 -->
       <div class="register-form__field">
-        <label for="register-confirm-password">
-          確認密碼
-        </label>
+        <label for="register-confirm-password"> 確認密碼 </label>
 
         <div
           class="register-form__input"
           :class="{
-            'register-form__input--error':
-              errors.confirmPassword,
+            'register-form__input--error': errors.confirmPassword,
           }"
         >
           <i class="bi bi-lock"></i>
@@ -387,46 +336,26 @@ async function handleSubmit() {
           <input
             id="register-confirm-password"
             v-model="form.confirmPassword"
-            :type="
-              showConfirmPassword
-                ? 'text'
-                : 'password'
-            "
+            :type="showConfirmPassword ? 'text' : 'password'"
             autocomplete="new-password"
             maxlength="16"
             placeholder="請再次輸入密碼"
-            @input="
-              clearError('confirmPassword')
-            "
+            @input="clearError('confirmPassword')"
           />
 
           <button
             type="button"
             class="register-form__input-action"
-            :aria-label="
-              showConfirmPassword
-                ? '隱藏密碼'
-                : '顯示密碼'
-            "
-            @click="
-              showConfirmPassword =
-                !showConfirmPassword
-            "
+            :aria-label="showConfirmPassword ? '隱藏密碼' : '顯示密碼'"
+            @click="showConfirmPassword = !showConfirmPassword"
           >
             <i
-              :class="
-                showConfirmPassword
-                  ? 'bi bi-eye-slash'
-                  : 'bi bi-eye'
-              "
+              :class="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"
             ></i>
           </button>
         </div>
 
-        <p
-          v-if="errors.confirmPassword"
-          class="register-form__error"
-        >
+        <p v-if="errors.confirmPassword" class="register-form__error">
           {{ errors.confirmPassword }}
         </p>
       </div>
@@ -447,22 +376,15 @@ async function handleSubmit() {
           <span>
             我已閱讀並同意 MealGo 的
 
-            <RouterLink to="/terms">
-              服務條款
-            </RouterLink>
+            <RouterLink to="/terms"> 服務條款 </RouterLink>
 
             與
 
-            <RouterLink to="/privacy">
-              隱私政策
-            </RouterLink>
+            <RouterLink to="/privacy"> 隱私政策 </RouterLink>
           </span>
         </label>
 
-        <p
-          v-if="errors.agreed"
-          class="register-form__error"
-        >
+        <p v-if="errors.agreed" class="register-form__error">
           {{ errors.agreed }}
         </p>
       </div>
@@ -473,16 +395,9 @@ async function handleSubmit() {
         class="register-form__submit"
         :disabled="!canSubmit"
       >
-        <span
-          v-if="isSubmitting"
-          class="register-form__spinner"
-        ></span>
+        <span v-if="isSubmitting" class="register-form__spinner"></span>
 
-        {{
-          isSubmitting
-            ? "註冊中..."
-            : "註冊會員"
-        }}
+        {{ isSubmitting ? "註冊中..." : "註冊會員" }}
       </button>
 
       <!-- 分隔線 -->
@@ -497,9 +412,7 @@ async function handleSubmit() {
           class="register-form__social"
           @click="emit('googleRegister')"
         >
-          <span class="register-form__google">
-            G
-          </span>
+          <span class="register-form__google"> G </span>
 
           <span>使用 Google 註冊</span>
         </button>
@@ -519,25 +432,32 @@ async function handleSubmit() {
       <p class="register-form__login">
         已經有帳號了？
 
-        <RouterLink to="/login">
-          立即登入
-        </RouterLink>
+        <RouterLink to="/login"> 立即登入 </RouterLink>
       </p>
     </form>
   </section>
 </template>
 
 <style scoped lang="scss">
+// .register-form {
+//   width: 100%;
+//   max-width: 540px;
+//   padding: 20px 34px 18px;
+//   border: 1px solid #e3e7ec;
+//   border-radius: 24px;
+//   background: rgb(255 255 255 / 97%);
+//   box-shadow:
+//     0 20px 48px rgb(45 34 25 / 9%),
+//     inset 0 1px 0 rgb(255 255 255 / 88%);
+// }
 .register-form {
   width: 100%;
-  max-width: 540px;
-  padding: 20px 34px 18px;
-  border: 1px solid #e3e7ec;
-  border-radius: 24px;
-  background: rgb(255 255 255 / 97%);
-  box-shadow:
-    0 20px 48px rgb(45 34 25 / 9%),
-    inset 0 1px 0 rgb(255 255 255 / 88%);
+  max-width: none;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 /* 標題 */
@@ -563,7 +483,6 @@ async function handleSubmit() {
 
 .register-form__header-content {
   min-width: 0;
-
 }
 
 .register-form__header h1 {
@@ -705,8 +624,7 @@ async function handleSubmit() {
   color: #dc3545;
 }
 
-.register-form__strength--weak
-  .register-form__strength-bar--active {
+.register-form__strength--weak .register-form__strength-bar--active {
   background: #dc3545;
 }
 
@@ -714,8 +632,7 @@ async function handleSubmit() {
   color: #f59e0b;
 }
 
-.register-form__strength--medium
-  .register-form__strength-bar--active {
+.register-form__strength--medium .register-form__strength-bar--active {
   background: #f59e0b;
 }
 
@@ -723,8 +640,7 @@ async function handleSubmit() {
   color: #22a06b;
 }
 
-.register-form__strength--strong
-  .register-form__strength-bar--active {
+.register-form__strength--strong .register-form__strength-bar--active {
   background: #22a06b;
 }
 
@@ -765,8 +681,7 @@ async function handleSubmit() {
   font-size: 13px;
 }
 
-.register-form__agreement-label input:checked +
-.register-form__checkbox {
+.register-form__agreement-label input:checked + .register-form__checkbox {
   border-color: #ff5a00;
   color: #ffffff;
   background: #ff5a00;
@@ -794,11 +709,7 @@ async function handleSubmit() {
   border: 0;
   border-radius: 9px;
   color: #ffffff;
-  background: linear-gradient(
-    90deg,
-    #ff5a00,
-    #ff6a19
-  );
+  background: linear-gradient(90deg, #ff5a00, #ff6a19);
   font-size: 14px;
   font-weight: 700;
   box-shadow: 0 7px 16px rgb(255 90 0 / 20%);
@@ -810,11 +721,7 @@ async function handleSubmit() {
 }
 
 .register-form__submit:hover:not(:disabled) {
-  background: linear-gradient(
-    90deg,
-    #ed5400,
-    #f75d0a
-  );
+  background: linear-gradient(90deg, #ed5400, #f75d0a);
   box-shadow: 0 9px 20px rgb(255 90 0 / 26%);
 }
 
@@ -925,53 +832,58 @@ async function handleSubmit() {
 
 /* 更矮桌面 */
 
-@media (max-height: 760px) and (min-width: 821px) {
-  .register-form {
-    max-width: 520px;
-    padding: 16px 28px 14px;
+@media (max-width: 821px) {
+//   .register-form {
+//     max-width: 520px;
+//     padding: 16px 28px 14px;
+//   }
+
+//   .register-form__header {
+//     margin-bottom: 11px;
+//   }
+
+//   .register-form__header-icon {
+//     width: 42px;
+//     height: 42px;
+//     font-size: 18px;
+//   }
+
+//   .register-form__header h1 {
+//     font-size: 20px;
+//   }
+
+//   .register-form__field {
+//     margin-bottom: 7px;
+//   }
+
+//   .register-form__input {
+//     height: 38px;
+//   }
+
+//   .register-form__agreement {
+//     margin-bottom: 8px;
+//   }
+
+//   .register-form__submit {
+//     height: 40px;
+//   }
+
+//   .register-form__divider {
+//     margin: 8px 0 6px;
+//   }
+
+//   .register-form__social {
+//     height: 36px;
+//   }
+
+//   .register-form__login {
+//     margin-top: 7px;
+//   }
+
+  .register-form__socials {
+    grid-template-columns: 1fr;
   }
 
-  .register-form__header {
-    margin-bottom: 11px;
-  }
-
-  .register-form__header-icon {
-    width: 42px;
-    height: 42px;
-    font-size: 18px;
-  }
-
-  .register-form__header h1 {
-    font-size: 20px;
-  }
-
-  .register-form__field {
-    margin-bottom: 7px;
-  }
-
-  .register-form__input {
-    height: 38px;
-  }
-
-  .register-form__agreement {
-    margin-bottom: 8px;
-  }
-
-  .register-form__submit {
-    height: 40px;
-  }
-
-  .register-form__divider {
-    margin: 8px 0 6px;
-  }
-
-  .register-form__social {
-    height: 36px;
-  }
-
-  .register-form__login {
-    margin-top: 7px;
-  }
 }
 
 /* 手機 */
@@ -1002,12 +914,11 @@ async function handleSubmit() {
     height: 47px;
   }
 
-  .register-form__socials {
-    grid-template-columns: 1fr;
-  }
-
   .register-form__social {
     height: 44px;
+  }
+  .register-form__socials {
+    grid-template-columns: 1fr;
   }
 }
 </style>

@@ -73,6 +73,7 @@ const categories = [
 main {
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
   //   gap: 56px;
 
   .category-scroll {

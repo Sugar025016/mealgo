@@ -32,17 +32,19 @@ import MgLogo from "@/components/ui/Logo.vue";
         <div class="mg-footer__links">
           <div class="mg-footer__column">
             <h5>關於 MealGo</h5>
-            <a href="#">關於我們</a>
+            <RouterLink to="/about">關於我們</RouterLink>
             <a href="#">最新消息</a>
-            <a href="#">使用條款</a>
-            <a href="#">隱私權政策</a>
+            <RouterLink to="/terms">使用條款</RouterLink>
+            <RouterLink to="/privacy">隱私權政策</RouterLink>
+            <!-- <a href="#">隱私權政策</a> -->
           </div>
 
           <div class="mg-footer__column">
             <h5>商家專區</h5>
-            <a href="#">商家登入</a>
-            <a href="#">成為合作商家</a>
-            <a href="#">商家後台</a>
+            <RouterLink to="/merchant-login">商家登入</RouterLink>
+            <RouterLink to="/merchant-register">成為合作商家</RouterLink>
+            <RouterLink to="/merchant-login">商家後台</RouterLink>
+            
           </div>
 
           <div class="mg-footer__column">

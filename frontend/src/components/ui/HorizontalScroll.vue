@@ -89,6 +89,7 @@ onBeforeUnmount(() => {
   max-width: 100%;
   overflow: visible;
   padding: 0 8px;
+//   margin-bottom:30px ;
 }
 
 .mg-scroll-content {

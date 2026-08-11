@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import authHeroImage from "@/assets/images/auth/shop-login.png";
+// import authHeroImage from "@/assets/images/auth/auth-login1.png";
 import MgLogo from "@/components/ui/Logo.vue";
 
 type AuthMode = "login" | "register";
+type AuthVisual = "delivery" | "shop";
 
 withDefaults(
   defineProps<{
     mode?: AuthMode;
     image?: string;
+    visual?: AuthVisual;
   }>(),
   {
     mode: "login",
     image: authHeroImage,
+    visual: "delivery",
   },
 );
 </script>
@@ -19,14 +23,22 @@ withDefaults(
 <template>
   <main class="auth-layout" :class="`auth-layout--${mode}`">
     <div class="auth-layout__container">
-      <!-- 左側品牌區 -->
+      <!-- 左側品牌與主視覺 -->
       <section class="auth-layout__brand">
+        <!-- Logo 與文案 -->
         <div class="auth-layout__brand-top">
-          <RouterLink to="/" class="auth-layout__logo" aria-label="返回首頁">
-            <MgLogo />
-          </RouterLink>
+          <div class="auth-layout__logo">
+            <MgLogo
+              :size="40"
+              :text-size="30"
+              icon-color="#ff5a1f"
+              meal-color="#202938"
+              go-color="#ff5a1f"
+            />
+          </div>
 
           <div class="auth-layout__intro">
+            <!-- 登入文案 -->
             <template v-if="mode === 'login'">
               <h1>歡迎回來</h1>
 
@@ -37,6 +49,7 @@ withDefaults(
               </p>
             </template>
 
+            <!-- 註冊文案 -->
             <template v-else>
               <h1>
                 註冊 <span>MealGo</span>
@@ -55,12 +68,19 @@ withDefaults(
           </div>
         </div>
 
-        <!-- 左側圖片 -->
+        <!-- 主視覺圖片 -->
         <div class="auth-layout__visual">
-          <img :src="image" alt="MealGo 美食外送" />
+          <img
+            :src="image"
+            :class="[
+              'auth-layout__visual-image',
+              `auth-layout__visual-image--${visual}`,
+            ]"
+            alt="MealGo 美食外送"
+          />
         </div>
 
-        <!-- 左側特色 -->
+        <!-- 特色資訊 -->
         <div class="auth-layout__features">
           <article class="auth-feature">
             <span class="auth-feature__icon">
@@ -100,7 +120,7 @@ withDefaults(
         </div>
       </section>
 
-      <!-- 右側表單 -->
+      <!-- 右側登入或註冊表單 -->
       <section class="auth-layout__form-area">
         <slot />
       </section>
@@ -116,96 +136,89 @@ withDefaults(
   --auth-muted: #7c8491;
 
   width: 100%;
-  height: 100dvh;
   min-height: 100dvh;
   overflow-x: hidden;
-  overflow-y: auto;
-
   color: var(--auth-text);
+
   background:
-    radial-gradient(circle at 10% 10%, rgb(255 255 255 / 92%), transparent 32%),
+    radial-gradient(circle at 10% 10%, rgb(255 255 255 / 94%), transparent 32%),
     radial-gradient(circle at 92% 16%, rgb(255 225 207 / 42%), transparent 30%),
     linear-gradient(135deg, #f7f4f0, #fffaf6);
 }
 
+/* =========================================
+   主要左右欄
+========================================= */
+
 .auth-layout__container {
   display: grid;
   grid-template-columns:
-    minmax(0, 1.12fr)
-    minmax(400px, 0.88fr);
-  align-items: stretch;
-  gap: clamp(30px, 5vw, 76px);
-  width: min(1380px, 100%);
-  height: 100%;
-  margin: auto 0;
-  padding: clamp(24px, 3.5vh, 52px) clamp(28px, 4vw, 64px);
-  //   padding: auto ;
+    minmax(0, 1.08fr)
+    minmax(500px, 0.92fr);
+  align-items: center;
+  gap: clamp(32px, 4vw, 64px);
+
+  width: min(1480px, 100%);
+  min-height: 100dvh;
+  margin: 0 auto;
+
+  padding: clamp(36px, 2.8vh, 52px) clamp(88px, 4vw, 164px);
+
+  box-sizing: border-box;
 }
-// .auth-layout__container {
-//   display: grid;
-//   grid-template-columns:
-//     minmax(0, 1.06fr)
-//     minmax(500px, 0.94fr);
-//   align-items: center;
-//   gap: clamp(30px, 4vw, 60px);
 
-//   width: min(1480px, 100%);
-//   height: 100%;
-//   min-height: 0;
-//   margin: 0 auto;
-//   padding:
-//     clamp(16px, 2.4vh, 28px)
-//     clamp(28px, 4vw, 64px);
-// }
-
-/* 左側 */
+/* =========================================
+   左側區域
+========================================= */
 
 .auth-layout__brand {
-  position: relative;
-  display: flex;
+  display: grid;
   min-width: 0;
   min-height: 0;
-  flex-direction: column;
+  align-self: stretch;
+
+  /*
+   * 固定為三個區域：
+   * 1. Logo 與標題
+   * 2. 主視覺圖片
+   * 3. 特色資訊
+   *
+   * 因此註冊標題多一行時，
+   * 不會改變圖片與特色的位置。
+   */
+  grid-template-rows:
+    245px
+    minmax(360px, 1fr)
+    64px;
 }
+
+/* =========================================
+   Logo 與標題
+========================================= */
 
 .auth-layout__brand-top {
   position: relative;
   z-index: 3;
-  flex: 0 0 auto;
+  min-width: 0;
+  min-height: 0;
 }
 
 .auth-layout__logo {
   display: inline-flex;
   width: fit-content;
   align-items: center;
-  color: inherit;
-  text-decoration: none;
 }
-
-.auth-layout__logo :deep(svg),
-.auth-layout__logo :deep(img) {
-  display: block;
-  width: auto;
-  height: clamp(48px, 4vh, 58px);
-}
-
-/* 標題 */
 
 .auth-layout__intro {
-  margin-top: clamp(16px, 2.6vh, 28px);
-  text-shadow:
-    -2px -2px 0 #fff,
-    2px -2px 0 #fff,
-    -2px 2px 0 #fff,
-    2px 2px 0 #fff;
+  margin-top: 18px;
 }
 
 .auth-layout__intro h1 {
   margin: 0;
   color: #222222;
-  font-size: clamp(38px, 4vw, 58px);
+  font-size: clamp(38px, 3.6vw, 54px);
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: -0.05em;
 }
 
@@ -216,7 +229,7 @@ withDefaults(
 .auth-layout__intro p {
   margin: 14px 0 0;
   color: #687180;
-  font-size: clamp(14px, 1.2vw, 17px);
+  font-size: clamp(14px, 1.1vw, 16px);
   line-height: 1.65;
 }
 
@@ -229,7 +242,9 @@ withDefaults(
   background: var(--auth-primary);
 }
 
-/* 圖片 */
+/* =========================================
+   主視覺圖片
+========================================= */
 
 .auth-layout__visual {
   position: relative;
@@ -251,44 +266,46 @@ withDefaults(
   filter: blur(14px);
 }
 
-// .auth-layout__visual img {
-//   position: absolute;
-//   z-index: 1;
-//   right: 0;
-//   bottom: 0;
-//   display: block;
-//   width: min(920px, 108%);
-//   height: 100%;
-//   max-height: 800px;
-//   object-fit: contain;
-//   object-position: center bottom;
-// }
-.auth-layout__visual img {
+.auth-layout__visual-image {
   position: absolute;
-  z-index: 0;
-  left: 50.2%;
-
-  bottom: -20%;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
   display: block;
-
-  width: 180%;
-  max-width: 1320px;
   height: auto;
-
   object-fit: contain;
   transform: translateX(-50%);
 }
 
-/* 特色 */
+/* 外送機車圖：原圖較寬 */
+.auth-layout__visual-image--delivery {
+  bottom: 5%;
+  width: 118%;
+  max-width: 920px;
+}
+
+/* 商店圖：原圖主體較高、透明留白較多 */
+.auth-layout__visual-image--shop {
+  bottom: -14%;
+  width: 150%;
+  max-width: 1320px;
+}
+
+/* =========================================
+   特色區
+========================================= */
 
 .auth-layout__features {
   position: relative;
   z-index: 3;
+
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  flex: 0 0 auto;
+  align-items: center;
   gap: 16px;
-  margin-top: 8px;
+
+  min-width: 0;
+  min-height: 64px;
 }
 
 .auth-feature {
@@ -306,12 +323,15 @@ withDefaults(
 .auth-feature__icon {
   display: grid;
   flex: 0 0 auto;
+
   width: 42px;
   height: 42px;
   place-items: center;
+
   border-radius: 50%;
   color: var(--auth-primary);
   background: #fff1e8;
+
   font-size: 18px;
   box-shadow: 0 6px 16px rgb(255 90 0 / 8%);
 }
@@ -338,7 +358,9 @@ withDefaults(
   white-space: nowrap;
 }
 
-/* 右側 */
+/* =========================================
+   右側表單區
+========================================= */
 
 .auth-layout__form-area {
   display: flex;
@@ -346,34 +368,64 @@ withDefaults(
   min-height: 0;
   align-items: center;
   justify-content: center;
-  padding: 13px 0;
   z-index: 1;
 }
 
 .auth-layout__form-area :deep(> *) {
   width: 100%;
   max-width: 560px;
+  margin: 0;
 }
 
-.auth-layout--register .auth-layout__form-area {
-  align-items: center;
-}
+/* =========================================
+   中型桌面
+========================================= */
 
-/* 較矮的桌面螢幕 */
-
-@media (min-width: 821px) {
+@media (max-width: 1280px) {
   .auth-layout__container {
-    padding-top: 10px;
-    padding-bottom: 20px;
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(480px, 0.95fr);
+
+    gap: 30px;
+    padding-right: 32px;
+    padding-left: 32px;
   }
 
-  .auth-layout__logo :deep(svg),
-  .auth-layout__logo :deep(img) {
-    height: 34px;
+  .auth-layout__intro h1 {
+    font-size: 46px;
+  }
+
+  .auth-layout__visual {
+    min-height: 330px;
+  }
+
+}
+
+/* =========================================
+   較窄桌面與平板橫向
+========================================= */
+
+@media (max-width: 1100px) {
+  .auth-layout__container {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(430px, 490px);
+
+    gap: 24px;
+    padding-right: 26px;
+    padding-left: 26px;
+  }
+
+  .auth-layout__brand {
+    grid-template-rows:
+      215px
+      minmax(300px, 1fr)
+      auto;
   }
 
   .auth-layout__intro {
-    margin-top: 16px;
+    margin-top: 14px;
   }
 
   .auth-layout__intro h1 {
@@ -382,41 +434,29 @@ withDefaults(
 
   .auth-layout__intro p {
     margin-top: 10px;
-    font-size: 14px;
+    font-size: 13px;
   }
 
-  .auth-layout__accent {
-    margin-top: 10px;
+  .auth-layout__visual {
+    min-height: 300px;
   }
 
-  //   .auth-layout__visual img {
-  //     max-height: 320px;
-  //   }
-
-  .auth-layout__features {
-    margin-top: 4px;
-  }
-}
-
-/* 平板 */
-
-@media (max-width: 1100px) {
-  .auth-layout__container {
-    grid-template-columns:
-      minmax(0, 1fr)
-      minmax(390px, 460px);
-    gap: 34px;
-    padding-right: 32px;
-    padding-left: 32px;
+  .auth-layout__visual-image--delivery {
+    bottom: 4%;
+    width: 125%;
+    max-width: 720px;
   }
 
-  .auth-layout__intro h1 {
-    font-size: 44px;
+  .auth-layout__visual-image--shop {
+    bottom: -8%;
+    width: 158%;
+    max-width: 900px;
   }
 
   .auth-layout__features {
     grid-template-columns: 1fr;
-    gap: 8px;
+    align-content: center;
+    gap: 7px;
   }
 
   .auth-feature:not(:last-child) {
@@ -429,11 +469,78 @@ withDefaults(
   }
 }
 
-/* 手機與小平板 */
+/* =========================================
+   螢幕高度較低
+========================================= */
+
+@media (max-height: 760px) and (min-width: 821px) {
+  .auth-layout__container {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .auth-layout__brand {
+    grid-template-rows:
+      185px
+      minmax(270px, 1fr)
+      52px;
+  }
+
+  .auth-layout__intro {
+    margin-top: 9px;
+  }
+
+  .auth-layout__intro h1 {
+    font-size: 36px;
+  }
+
+  .auth-layout__intro p {
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .auth-layout__accent {
+    margin-top: 8px;
+  }
+
+  .auth-layout__visual {
+    min-height: 270px;
+  }
+
+  .auth-layout__visual-image--delivery {
+    bottom: 2%;
+    width: 108%;
+    max-width: 650px;
+  }
+
+  .auth-layout__visual-image--shop {
+    bottom: -8%;
+    width: 132%;
+    max-width: 760px;
+  }
+
+  .auth-feature__icon {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+
+  .auth-feature strong {
+    font-size: 12px;
+  }
+
+  .auth-feature small {
+    font-size: 9px;
+  }
+}
+
+/* =========================================
+   手機與小平板
+========================================= */
 
 @media (max-width: 820px) {
   .auth-layout {
-    height: auto;
     min-height: 100dvh;
     overflow-y: auto;
     background: #fffaf6;
@@ -442,7 +549,6 @@ withDefaults(
   .auth-layout__container {
     display: block;
     width: 100%;
-    height: auto;
     min-height: 100dvh;
     padding: 20px 14px 32px;
   }
@@ -453,14 +559,12 @@ withDefaults(
 
   .auth-layout__form-area {
     display: block;
-    width: min(520px, 100%);
-    max-height: none;
+    width: min(560px, 100%);
     margin: 0 auto;
   }
 
   .auth-layout__form-area :deep(> *) {
     max-width: none;
-    max-height: none;
   }
 }
 </style>

@@ -15,7 +15,7 @@ const cartItems = ref<CartItem[]>([
   {
     id: 1,
     name: "經典豬肉起司堡",
-    price: 85,
+    price: 585,
     qty: 1,
     image: "https://picsum.photos/120/120?random=1",
   },
@@ -164,7 +164,7 @@ function checkout() {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 100px);
-  padding: 14px 10px 12px 18px;
+  padding: 14px 12px 12px;
   border: 1px solid #e5e7eb;
   border-radius: 18px;
   background: #fff;
@@ -212,12 +212,16 @@ function checkout() {
 
 .shop-cart-panel__scroll {
   display: flex;
+  position: relative;
+  //   right: -16px;
+  margin: 0 -12px;
+  padding: 0 10px 0px 16px;
   flex-direction: column;
   gap: 8px;
   min-height: calc(100vh - 180px);
   overflow-y: auto;
-  padding-right: 8px;
-  padding-bottom: 10px;
+  //   padding-right: 10px;
+  //   padding-bottom: 10px;
   scrollbar-width: thin;
   scrollbar-color: #fed7aa transparent;
 
@@ -242,8 +246,8 @@ function checkout() {
 .shop-cart-panel__items {
   display: flex;
   flex-direction: column;
-  
-//   min-height: calc(100vh - 400px);
+
+  //   min-height: calc(100vh - 400px);
   gap: 8px;
 }
 

@@ -75,7 +75,7 @@ const activeCategory = "全部";
 /* 修改 HorizontalScroll 裡面的內容 */
 .shop-list-toolbar__scroll :deep(.mg-scroll-content) {
   gap: 8px;
-//   padding: 6px 8px;
+  //   padding: 6px 8px;
 }
 
 /* 箭頭縮小一點 */

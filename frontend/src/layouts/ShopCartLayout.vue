@@ -69,7 +69,7 @@ withDefaults(
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
 }
 
 .shop-cart-layout__breadcrumb {
@@ -102,8 +102,8 @@ withDefaults(
     gap: 16px;
   }
 
-  .shop-cart-layout__main {
-    gap: 16px;
-  }
+//   .shop-cart-layout__main {
+//     gap: 16px;
+//   }
 }
 </style>

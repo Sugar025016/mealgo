@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, ComponentPublicInstance } from "vue";
 import ShopCategoryTabs from "@/components/shop/ShopCategoryTabs.vue";
 import ShopMenuSearch from "@/components/shop/ShopMenuSearch.vue";
-import ShopProductCard from "@/components/shop/ShopProductCard.vue";
+import ProductCard from "@/components/product/ProductCard.vue";
+
+import ProductDetailModal, {
+  type ProductDetailModalProduct,
+  type ProductDetailSubmitPayload,
+} from "@/components/product/ProductDetailModal.vue";
 
 type Product = {
   id: number;
@@ -21,90 +26,441 @@ const products = ref<Product[]>([
     name: "經典豬肉起司堡",
     description: "豬肉排、生菜、起司、番茄",
     price: 85,
-    image: "https://picsum.photos/300/200?random=1",
+    image: "https://picsum.photos/900/600?random=1",
     category: "推薦餐點",
+    isFavorite: false,
+    ingredients: ["漢堡麵包", "豬肉排", "生菜", "起司", "番茄"],
+    allergenNotice: "本產品含有麩質、蛋及乳製品。",
+    optionGroups: [
+      {
+        id: 1,
+        name: "辣度選擇",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 1,
+            name: "不辣",
+            extraPrice: 0,
+          },
+          {
+            id: 2,
+            name: "小辣 🌶️",
+            extraPrice: 0,
+          },
+          {
+            id: 3,
+            name: "中辣 🌶️🌶️",
+            extraPrice: 0,
+          },
+          {
+            id: 4,
+            name: "大辣 🌶️🌶️🌶️",
+            extraPrice: 0,
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "加料選擇",
+        type: "CHECKBOX",
+        required: false,
+        maxSelect: 3,
+        options: [
+          {
+            id: 5,
+            name: "加蛋",
+            extraPrice: 10,
+          },
+          {
+            id: 6,
+            name: "加起司",
+            extraPrice: 15,
+          },
+          {
+            id: 7,
+            name: "加培根",
+            extraPrice: 20,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 2,
     name: "原味蛋餅",
     description: "手工蛋餅皮、蔥花蛋",
     price: 35,
-    image: "https://picsum.photos/300/200?random=2",
+    image: "https://picsum.photos/900/600?random=2",
     category: "推薦餐點",
+    isFavorite: false,
+    ingredients: ["蛋餅皮", "雞蛋", "蔥花", "醬油膏"],
+    allergenNotice: "本產品含有蛋製品及麩質。",
+    optionGroups: [
+      {
+        id: 3,
+        name: "辣度選擇",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 8,
+            name: "不辣",
+            extraPrice: 0,
+          },
+          {
+            id: 9,
+            name: "小辣 🌶️",
+            extraPrice: 0,
+          },
+          {
+            id: 10,
+            name: "中辣 🌶️🌶️",
+            extraPrice: 0,
+          },
+          {
+            id: 11,
+            name: "大辣 🌶️🌶️🌶️",
+            extraPrice: 0,
+          },
+        ],
+      },
+      {
+        id: 4,
+        name: "加料選擇",
+        type: "CHECKBOX",
+        required: false,
+        maxSelect: 3,
+        options: [
+          {
+            id: 12,
+            name: "加蛋",
+            extraPrice: 10,
+          },
+          {
+            id: 13,
+            name: "加起司",
+            extraPrice: 15,
+          },
+          {
+            id: 14,
+            name: "加培根",
+            extraPrice: 20,
+          },
+          {
+            id: 15,
+            name: "加火腿",
+            extraPrice: 15,
+            disabled: true,
+          },
+        ],
+      },
+      {
+        id: 5,
+        name: "醬料選擇",
+        type: "CHECKBOX",
+        required: false,
+        maxSelect: 2,
+        options: [
+          {
+            id: 16,
+            name: "醬油膏",
+            extraPrice: 0,
+          },
+          {
+            id: 17,
+            name: "甜辣醬",
+            extraPrice: 0,
+          },
+          {
+            id: 18,
+            name: "胡椒粉",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 3,
     name: "奶油厚片吐司",
     description: "香濃奶油厚片，烤得酥香",
     price: 35,
-    image: "https://picsum.photos/300/200?random=3",
+    image: "https://picsum.photos/900/600?random=3",
     category: "早餐",
+    isFavorite: false,
+    ingredients: ["厚片吐司", "奶油"],
+    allergenNotice: "本產品含有麩質及乳製品。",
+    optionGroups: [
+      {
+        id: 6,
+        name: "吐司口感",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 19,
+            name: "正常",
+            extraPrice: 0,
+          },
+          {
+            id: 20,
+            name: "烤酥一點",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 4,
     name: "荷包蛋",
     description: "半熟荷包蛋",
     price: 15,
-    image: "https://picsum.photos/300/200?random=4",
+    image: "https://picsum.photos/900/600?random=4",
     category: "早餐",
+    isFavorite: false,
+    ingredients: ["雞蛋"],
+    allergenNotice: "本產品含有蛋製品。",
+    optionGroups: [
+      {
+        id: 7,
+        name: "熟度選擇",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 21,
+            name: "半熟",
+            extraPrice: 0,
+          },
+          {
+            id: 22,
+            name: "全熟",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 14,
-    name: "荷包蛋",
-    description: "半熟荷包蛋",
-    price: 15,
-    image: "https://picsum.photos/300/200?random=4",
+    name: "雙蛋荷包蛋",
+    description: "兩顆現煎荷包蛋",
+    price: 30,
+    image: "https://picsum.photos/900/600?random=14",
     category: "早餐",
+    isFavorite: false,
+    ingredients: ["雞蛋"],
+    allergenNotice: "本產品含有蛋製品。",
+    optionGroups: [
+      {
+        id: 8,
+        name: "熟度選擇",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 23,
+            name: "半熟",
+            extraPrice: 0,
+          },
+          {
+            id: 24,
+            name: "全熟",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 5,
     name: "豬肉漢堡",
     description: "豬肉排、生菜、起司",
     price: 75,
-    image: "https://picsum.photos/300/200?random=5",
+    image: "https://picsum.photos/900/600?random=5",
     category: "漢堡",
+    isFavorite: false,
+    ingredients: ["漢堡麵包", "豬肉排", "生菜", "起司"],
+    allergenNotice: "本產品含有麩質、蛋及乳製品。",
+    optionGroups: [
+      {
+        id: 9,
+        name: "辣度選擇",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 25,
+            name: "不辣",
+            extraPrice: 0,
+          },
+          {
+            id: 26,
+            name: "小辣 🌶️",
+            extraPrice: 0,
+          },
+          {
+            id: 27,
+            name: "中辣 🌶️🌶️",
+            extraPrice: 0,
+          },
+          {
+            id: 28,
+            name: "大辣 🌶️🌶️🌶️",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 6,
     name: "香雞堡",
     description: "香酥雞排、生菜、美乃滋",
     price: 80,
-    image: "https://picsum.photos/300/200?random=6",
+    image: "https://picsum.photos/900/600?random=6",
     category: "漢堡",
+    isFavorite: false,
+    ingredients: ["漢堡麵包", "雞排", "生菜", "美乃滋"],
+    allergenNotice: "本產品含有麩質及蛋製品。",
+    optionGroups: [],
   },
   {
     id: 7,
     name: "奶茶",
     description: "香濃奶茶，甜度固定",
     price: 30,
-    image: "https://picsum.photos/300/200?random=7",
+    image: "https://picsum.photos/900/600?random=7",
     category: "飲品",
+    isFavorite: false,
+    ingredients: ["紅茶", "奶精", "糖"],
+    allergenNotice: "本產品含有乳製品。",
+    optionGroups: [
+      {
+        id: 10,
+        name: "冰量選擇",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 29,
+            name: "正常冰",
+            extraPrice: 0,
+          },
+          {
+            id: 30,
+            name: "少冰",
+            extraPrice: 0,
+          },
+          {
+            id: 31,
+            name: "去冰",
+            extraPrice: 0,
+          },
+          {
+            id: 32,
+            name: "熱飲",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 8,
     name: "紅茶",
     description: "古早味紅茶",
     price: 25,
-    image: "https://picsum.photos/300/200?random=8",
+    image: "https://picsum.photos/900/600?random=8",
     category: "飲品",
+    isFavorite: false,
+    ingredients: ["紅茶", "糖"],
+    optionGroups: [
+      {
+        id: 11,
+        name: "冰量選擇",
+        type: "RADIO",
+        required: true,
+        options: [
+          {
+            id: 33,
+            name: "正常冰",
+            extraPrice: 0,
+          },
+          {
+            id: 34,
+            name: "少冰",
+            extraPrice: 0,
+          },
+          {
+            id: 35,
+            name: "去冰",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
   {
     id: 9,
     name: "黃金雞塊",
     description: "酥脆雞塊，搭配番茄醬",
     price: 55,
-    image: "https://picsum.photos/300/200?random=9",
+    image: "https://picsum.photos/900/600?random=9",
     category: "點心",
+    isFavorite: false,
+    ingredients: ["雞肉", "麵衣"],
+    allergenNotice: "本產品含有麩質。",
+    optionGroups: [
+      {
+        id: 12,
+        name: "醬料選擇",
+        type: "CHECKBOX",
+        required: false,
+        maxSelect: 2,
+        options: [
+          {
+            id: 36,
+            name: "番茄醬",
+            extraPrice: 0,
+          },
+          {
+            id: 37,
+            name: "甜辣醬",
+            extraPrice: 0,
+          },
+          {
+            id: 38,
+            name: "胡椒粉",
+            extraPrice: 0,
+          },
+        ],
+      },
+    ],
   },
 ]);
 
 const selectedCategory = ref("推薦餐點");
 const keyword = ref("");
+/* 商品詳細視窗 */
+const isProductDetailOpen = ref(false);
 
 const sectionRefs = ref<Record<string, HTMLElement | null>>({});
 
-function setSectionRef(category: string, el: Element | null) {
-  sectionRefs.value[category] = el as HTMLElement | null;
+// function setSectionRef(category: string, el: Element | null) {
+//   sectionRefs.value[category] = el as HTMLElement | null;
+// }
+function setSectionRef(
+  name: string,
+  el: Element | ComponentPublicInstance | null,
+) {
+  if (el instanceof HTMLElement) {
+    sectionRefs.value[name] = el;
+  } else {
+    delete sectionRefs.value[name];
+  }
 }
 
 function scrollToCategory(category: string) {
@@ -142,8 +498,28 @@ const displayCategories = computed(() => {
     .filter((group) => group.products.length > 0);
 });
 
-function handleAddToCart(product: Product) {
-  console.log("加入購物車", product);
+// function handleAddToCart(product: Product) {
+//   console.log("加入購物車", product);
+// }
+
+function handleAddToCart(payload: ProductDetailSubmitPayload) {
+  console.log("加入購物車資料：", payload);
+
+  /*
+  await cartApi.addItem({
+    productId: payload.productId,
+    qty: payload.quantity,
+    remark: payload.remark,
+    selectedOptions: payload.selectedOptions,
+  });
+  */
+}
+const selectedProduct =
+  ref<ProductDetailModalProduct | null>(null);
+
+function openProductDetail(product: Product) {
+  selectedProduct.value = product;
+  isProductDetailOpen.value = true;
 }
 </script>
 
@@ -172,13 +548,18 @@ function handleAddToCart(product: Product) {
           </h2>
 
           <div class="shop-menu-section__grid">
-            <ShopProductCard
+            <ProductCard
               v-for="product in group.products"
               :key="product.id"
               :product="product"
-              @add-to-cart="handleAddToCart"
+              @add-to-cart="openProductDetail"
             />
           </div>
+          <ProductDetailModal
+            v-model="isProductDetailOpen"
+            :product="selectedProduct"
+            @add-to-cart="handleAddToCart"
+          />
         </section>
       </template>
 

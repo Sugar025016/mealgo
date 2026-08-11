@@ -23,6 +23,7 @@ const emit = defineEmits<{
     <img class="cart-product-card__image" :src="item.image" :alt="item.name" />
 
     <div class="cart-product-card__content">
+        
       <h3 class="cart-product-card__name">
         {{ item.name }}
       </h3>
@@ -89,12 +90,12 @@ const emit = defineEmits<{
   text-overflow: ellipsis;
 }
 
-.cart-product-card__bottom {
-  display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr);
-  align-items: center;
-  gap: 10px;
-}
+// .cart-product-card__bottom {
+//   display: grid;
+//   grid-template-columns: auto auto minmax(0, 1fr);
+//   align-items: center;
+//   gap: 10px;
+// }
 .cart-product-card__bottom {
   display: flex;
   align-items: center;
@@ -108,12 +109,14 @@ const emit = defineEmits<{
   font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
+  min-width: 76px;
 }
 
 .cart-product-card__qty {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-width: 86px;
 }
 
 .cart-product-card__qty button {
@@ -157,5 +160,7 @@ const emit = defineEmits<{
   font-size: 14px;
   font-weight: 800;
   white-space: nowrap;
+  min-width: 76px;
+  text-align: right;
 }
 </style>

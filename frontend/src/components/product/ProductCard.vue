@@ -36,14 +36,6 @@ const emit = defineEmits<{
             {{ product.description }}
           </p>
         </div>
-
-        <button
-          type="button"
-          class="shop-product-card__favorite"
-          aria-label="收藏餐點"
-        >
-          <i class="bi bi-heart"></i>
-        </button>
       </div>
 
       <div class="shop-product-card__bottom">
@@ -87,7 +79,7 @@ const emit = defineEmits<{
 
 .shop-product-card__image {
   width: 120px;
-//   height: 96px;
+  //   height: 96px;
 
   aspect-ratio: 16/14;
   object-fit: cover;
@@ -124,24 +116,6 @@ const emit = defineEmits<{
   line-height: 1.4;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
-
-.shop-product-card__favorite {
-  flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
-  border: 0;
-  color: #9ca3af;
-  background: transparent;
-  cursor: pointer;
-
-  &:hover {
-    color: #ff5a00;
-  }
-
-  i {
-    font-size: 17px;
-  }
 }
 
 .shop-product-card__bottom {

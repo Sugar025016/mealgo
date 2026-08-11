@@ -44,7 +44,7 @@ const breadcrumbItems = [
 
 <style scoped lang="scss">
 .shop-detail-view {
-  padding: 10px 0 48px;
+  padding: 10px 0 26px;
 }
 
 .shop-detail-view__content {

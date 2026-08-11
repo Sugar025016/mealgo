@@ -70,7 +70,7 @@ const props = withDefaults(defineProps<ShopHeroProps>(), {
           </div>
 
           <div class="shop-hero__meta-item">
-            <i class="bi bi-scooter"></i>
+            <i class="bi bi-bicycle"></i>
 
             <div>
               <strong>NT$ {{ props.deliveryFee }}</strong>
@@ -411,7 +411,7 @@ const props = withDefaults(defineProps<ShopHeroProps>(), {
 .shop-hero {
   width: 100%;
   max-width: 100%;
-  padding-top: 10px;
+  padding-top: 5px;
 }
 
 .shop-hero__breadcrumb {
@@ -659,9 +659,9 @@ const props = withDefaults(defineProps<ShopHeroProps>(), {
 }
 
 @media (max-width: 768px) {
-  .shop-hero {
-    padding-top: 16px;
-  }
+  //   .shop-hero {
+  //     padding-top: 16px;
+  //   }
 
   .shop-hero__title {
     font-size: 28px;
