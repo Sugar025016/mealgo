@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ShopHero from "@/components/shop/ShopHero.vue";
 import ShopMenuSection from "@/components/shop/ShopMenuSection.vue";
-import ShopCartLayout from "@/layouts/ShopCartLayout.vue";
+import ProductCartPanel from "@/components/cart/ProductCartPanel.vue";
 
 const shop = {
   image: "https://picsum.photos/800/500?random=11",
@@ -18,26 +18,19 @@ const shop = {
   isOpen: true,
   isFavorite: false,
 };
-
-const breadcrumbItems = [
-  { label: "首頁", to: "/" },
-  { label: "店家", to: "/shops" },
-  { label: shop.name },
-];
 </script>
 
 <template>
   <main class="shop-detail-view">
-    <div class="container">
-      <ShopCartLayout
-        :breadcrumb-items="breadcrumbItems"
-        cart-width="390px"
-      >
-        <div class="shop-detail-view__content">
-          <ShopHero v-bind="shop" />
-          <ShopMenuSection />
-        </div>
-      </ShopCartLayout>
+    <div class="shop-detail-view__container">
+      <section class="shop-detail-view__content">
+        <ShopHero v-bind="shop" />
+        <ShopMenuSection />
+      </section>
+
+      <aside class="shop-detail-view__cart">
+        <ProductCartPanel />
+      </aside>
     </div>
   </main>
 </template>
@@ -47,13 +40,44 @@ const breadcrumbItems = [
   padding: 10px 0 26px;
 }
 
+.shop-detail-view__container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  align-items: start;
+  gap: 24px;
+
+  width: min(calc(100% - 48px), 1320px);
+  margin: 0 auto;
+}
+
 .shop-detail-view__content {
   min-width: 0;
+}
+
+.shop-detail-view__cart {
+  position: sticky;
+  top: 96px;
+  min-width: 0;
+}
+
+@media (max-width: 992px) {
+  .shop-detail-view__container {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shop-detail-view__cart {
+    position: static;
+  }
 }
 
 @media (max-width: 576px) {
   .shop-detail-view {
     padding-bottom: 32px;
+  }
+
+  .shop-detail-view__container {
+    width: min(calc(100% - 24px), 1320px);
+    gap: 16px;
   }
 }
 </style>

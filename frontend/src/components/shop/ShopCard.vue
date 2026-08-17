@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps({
   image: { type: String, default: "" },
+  shopId: { type: Number, default: 1 },
   name: { type: String, default: "店家名稱" },
   description: { type: String, default: "店家描述" },
   deliveryFee: { type: Number, default: 30 },
@@ -16,40 +17,41 @@ defineProps({
 </script>
 
 <template>
-  <div class="shop-card">
-    <div class="shop-card__image">
-      <img :src="image" :alt="name" />
+  <RouterLink :to="`/shops/${shopId}`" class="shop-card">
+    <div class="shop-card">
+      <div class="shop-card__image">
+        <img :src="image" :alt="name" />
 
-      <span class="shop-card__badge">
-        <i class="bi bi-fire"></i>
-        熱門
-      </span>
-
-      <button class="shop-card__favorite" type="button">
-        <i class="bi bi-heart"></i>
-      </button>
-    </div>
-
-    <div class="shop-card__body">
-      <h5 class="shop-card__title">
-        {{ name }}
-      </h5>
-
-      <div class="shop-card__meta">
-        <span class="shop-card__rating">
-          <i class="bi bi-star-fill"></i>
-          {{ rating }}
+        <span class="shop-card__badge">
+          <i class="bi bi-fire"></i>
+          熱門
         </span>
 
-        <span class="shop-card__review">({{ reviewCount }})</span>
-
-        <span class="shop-card__time">
-          <i class="bi bi-clock"></i>
-          {{ deliveryTime }}
-        </span>
+        <button class="shop-card__favorite" type="button">
+          <i class="bi bi-heart"></i>
+        </button>
       </div>
 
-      <!-- <div class="shop-card__tags">
+      <div class="shop-card__body">
+        <h5 class="shop-card__title">
+          {{ name }}
+        </h5>
+
+        <div class="shop-card__meta">
+          <span class="shop-card__rating">
+            <i class="bi bi-star-fill"></i>
+            {{ rating }}
+          </span>
+
+          <span class="shop-card__review">({{ reviewCount }})</span>
+
+          <span class="shop-card__time">
+            <i class="bi bi-clock"></i>
+            {{ deliveryTime }}
+          </span>
+        </div>
+
+        <!-- <div class="shop-card__tags">
         <span
           v-for="tag in tags"
           :key="String(tag)"
@@ -59,23 +61,24 @@ defineProps({
         </span>
       </div> -->
 
-      <p class="shop-card__description">
-        {{ description }}
-      </p>
+        <p class="shop-card__description">
+          {{ description }}
+        </p>
 
-      <div class="shop-card__footer">
-        <span>
-          <i class="bi bi-bicycle"></i>
-          ${{ deliveryFee }}
-        </span>
+        <div class="shop-card__footer">
+          <span>
+            <i class="bi bi-bicycle"></i>
+            ${{ deliveryFee }}
+          </span>
 
-        <span>
-          <i class="bi bi-geo-alt"></i>
-          {{ distance }}
-        </span>
+          <span>
+            <i class="bi bi-geo-alt"></i>
+            {{ distance }}
+          </span>
+        </div>
       </div>
     </div>
-  </div>
+  </RouterLink>
 </template>
 
 <style scoped lang="scss">

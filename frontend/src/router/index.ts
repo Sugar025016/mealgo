@@ -24,6 +24,8 @@ import MemberRegisterView from "@/views/auth/MemberRegisterView.vue";
 import MerchantLoginView from "@/views/auth/MerchantLoginView.vue";
 import MerchantRegisterView from "@/views/auth/MerchantRegisterView.vue";
 
+// import MerchantLayout from "@/layouts/MerchantLayout.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
@@ -153,6 +155,53 @@ const router = createRouter({
       name: "order",
       component: OrderView,
     },
+    // {
+    //   path: "/merchant",
+    //   component: MerchantLayout,
+    //   children: [
+    //     {
+    //       path: "",
+    //       name: "merchant-home",
+    //       component: () => import("@/views/merchant/MerchantHomeView.vue"),
+    //     },
+    //     {
+    //       path: "live-orders",
+    //       name: "merchant-live-orders",
+    //       component: () => import("@/views/merchant/LiveOrdersView.vue"),
+    //     },
+    //     {
+    //       path: "order-history",
+    //       name: "merchant-order-history",
+    //       component: () => import("@/views/merchant/OrderHistoryView.vue"),
+    //     },
+    //     {
+    //       path: "reviews",
+    //       name: "merchant-reviews",
+    //       component: () => import("@/views/merchant/ReviewsView.vue"),
+    //     },
+    //     {
+    //       path: "categories",
+    //       name: "merchant-categories",
+    //       component: () => import("@/views/merchant/CategoriesView.vue"),
+    //     },
+    //     {
+    //       path: "products",
+    //       name: "merchant-products",
+    //       component: () => import("@/views/merchant/ProductsView.vue"),
+    //     },
+    //     {
+    //       path: "shop",
+    //       name: "merchant-shop",
+    //       component: () => import("@/views/merchant/ShopManagementView.vue"),
+    //     },
+    //     {
+    //       path: "business",
+    //       name: "merchant-business",
+    //       component: () =>
+    //         import("@/views/merchant/BusinessManagementView.vue"),
+    //     },
+    //   ],
+    // },
   ],
 
   scrollBehavior() {

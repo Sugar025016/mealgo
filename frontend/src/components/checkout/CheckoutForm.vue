@@ -29,9 +29,7 @@ const form = reactive({
 
         <div class="checkout-form__heading-text">
           <h2 class="checkout-form__title">外送地址</h2>
-          <p class="checkout-form__description">
-            請確認餐點要送達的地址
-          </p>
+          <p class="checkout-form__description">請確認餐點要送達的地址</p>
         </div>
       </div>
 
@@ -46,12 +44,9 @@ const form = reactive({
             <strong>{{ form.address }}</strong>
           </div>
 
-          <button
-            type="button"
-            class="checkout-form__edit-button"
-          >
+          <RouterLink to="/member/addresses" class="checkout-form__edit-button">
             修改
-          </button>
+          </RouterLink>
         </div>
       </div>
     </section>
@@ -65,24 +60,16 @@ const form = reactive({
 
         <div class="checkout-form__heading-text">
           <h2 class="checkout-form__title">取餐方式</h2>
-          <p class="checkout-form__description">
-            選擇外送或到店自取
-          </p>
+          <p class="checkout-form__description">選擇外送或到店自取</p>
         </div>
       </div>
 
       <div class="checkout-form__content">
-        <div
-          class="
-            checkout-form__options
-            checkout-form__options--two
-          "
-        >
+        <div class="checkout-form__options checkout-form__options--two">
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.fulfillmentType === 'delivery',
+              'checkout-option--active': form.fulfillmentType === 'delivery',
             }"
           >
             <input
@@ -107,8 +94,7 @@ const form = reactive({
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.fulfillmentType === 'pickup',
+              'checkout-option--active': form.fulfillmentType === 'pickup',
             }"
           >
             <input
@@ -142,24 +128,16 @@ const form = reactive({
 
         <div class="checkout-form__heading-text">
           <h2 class="checkout-form__title">付款方式</h2>
-          <p class="checkout-form__description">
-            選擇本次訂單的付款方式
-          </p>
+          <p class="checkout-form__description">選擇本次訂單的付款方式</p>
         </div>
       </div>
 
       <div class="checkout-form__content">
-        <div
-          class="
-            checkout-form__options
-            checkout-form__options--three
-          "
-        >
+        <div class="checkout-form__options checkout-form__options--three">
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.paymentType === 'cash',
+              'checkout-option--active': form.paymentType === 'cash',
             }"
           >
             <input
@@ -184,8 +162,7 @@ const form = reactive({
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.paymentType === 'credit-card',
+              'checkout-option--active': form.paymentType === 'credit-card',
             }"
           >
             <input
@@ -210,8 +187,7 @@ const form = reactive({
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.paymentType === 'line-pay',
+              'checkout-option--active': form.paymentType === 'line-pay',
             }"
           >
             <input
@@ -245,9 +221,7 @@ const form = reactive({
 
         <div class="checkout-form__heading-text">
           <h2 class="checkout-form__title">訂單備註</h2>
-          <p class="checkout-form__description">
-            有特殊需求可以告訴店家
-          </p>
+          <p class="checkout-form__description">有特殊需求可以告訴店家</p>
         </div>
       </div>
 
@@ -274,24 +248,16 @@ const form = reactive({
 
         <div class="checkout-form__heading-text">
           <h2 class="checkout-form__title">發票資訊</h2>
-          <p class="checkout-form__description">
-            選擇電子發票的開立方式
-          </p>
+          <p class="checkout-form__description">選擇電子發票的開立方式</p>
         </div>
       </div>
 
       <div class="checkout-form__content">
-        <div
-          class="
-            checkout-form__options
-            checkout-form__options--three
-          "
-        >
+        <div class="checkout-form__options checkout-form__options--three">
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.invoiceType === 'member',
+              'checkout-option--active': form.invoiceType === 'member',
             }"
           >
             <input
@@ -316,8 +282,7 @@ const form = reactive({
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.invoiceType === 'mobile',
+              'checkout-option--active': form.invoiceType === 'mobile',
             }"
           >
             <input
@@ -342,8 +307,7 @@ const form = reactive({
           <label
             class="checkout-option"
             :class="{
-              'checkout-option--active':
-                form.invoiceType === 'company',
+              'checkout-option--active': form.invoiceType === 'company',
             }"
           >
             <input
@@ -366,10 +330,7 @@ const form = reactive({
           </label>
         </div>
 
-        <div
-          v-if="form.invoiceType === 'mobile'"
-          class="checkout-form__extra"
-        >
+        <div v-if="form.invoiceType === 'mobile'" class="checkout-form__extra">
           <label class="checkout-form__field">
             <span>手機條碼</span>
 
@@ -530,6 +491,7 @@ const form = reactive({
     color 0.2s ease,
     background 0.2s ease,
     box-shadow 0.2s ease;
+  text-decoration: none;
 }
 
 .checkout-form__edit-button:hover {

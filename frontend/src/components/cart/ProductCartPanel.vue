@@ -150,11 +150,14 @@ function checkout() {
           </div>
         </div>
       </div>
-
-      <button type="button" class="shop-cart-panel__checkout" @click="checkout">
+      <RouterLink to="/checkout/{cartId}" class="shop-cart-panel__checkout">
         前往結帳
         <span>NT$ {{ totalPrice }}</span>
-      </button>
+      </RouterLink>
+      <!-- <button type="button" class="shop-cart-panel__checkout" @click="checkout">
+        前往結帳
+        <span>NT$ {{ totalPrice }}</span>
+      </button> -->
     </div>
   </aside>
 </template>
@@ -338,6 +341,7 @@ function checkout() {
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(255, 90, 0, 0.28);
+  text-decoration: none;
 
   &:hover {
     background: #f97316;
